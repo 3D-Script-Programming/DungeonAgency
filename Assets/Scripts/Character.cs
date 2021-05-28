@@ -1,10 +1,5 @@
 ﻿using System;
-public enum Type
-{
-    FIRE,
-    WATER,
-    WIND
-}
+
 public class Character
 {
     private int level;
