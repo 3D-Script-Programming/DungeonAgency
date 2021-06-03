@@ -32,4 +32,8 @@ public class CharacterController : MonoBehaviour
         animator.SetInteger("HP", hp);
         if (hp < 1) Die();
     }
+    
+    public void Victory() {
+        animator.SetBool("Victory", true);
+    }
 }
