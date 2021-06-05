@@ -12,6 +12,10 @@ public class BattleManager : MonoBehaviour
     }
     public PerformAction battleStates;
 
+    public bool myTurn;
+    public int monsterCount = 0;
+    public int heroesCount = 0;
+
     // 한 턴마다 공격에 대한 정보를 담는 리스트
     public List<HandleTurn> performList = new List<HandleTurn>();
     public List<GameObject> monsterInBattle = new List<GameObject>();
@@ -22,6 +26,7 @@ public class BattleManager : MonoBehaviour
         battleStates = PerformAction.WAIT;
         monsterInBattle.AddRange(GameObject.FindGameObjectsWithTag("Monster"));
         heroesInBattle.AddRange(GameObject.FindGameObjectsWithTag("Hero"));
+        myTurn = true;
     }
 
     private void Update()
@@ -36,13 +41,27 @@ public class BattleManager : MonoBehaviour
                 break;
             case (PerformAction.TAKEACTION):
                 GameObject performer = performList[0].attackerGameObject;
-                ChracterState chracterState = performer.GetComponent<ChracterState>();
-                chracterState.attackTarget = performList[0].attackerTarget;
-                chracterState.currentState = ChracterState.TurnState.ACTION;
+                if (performer.tag == "Monster")
+                {
+                    MonsterState monsterState = performer.GetComponent<MonsterState>();
+                    monsterState.attackTarget = performList[0].attackerTarget;
+                    monsterState.currentState = MonsterState.CharacterState.ACTION;
+                    monsterCount++;
+                    monsterCount = monsterCount % monsterInBattle.Count;
+                }
+                else if(performer.tag == "Hero")
+                {
+                    HeroState heroState = performer.GetComponent<HeroState>();
+                    heroState.attackTarget = performList[0].attackerTarget;
+                    heroState.currentState = HeroState.CharacterState.ACTION;
+                    heroesCount++;
+                    heroesCount = heroesCount % heroesInBattle.Count;
+                }
+                myTurn = !myTurn;
                 battleStates = PerformAction.PERFORMACTION;
                 break;
             case (PerformAction.PERFORMACTION):
-
+                // idle
                 break;
         }
     }
