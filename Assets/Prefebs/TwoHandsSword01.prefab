@@ -8341,6 +8341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4774480260177774}
   - component: {fileID: 95291735494667364}
+  - component: {fileID: -7653513500880605265}
   m_Layer: 0
   m_Name: TwoHandsSword01
   m_TagString: Untagged
@@ -8437,6 +8438,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-7653513500880605265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670618200372504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a43af66e9f6004a4d9e0ea1129250d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1705132039191908
 GameObject:
   m_ObjectHideFlags: 0
