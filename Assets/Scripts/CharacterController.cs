@@ -20,7 +20,7 @@ public class CharacterController : MonoBehaviour
         if (isDead) return;
     }
 
-    private void Die() {
+    public void Die() {
         animator.SetTrigger("Die");
         isDead = true;
     }
