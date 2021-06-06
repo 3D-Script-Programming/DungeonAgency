@@ -6,7 +6,6 @@ public class HeroState : MonoBehaviour
 {
     private BattleManager battleManager;
     public Character chracter;
-    public int priority;
 
     public enum CharacterState
     {
@@ -40,10 +39,8 @@ public class HeroState : MonoBehaviour
             case (CharacterState.TURNCHECK):
                 if (battleManager.myTurn == false)
                 {
-                    if (priority == battleManager.heroesCount)
-                    {
+                    if (this.gameObject == battleManager.heroesInBattle[battleManager.heroPriority])
                         currentState = CharacterState.CHOOSEACTION;
-                    }
                 }
                 break;
             case (CharacterState.CHOOSEACTION):

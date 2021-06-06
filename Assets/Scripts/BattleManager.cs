@@ -18,8 +18,12 @@ public class BattleManager : MonoBehaviour
 
     // 한 턴마다 공격에 대한 정보를 담는 리스트
     public List<HandleTurn> performList = new List<HandleTurn>();
+    // TODO: GameManager에서 배열로 넘겨줌. 배열 -> 리스트로 형변환
     public List<GameObject> monsterInBattle = new List<GameObject>();
     public List<GameObject> heroesInBattle = new List<GameObject>();
+
+    public int monsterPriority = 0;
+    public int heroPriority = 0;
 
     private void Start()
     {
@@ -46,16 +50,16 @@ public class BattleManager : MonoBehaviour
                     MonsterState monsterState = performer.GetComponent<MonsterState>();
                     monsterState.attackTarget = performList[0].attackerTarget;
                     monsterState.currentState = MonsterState.CharacterState.ACTION;
-                    monsterCount++;
-                    monsterCount = monsterCount % monsterInBattle.Count;
+                    monsterPriority++;
+                    monsterPriority %= monsterInBattle.Count;
                 }
                 else if(performer.tag == "Hero")
                 {
                     HeroState heroState = performer.GetComponent<HeroState>();
                     heroState.attackTarget = performList[0].attackerTarget;
                     heroState.currentState = HeroState.CharacterState.ACTION;
-                    heroesCount++;
-                    heroesCount = heroesCount % heroesInBattle.Count;
+                    heroPriority++;
+                    heroPriority %= heroesInBattle.Count;
                 }
                 myTurn = !myTurn;
                 battleStates = PerformAction.PERFORMACTION;

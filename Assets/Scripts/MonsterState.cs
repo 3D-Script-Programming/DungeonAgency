@@ -6,7 +6,6 @@ public class MonsterState : MonoBehaviour
 {
     private BattleManager battleManager;
     public Character chracter;
-    public int priority;
 
     public enum CharacterState
     {
@@ -40,10 +39,8 @@ public class MonsterState : MonoBehaviour
             case (CharacterState.TURNCHECK):
                 if (battleManager.myTurn == true)
                 {
-                    if(priority == battleManager.monsterCount)
-                    {
+                    if (this.gameObject == battleManager.monsterInBattle[battleManager.monsterPriority])
                         currentState = CharacterState.CHOOSEACTION;
-                    }
                 }
                 break;
             case (CharacterState.CHOOSEACTION):
@@ -55,7 +52,7 @@ public class MonsterState : MonoBehaviour
                 break;
             case (CharacterState.ACTION):
                 StartCoroutine(TimeForAction());
-                if (chracter.GetMaxHP() < 0)
+                if (chracter.GetMaxHP() < 0)//
                 {
                     currentState = CharacterState.DEAD;
                 }
