@@ -44,4 +44,8 @@ public class CharacterController : MonoBehaviour
     public void MoveBackward() {
         animator.SetTrigger("Backward");
     }
+
+    public void StopMove() {
+        animator.SetTrigger("Idle");
+    }
 }
