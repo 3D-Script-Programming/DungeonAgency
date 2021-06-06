@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Prefabs.meta
+guid: f452f61af060d9c4f97cca2b02e9dcaa
+=======
 guid: eb59f4d1c0d9a413eb2745d216cf54d1
+>>>>>>> 2edb4823a899390d0d2acdf225856d0c3ed380ec:Assets/Animators.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
