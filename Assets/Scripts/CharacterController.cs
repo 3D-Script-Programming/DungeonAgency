@@ -41,6 +41,10 @@ public class CharacterController : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
+    public void CiritcalAttack() {
+        animator.SetTrigger("Critical");
+    }
+
     public void MoveBackward() {
         animator.SetTrigger("Backward");
     }
