@@ -25,7 +25,7 @@ public class CharacterController : MonoBehaviour
         isDead = true;
     }
 
-    public void GetHit(int damage) {
+    public void GetHit() {
         animator.SetTrigger("GetHit");
     }
     
