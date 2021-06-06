@@ -30,7 +30,7 @@ public class CharacterController : MonoBehaviour
     }
     
     public void Victory() {
-        animator.SetBool("Victory", true);
+        animator.SetTrigger("Victory");
     }
 
     public void MoveFoward() {
