@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
 {
     Player player;
 
-
     public static GameManager instance
     {
         get

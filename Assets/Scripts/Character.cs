@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class Character
+public class Character:MonoBehaviour
 {
     private int level;
     private int exp;
@@ -8,6 +11,11 @@ public class Character
     private Nature nature;
 
     private int rank, potential;
+
+    private int prefabPath;
+    private string name;
+
+    GameObject prefabs = Resources.Load<GameObject>("");
 
     public Character(int str, int bal, int vtp, int potential, Nature nature)
     {
@@ -28,7 +36,7 @@ public class Character
     }
     public Character(int rank)
     {
-        Random random = new Random();
+        System.Random random = new System.Random();
         int statusSum = (int)Math.Pow(1.2, rank) * 50;
         int defaultStatus = statusSum * 2 / 5;
 
