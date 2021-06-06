@@ -6,14 +6,12 @@ public class CharacterController : MonoBehaviour
 {
     private Animator animator;
 
-    private int hp; 
     private bool isDead;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        hp = 1000;
     }
 
     // Update is called once per frame
@@ -23,14 +21,12 @@ public class CharacterController : MonoBehaviour
     }
 
     private void Die() {
+        animator.SetTrigger("Die");
         isDead = true;
     }
 
     public void GetHit(int damage) {
         animator.SetTrigger("GetHit");
-        hp -= damage;
-        animator.SetInteger("HP", hp);
-        if (hp < 1) Die();
     }
     
     public void Victory() {
