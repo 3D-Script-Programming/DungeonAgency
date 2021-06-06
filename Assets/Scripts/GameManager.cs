@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    int gold;
-    int evilPoint;
-
-    List<Character> monsters = new List<Character>();
-    List<DungeonRoom> dungeon = new List<DungeonRoom>();//처음에 3칸
+    Player player;
 
     public static GameManager instance
     {
@@ -27,25 +23,15 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        player.AddRangeMonster(CharacterFactory.CreateMonsterList(6));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void SaveData() { }
     public void LoadData() { }
-
-    public int GetGold()
-    {
-        return gold;
-    }
-
-    public int GetEvilPoint()
-    {
-        return evilPoint;
-    }
 }

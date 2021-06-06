@@ -24,11 +24,15 @@ public class AnimationController : MonoBehaviour
     }
 
     public void MoveFoward() {
-        animator.SetTrigger("Foward");
+        animator.SetTrigger("Forward");
     }
 
     public void Attack() {
         animator.SetTrigger("Attack");
+    }
+
+    public void CiritcalAttack() {
+        animator.SetTrigger("Critical");
     }
 
     public void MoveBackward() {

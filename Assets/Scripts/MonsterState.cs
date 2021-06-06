@@ -25,7 +25,12 @@ public class MonsterState : MonoBehaviour
 
     private void Start()
     {
+<<<<<<< HEAD
         animator = GetComponent<Animator>();
+=======
+        // TODO: 캐릭터 스텟은 게임 메니저가 관리함 이후에 지워야 해
+        chracter = CharacterFactory.CreateMonster();
+>>>>>>> 080f31336f177996d5f6c9c2571960c89ed97b36
         myAttack = new HandleTurn();
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;

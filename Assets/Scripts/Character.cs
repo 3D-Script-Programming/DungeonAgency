@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Collections;
+using UnityEngine;
 
-public class Character
+public class Character:MonoBehaviour
 {
     private int level;
     private int exp;
     private int str, bal, vtp;
-    private Type type;
+    private Nature nature;
+    private int hp;
 
-    public Character(int str, int bal, int vtp, Type type)
+    private int rank, potential;
+    private string name;
+
+    private GameObject prefab;
+
+    public Character(string prefabPath, int str, int bal, int vtp, int potential, Nature nature)
     {
         level = 1;
         exp = 0;
@@ -15,11 +23,14 @@ public class Character
         this.str = str;
         this.bal = bal;
         this.vtp = vtp;
-        this.type = type;
+        this.nature = nature;
+        this.potential = potential;
+
+        prefab = Resources.Load<GameObject>(prefabPath);
     }
 
-    public Character(int level, int str, int bal, int vtp, Type type)
-        :this(str, bal, vtp, type)
+    public Character(string prefabPath, int level, int str, int bal, int vtp, int potential, Nature nature)
+        :this(prefabPath, str, bal, vtp, potential, nature)
     {
         LevelUp(level);
     }
@@ -29,10 +40,11 @@ public class Character
         if (GetReqExp() > exp)
             return;
 
-        level++;
-        str = (int)(Math.Log10(100 + 100000 / level) + Math.Log(100 + 10000 / str, 10 + str));
-        bal = (int)(Math.Log10(100 + 100000 / level) + Math.Log(100 + 10000 / bal, 10 + str));
-        vtp = (int)(Math.Log10(100 + 100000 / level) + Math.Log(100 + 10000 / vtp, 10 + str));
+        level++; 
+        int statusSum = (int)(Math.Log10(100 + level) * 15 + potential * 1.2);
+        str += statusSum / 3;
+        vtp += statusSum / 3;
+        bal += statusSum / 3;
 
         exp = 0;
     }
@@ -51,9 +63,9 @@ public class Character
         return str * 8 + bal * 3 + vtp * 4;
     }
 
-    public Type GetType()
+    public Nature GetNature()
     {
-        return type;
+        return nature;
     }
 
     public int GetLevel()
@@ -68,7 +80,8 @@ public class Character
 
     public int GetReqExp()
     {
-        return (int)(Math.Pow(level, 1.5)) * 250;
+        int levelWeight = (int)Math.Pow(level, 1.3);
+        return levelWeight * (200 + (potential * 80) * (rank + 5) / 10);
     }
 
     public int GetMaxHP()
@@ -76,9 +89,19 @@ public class Character
         return vtp * 400;
     }
 
+    public int GetHP()
+    {
+        return hp;
+    }
+
+    public void SetHP(int hp)
+    {
+        this.hp = hp;
+    }
+
     public int GetDamage()
     {
-        Random rand = new Random();
+        System.Random rand = new System.Random();
         int maxDamage = str * 15;
         int minDamage = str * 15 * bal / 2;
 
