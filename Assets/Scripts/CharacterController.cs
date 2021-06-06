@@ -34,7 +34,7 @@ public class CharacterController : MonoBehaviour
     }
 
     public void MoveFoward() {
-        animator.SetTrigger("Foward");
+        animator.SetTrigger("Forward");
     }
 
     public void Attack() {
