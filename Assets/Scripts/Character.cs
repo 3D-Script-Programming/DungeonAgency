@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Character:MonoBehaviour
@@ -9,15 +8,14 @@ public class Character:MonoBehaviour
     private int exp;
     private int str, bal, vtp;
     private Nature nature;
+    private int hp;
 
     private int rank, potential;
-
-    private int prefabPath;
     private string name;
 
-    GameObject prefabs = Resources.Load<GameObject>("");
+    private GameObject prefab;
 
-    public Character(int str, int bal, int vtp, int potential, Nature nature)
+    public Character(string prefabPath, int str, int bal, int vtp, int potential, Nature nature)
     {
         level = 1;
         exp = 0;
@@ -27,37 +25,14 @@ public class Character:MonoBehaviour
         this.vtp = vtp;
         this.nature = nature;
         this.potential = potential;
+
+        prefab = Resources.Load<GameObject>(prefabPath);
     }
 
-    public Character(int level, int str, int bal, int vtp, int potential, Nature nature)
-        :this(str, bal, vtp, potential, nature)
+    public Character(string prefabPath, int level, int str, int bal, int vtp, int potential, Nature nature)
+        :this(prefabPath, str, bal, vtp, potential, nature)
     {
         LevelUp(level);
-    }
-    public Character(int rank)
-    {
-        System.Random random = new System.Random();
-        int statusSum = (int)Math.Pow(1.2, rank) * 50;
-        int defaultStatus = statusSum * 2 / 5;
-
-        statusSum -= defaultStatus;
-
-        int str = random.Next(statusSum);
-        int bal = random.Next(statusSum -= str);
-        int vtp = statusSum - bal;
-
-        int potential = 10 - (int)Math.Log(random.Next(2048), 2);
-
-        Nature nature = (Nature)random.Next(3);
-
-        level = 1;
-        exp = 0;
-
-        this.str = str;
-        this.bal = bal;
-        this.vtp = vtp;
-        this.nature = nature;
-        this.potential = potential;
     }
 
     public void LevelUp()
@@ -114,9 +89,19 @@ public class Character:MonoBehaviour
         return vtp * 400;
     }
 
+    public int GetHP()
+    {
+        return hp;
+    }
+
+    public void SetHP(int hp)
+    {
+        this.hp = hp;
+    }
+
     public int GetDamage()
     {
-        Random rand = new Random();
+        System.Random rand = new System.Random();
         int maxDamage = str * 15;
         int minDamage = str * 15 * bal / 2;
 

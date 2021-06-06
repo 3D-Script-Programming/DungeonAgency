@@ -35,11 +35,16 @@ public class Player
             return monsters;
 
         return null;
-     }
+    }
 
     public void AddMonster(Character monster)
     {
         monsters.Add(monster);
+    }
+
+    public void AddRangeMonster(List<Character> monsters)
+    {
+        monsters.AddRange(monsters);
     }
 
     public void RemoveMonster(int index)
