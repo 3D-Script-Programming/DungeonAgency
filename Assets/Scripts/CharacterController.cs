@@ -32,4 +32,16 @@ public class CharacterController : MonoBehaviour
     public void Victory() {
         animator.SetBool("Victory", true);
     }
+
+    public void MoveFoward() {
+        animator.SetTrigger("Foward");
+    }
+
+    public void Attack() {
+        animator.SetTrigger("Attack");
+    }
+
+    public void MoveBackward() {
+        animator.SetTrigger("Backward");
+    }
 }
