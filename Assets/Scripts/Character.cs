@@ -116,7 +116,7 @@ public class Character:MonoBehaviour
 
     public int GetDamage()
     {
-        Random rand = new Random();
+        System.Random rand = new System.Random();
         int maxDamage = str * 15;
         int minDamage = str * 15 * bal / 2;
 

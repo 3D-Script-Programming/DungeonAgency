@@ -25,7 +25,7 @@ public class HeroState : MonoBehaviour
     private void Start()
     {
         // TODO: 캐릭터 스텟은 게임 메니저가 관리함 이후에 지워야 해
-        chracter = new Character(10, 10, 10, Type.FIRE);
+        chracter = new Character(10, 10, 10, 10, Nature.FIRE);
         myAttack = new HandleTurn();
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;
