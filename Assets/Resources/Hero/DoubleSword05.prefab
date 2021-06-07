@@ -11429,9 +11429,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4898695792458526}
   - component: {fileID: 95209755138618062}
+  - component: {fileID: 8671514822692441378}
   m_Layer: 0
   m_Name: DoubleSword05
-  m_TagString: Untagged
+  m_TagString: Hero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11525,6 +11526,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8671514822692441378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938047842842718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dddbdf893e3183d499601ebe7d40dc12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chracter: {fileID: 0}
+  currentState: 0
+  attackTarget: {fileID: 0}
 --- !u!1 &1940262280019192
 GameObject:
   m_ObjectHideFlags: 0

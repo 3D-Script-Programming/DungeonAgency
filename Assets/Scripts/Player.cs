@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using UnityEngine;
+using System.Collections.Generic;
 
 public class Player
 {
     int gold;
     int evilPoint;
 
-    List<Character> monsters = new List<Character>();
-    List<DungeonRoom> dungeon = new List<DungeonRoom>
+    private List<Character> monsters = new List<Character>();
+    private List<DungeonRoom> dungeon = new List<DungeonRoom>
     {
         new DungeonRoom(),
         new DungeonRoom(),
@@ -44,7 +46,7 @@ public class Player
 
     public void AddRangeMonster(List<Character> monsters)
     {
-        monsters.AddRange(monsters);
+        this.monsters.AddRange(monsters);
     }
 
     public void RemoveMonster(int index)

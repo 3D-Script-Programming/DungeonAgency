@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    Player player;
+    private Player player;
 
     public static GameManager instance
     {
@@ -18,15 +18,20 @@ public class GameManager : MonoBehaviour
             return m_instance;
         }
     }
+
+    public Player Player { get => player; set => player = value; }
+
     private static GameManager m_instance;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        player = new Player();
         player.AddRangeMonster(CharacterFactory.CreateMonsterList(6));
     }
+    void Start()
+    {
+    }
 
-    // Update is called once per frame
     void Update()
     {
 

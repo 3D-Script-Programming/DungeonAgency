@@ -5,8 +5,8 @@ using UnityEngine;
 public class HeroState : MonoBehaviour
 {
     private BattleManager battleManager;
-    public Character chracter;
-    private Animator animator;
+    public Character chracter; // 참조로 가져옴
+    public Animator animator;
 
     public enum CharacterState
     {
@@ -26,8 +26,6 @@ public class HeroState : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        // TODO: 캐릭터 스텟은 게임 메니저가 관리함 이후에 지워야 해
-        chracter = CharacterFactory.CreateHero();
         myAttack = new HandleTurn();
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;
@@ -83,7 +81,10 @@ public class HeroState : MonoBehaviour
         while (MoveTowardEnemy()) { yield return null; }
 
         // TODO: attack 애니메이션 실행
-        animator.SetTrigger("Attack");
+        animator.SetTrigger("Critical");
+        yield return new WaitForSeconds(0.4f);
+        attackTarget.GetComponent<MonsterState>().animator.SetTrigger("GetHit");
+
         // 잠깐 기다림
         yield return new WaitForSeconds(1.2f);
 
