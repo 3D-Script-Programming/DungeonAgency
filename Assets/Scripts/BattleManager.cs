@@ -18,7 +18,6 @@ public class BattleManager : MonoBehaviour
 
     // 한 턴마다 공격에 대한 정보를 담는 리스트
     public List<HandleTurn> performList = new List<HandleTurn>();
-    // TODO: GameManager에서 배열로 넘겨줌. 배열 -> 리스트로 형변환
     public List<GameObject> monsterInBattle = new List<GameObject>();
     public List<GameObject> heroesInBattle = new List<GameObject>();
 

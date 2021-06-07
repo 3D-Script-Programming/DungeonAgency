@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 public static class CharacterFactory
 {
@@ -57,8 +58,16 @@ public static class CharacterFactory
         int potential = 10 - (int)Math.Log(random.Next(2048), 2);
 
         Nature nature = (Nature)Enum.ToObject(typeof(Nature), random.Next(Enum.GetValues(typeof(Nature)).Length));
-        string prefabPath = GetPrefabPath(isMonster, random.Next(Enum.GetValues(typeof(Monster)).Length));
 
+        string prefabPath;
+        if (isMonster)
+        {
+            prefabPath = GetPrefabPath(isMonster, random.Next(Enum.GetValues(typeof(Monster)).Length));
+        }
+        else
+        {
+            prefabPath = GetPrefabPath(isMonster, random.Next(Enum.GetValues(typeof(Hero)).Length));
+        }
         return new Character(prefabPath, str, bal, vtp, potential, nature);
     }
 

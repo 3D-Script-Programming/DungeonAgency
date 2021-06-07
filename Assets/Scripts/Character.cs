@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
-public class Character:MonoBehaviour
+public class Character
 {
     private int level;
     private int exp;
@@ -11,9 +10,10 @@ public class Character:MonoBehaviour
     private int hp;
 
     private int rank, potential;
-    private string name;
 
     private GameObject prefab;
+
+    public GameObject Prefab { get => prefab; set => prefab = value; }
 
     public Character(string prefabPath, int str, int bal, int vtp, int potential, Nature nature)
     {
@@ -25,7 +25,6 @@ public class Character:MonoBehaviour
         this.vtp = vtp;
         this.nature = nature;
         this.potential = potential;
-
         prefab = Resources.Load<GameObject>(prefabPath);
     }
 

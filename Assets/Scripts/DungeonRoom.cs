@@ -1,7 +1,10 @@
 ﻿public class DungeonRoom
 {
-    Character[] monsters = new Character[6];//012 : 전열 345 후열
-    Item item = Item.NONE;
+    private Character[] monsters = new Character[6];//012 : 전열 345 후열
+    private Item item = Item.NONE;
+
+    public Character[] Monsters { get => monsters; set => monsters = value; }
+    public Item Item { get => item; set => item = value; }
 
     public void PlaceMonster(int index, Character monster)
     {
