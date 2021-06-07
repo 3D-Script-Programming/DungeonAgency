@@ -6,6 +6,7 @@ public class HeroState : MonoBehaviour
 {
     private BattleManager battleManager;
     public Character chracter;
+    private Animator animator;
 
     public enum CharacterState
     {
@@ -19,11 +20,12 @@ public class HeroState : MonoBehaviour
     private Vector3 startPosition;
     private bool actionStarted = false;
     public GameObject attackTarget;
-    private float animateSpeed = 15f;
+    private float animateSpeed = 10f;
     HandleTurn myAttack;
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         // TODO: 캐릭터 스텟은 게임 메니저가 관리함 이후에 지워야 해
         chracter = CharacterFactory.CreateHero();
         myAttack = new HandleTurn();
@@ -48,21 +50,14 @@ public class HeroState : MonoBehaviour
                 currentState = CharacterState.WAITING;
                 break;
             case (CharacterState.WAITING):
-                // TODO: idle
                 break;
             case (CharacterState.ACTION):
                 StartCoroutine(TimeForAction());
-                if (chracter.GetMaxHP() < 0)
-                {
-                    currentState = CharacterState.DEAD;
-                }
-                else
-                {
                     currentState = CharacterState.TURNCHECK;
-                }
                 break;
             case (CharacterState.DEAD):
                 // TODO: die
+                animator.SetTrigger("Die");
                 break;
         }
     }
@@ -83,23 +78,23 @@ public class HeroState : MonoBehaviour
             yield break;
         }
         actionStarted = true;
-        Vector3 enemyPosition =
-                new Vector3(attackTarget.transform.position.x, attackTarget.transform.position.y, attackTarget.transform.position.z + 2);
 
-        while (MoveToward(enemyPosition)) { yield return null; }
+        animator.SetTrigger("Forward");
+        while (MoveTowardEnemy()) { yield return null; }
 
         // TODO: attack 애니메이션 실행
-
+        animator.SetTrigger("Attack");
         // 잠깐 기다림
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.2f);
 
         //제자리로 돌아옴
-        while (MoveToward(startPosition)) { yield return null; }
+        animator.SetTrigger("Backward");
+        while (MoveTowardBack()) { yield return null; }
 
         // 공격 이펙트 실행과 데미지 계산
 
         // 제자리로 돌아와서 idle 애니메이션 실행
-
+        animator.SetTrigger("Idle");
         // BattleManager에 performList에서 하나를 제거
         battleManager.performList.RemoveAt(0);
         // performList를 Wait로 reset
@@ -108,9 +103,14 @@ public class HeroState : MonoBehaviour
         actionStarted = false;
     }
 
-    private bool MoveToward(Vector3 target)
+    private bool MoveTowardEnemy()
     {
-        return target != (transform.position = Vector3.MoveTowards(transform.position, target, animateSpeed * Time.deltaTime));
-        // TODO: move 애니메이션 실행
+        Vector3 enemyPosition =
+                    new Vector3(attackTarget.transform.position.x, attackTarget.transform.position.y, attackTarget.transform.position.z + 2.5f);
+        return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, animateSpeed * Time.deltaTime));
+    }
+    private bool MoveTowardBack()
+    {
+        return startPosition != (transform.position = Vector3.MoveTowards(transform.position, startPosition, animateSpeed * Time.deltaTime));
     }
 }

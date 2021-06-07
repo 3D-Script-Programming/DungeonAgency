@@ -2,27 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class AnimationController : MonoBehaviour
 {
     private Animator animator;
 
-    private bool isDead;
-
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (isDead) return;
-    }
-
     public void Die() {
         animator.SetTrigger("Die");
-        isDead = true;
     }
 
     public void GetHit() {
