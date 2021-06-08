@@ -113347,8 +113347,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleStates: 0
   myTurn: 0
-  monsterCount: 0
-  heroesCount: 0
   performList: []
   monsterInBattle: []
   heroesInBattle: []

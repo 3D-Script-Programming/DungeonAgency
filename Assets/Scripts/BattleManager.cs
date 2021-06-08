@@ -13,8 +13,6 @@ public class BattleManager : MonoBehaviour
     public PerformAction battleStates;
 
     public bool myTurn;
-    public int monsterCount = 0;
-    public int heroesCount = 0;
 
     // 한 턴마다 공격에 대한 정보를 담는 리스트
     public List<HandleTurn> performList = new List<HandleTurn>();
@@ -47,7 +45,15 @@ public class BattleManager : MonoBehaviour
                 if (performer.tag == "Monster")
                 {
                     MonsterState monsterState = performer.GetComponent<MonsterState>();
-                    monsterState.attackTarget = performList[0].attackerTarget;
+                    
+                    for(int i=0; i<heroesInBattle.Count; i++)
+                    {
+                        if(!heroesInBattle[i].GetComponent<HeroState>().GetIsDead())
+                        {
+                            monsterState.targetObject = heroesInBattle[i];
+                            break;
+                        }
+                    }
                     monsterState.currentState = MonsterState.CharacterState.ACTION;
                     monsterPriority++;
                     monsterPriority %= monsterInBattle.Count;
@@ -55,7 +61,16 @@ public class BattleManager : MonoBehaviour
                 else if(performer.tag == "Hero")
                 {
                     HeroState heroState = performer.GetComponent<HeroState>();
-                    heroState.attackTarget = performList[0].attackerTarget;
+
+                    for (int i = 0; i < monsterInBattle.Count; i++)
+                    {
+                        if (!monsterInBattle[i].GetComponent<MonsterState>().GetIsDead())
+                        {
+                            heroState.targetObject = monsterInBattle[i];
+                            break;
+                        }
+                    }
+
                     heroState.currentState = HeroState.CharacterState.ACTION;
                     heroPriority++;
                     heroPriority %= heroesInBattle.Count;

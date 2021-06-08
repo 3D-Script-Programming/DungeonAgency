@@ -8,7 +8,6 @@ public class Character
     private int str, bal, vtp;
     private Nature nature;
     private int hp;
-
     private int rank, potential;
 
     private GameObject prefab;
@@ -25,6 +24,7 @@ public class Character
         this.vtp = vtp;
         this.nature = nature;
         this.potential = potential;
+        hp = vtp * 400;
         prefab = Resources.Load<GameObject>(prefabPath);
     }
 
@@ -93,17 +93,20 @@ public class Character
         return hp;
     }
 
-    public void SetHP(int hp)
+    public void GetHit(int damage)
     {
-        this.hp = hp;
+        hp -= damage;
+        if (hp < 0)
+        {
+            hp = 0;
+        }
     }
 
     public int GetDamage()
     {
-        System.Random rand = new System.Random();
         int maxDamage = str * 15;
         int minDamage = str * 15 * bal / 2;
 
-        return rand.Next(minDamage, maxDamage);
+        return UnityEngine.Random.Range(minDamage, maxDamage);
     }
 }
