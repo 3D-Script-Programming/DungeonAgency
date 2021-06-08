@@ -5,8 +5,11 @@ using UnityEngine;
 public class MonsterState : MonoBehaviour
 {
     private BattleManager battleManager;
-    public Character chracter; // 참조로 가져옴
-    public Animator animator;
+    private Character character;
+    private Vector3 startPosition;
+    private bool actionStarted = false;
+    private float animateSpeed = 10f;
+    private bool isDead = false;
 
     public enum CharacterState
     {
@@ -17,16 +20,12 @@ public class MonsterState : MonoBehaviour
         DEAD
     }
     public CharacterState currentState;
-    private Vector3 startPosition;
-    private bool actionStarted = false;
-    public GameObject attackTarget;
-    private float animateSpeed = 10f;
-    HandleTurn myAttack;
+    public GameObject targetObject;
+    public Animator animator;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        myAttack = new HandleTurn();
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;
         currentState = CharacterState.TURNCHECK;
@@ -37,37 +36,42 @@ public class MonsterState : MonoBehaviour
         switch (currentState)
         {
             case (CharacterState.TURNCHECK):
-                if (battleManager.myTurn == true)
+                if (isDead)
                 {
-                    if (this.gameObject == battleManager.monsterInBattle[battleManager.monsterPriority])
-                        currentState = CharacterState.CHOOSEACTION;
+                    battleManager.monsterPriority++;
+                    battleManager.monsterPriority %= battleManager.monsterInBattle.Count;
+                    currentState = CharacterState.DEAD;
+                }
+                else
+                {
+                    if (battleManager.myTurn == true)
+                    {
+                        if (this.gameObject == battleManager.monsterInBattle[battleManager.monsterPriority])
+                            currentState = CharacterState.CHOOSEACTION;
+                    }
                 }
                 break;
             case (CharacterState.CHOOSEACTION):
-                ChooseAction(battleManager.heroesInBattle);
+                ChooseAction();
                 currentState = CharacterState.WAITING;
                 break;
             case (CharacterState.WAITING):
                 break;
             case (CharacterState.ACTION):
                 StartCoroutine(TimeForAction());
-                    currentState = CharacterState.TURNCHECK;
+                currentState = CharacterState.TURNCHECK;
                 break;
             case (CharacterState.DEAD):
-                // TODO: die
-                animator.SetTrigger("Die");
                 break;
         }
     }
 
-    void ChooseAction(List<GameObject> targetList)
+    void ChooseAction()
     {
-        myAttack.attackerGameObject = this.gameObject;
-        // TODO: cp가 가장 높은 타겟을 선택해야함 => 게임 메니저에서 용사와 몬스터 cp 가장 높은 타겟 가져오기
-        myAttack.attackerTarget = targetList[Random.Range(0, targetList.Count)];
+        HandleTurn myAttack = new HandleTurn();
+        myAttack.attackerGameObject = gameObject;
         battleManager.CollectActions(myAttack);
     }
-
 
     private IEnumerator TimeForAction()
     {
@@ -77,12 +81,26 @@ public class MonsterState : MonoBehaviour
         }
         actionStarted = true;
 
+        HeroState target = targetObject.GetComponent<HeroState>();
+
         animator.SetTrigger("Forward");
         while (MoveTowardEnemy()) { yield return null; }
 
-        animator.SetTrigger("Critical");
+        // 공격 이펙트 실행과 데미지 계산
+        animator.SetTrigger("Attack");
         yield return new WaitForSeconds(0.4f);
-        attackTarget.GetComponent<HeroState>().animator.SetTrigger("GetHit");
+
+        target.GetCharacter().GetHit(character.GetDamage());
+
+        if (target.GetCharacter().GetHP() == 0)
+        {
+            target.animator.SetTrigger("Die");
+            target.SetIsDead(true);
+        }
+        else
+        {
+            target.animator.SetTrigger("GetHit");
+        }
 
         // 잠깐 기다림
         yield return new WaitForSeconds(1.2f);
@@ -90,8 +108,6 @@ public class MonsterState : MonoBehaviour
         //제자리로 돌아옴
         animator.SetTrigger("Backward");
         while (MoveTowardBack()) { yield return null; }
-
-        // 공격 이펙트 실행과 데미지 계산
 
         // 제자리로 돌아와서 idle 애니메이션 실행
         animator.SetTrigger("Idle");
@@ -107,11 +123,32 @@ public class MonsterState : MonoBehaviour
     private bool MoveTowardEnemy()
     {
         Vector3 enemyPosition =
-            new Vector3(attackTarget.transform.position.x, attackTarget.transform.position.y, attackTarget.transform.position.z - 2.5f);
+            new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetObject.transform.position.z - 2.5f);
         return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, animateSpeed * Time.deltaTime));
     }
+
     private bool MoveTowardBack()
     {
         return startPosition != (transform.position = Vector3.MoveTowards(transform.position, startPosition, animateSpeed * Time.deltaTime));
+    }
+
+    public Character GetCharacter()
+    {
+        return character;
+    }
+
+    public void SetCharacter(Character character)
+    {
+        this.character = character;
+    }
+
+    public bool GetIsDead()
+    {
+        return isDead;
+    }
+
+    public void SetIsDead(bool value)
+    {
+        isDead = value;
     }
 }
