@@ -10,14 +10,14 @@ public class MonsterState : MonoBehaviour
     private bool actionStarted = false;
     private float animateSpeed = 10f;
     private bool isDead = false;
+    private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
 
     public enum CharacterState
     {
         TURNCHECK,
         CHOOSEACTION,
         WAITING,
-        ACTION,
-        DEAD
+        ACTION
     }
     public CharacterState currentState;
     public GameObject targetObject;
@@ -36,32 +36,20 @@ public class MonsterState : MonoBehaviour
         switch (currentState)
         {
             case (CharacterState.TURNCHECK):
-                if (isDead)
+                if (battleManager.myTurn == true)
                 {
-                    battleManager.monsterPriority++;
-                    battleManager.monsterPriority %= battleManager.monsterInBattle.Count;
-                    currentState = CharacterState.DEAD;
-                }
-                else
-                {
-                    if (battleManager.myTurn == true)
+                    if (spawnNumber == battleManager.monsterNumber[0])
                     {
-                        if (this.gameObject == battleManager.monsterInBattle[battleManager.monsterPriority])
-                            currentState = CharacterState.CHOOSEACTION;
+                        ChooseAction();
+                        currentState = CharacterState.WAITING;
                     }
                 }
-                break;
-            case (CharacterState.CHOOSEACTION):
-                ChooseAction();
-                currentState = CharacterState.WAITING;
                 break;
             case (CharacterState.WAITING):
                 break;
             case (CharacterState.ACTION):
                 StartCoroutine(TimeForAction());
                 currentState = CharacterState.TURNCHECK;
-                break;
-            case (CharacterState.DEAD):
                 break;
         }
     }
@@ -96,6 +84,9 @@ public class MonsterState : MonoBehaviour
         {
             target.animator.SetTrigger("Die");
             target.SetIsDead(true);
+            battleManager.heroesInBattle.Remove(targetObject);
+            battleManager.heroNumber.Remove(target.GetSpawnNumber());
+            battleManager.heroCps.Remove(target.GetCharacter().GetCP());
         }
         else
         {
@@ -114,10 +105,11 @@ public class MonsterState : MonoBehaviour
 
         // BattleManager에 performList에서 하나를 제거
         battleManager.performList.RemoveAt(0);
-        // performList를 Wait로 reset
-        battleManager.battleStates = BattleManager.PerformAction.WAIT;
 
         actionStarted = false;
+
+        // performList를 Wait로 reset
+        battleManager.battleStates = BattleManager.PerformAction.WAIT;
     }
 
     private bool MoveTowardEnemy()
@@ -150,5 +142,15 @@ public class MonsterState : MonoBehaviour
     public void SetIsDead(bool value)
     {
         isDead = value;
+    }
+
+    public int GetSpawnNumber()
+    {
+        return spawnNumber;
+    }
+
+    public void SetSpawnNumber(int value)
+    {
+        spawnNumber = value;
     }
 }
