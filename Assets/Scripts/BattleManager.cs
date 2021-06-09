@@ -22,7 +22,9 @@ public class BattleManager : MonoBehaviour
     public List<int> heroNumber = new List<int>();
     public List<int> monsterCps = new List<int>();
     public List<int> heroCps = new List<int>();
-
+    public GameObject fireEffect;
+    public GameObject waterEffect;
+    public GameObject windEffect;
 
     private void Start()
     {

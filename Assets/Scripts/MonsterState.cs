@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class MonsterState : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class MonsterState : MonoBehaviour
     private Character character;
     private Vector3 startPosition;
     private bool actionStarted = false;
-    private float animateSpeed = 10f;
+    private float animateSpeed = 15f;
     private bool isDead = false;
     private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
 
@@ -22,6 +24,8 @@ public class MonsterState : MonoBehaviour
     public CharacterState currentState;
     public GameObject targetObject;
     public Animator animator;
+    public Slider healthSlider;
+
 
     private void Start()
     {
@@ -29,6 +33,8 @@ public class MonsterState : MonoBehaviour
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;
         currentState = CharacterState.TURNCHECK;
+        healthSlider.maxValue = character.GetMaxHP();
+        healthSlider.value = character.GetHP();
     }
 
     private void Update()
@@ -75,10 +81,29 @@ public class MonsterState : MonoBehaviour
         while (MoveTowardEnemy()) { yield return null; }
 
         // 공격 이펙트 실행과 데미지 계산
-        animator.SetTrigger("Attack");
-        yield return new WaitForSeconds(0.4f);
+        int damage = character.GetDamage();
+        if(damage == character.GetMaxDamage())
+        {
+            animator.SetTrigger("Critical");
+        }
+        else
+        {
+            animator.SetTrigger("Attack");
 
-        target.GetCharacter().GetHit(character.GetDamage());
+        }
+
+        GameObject effect;
+        if (character.GetNature() == Nature.FIRE) effect = battleManager.fireEffect;
+        else if (character.GetNature() == Nature.WATER) effect = battleManager.waterEffect;
+        else effect = battleManager.windEffect;
+
+        yield return new WaitForSeconds(0.4f);
+        GameObject gameObject = Instantiate(effect, targetObject.transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(0.1f);
+        Destroy(gameObject);
+
+        target.GetCharacter().GetHit(damage);
+        target.healthSlider.value = target.GetCharacter().GetHP();
 
         if (target.GetCharacter().GetHP() == 0)
         {
