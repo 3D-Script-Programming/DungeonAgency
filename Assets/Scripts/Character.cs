@@ -29,7 +29,7 @@ public class Character
     }
 
     public Character(string prefabPath, int level, int str, int bal, int vtp, int potential, Nature nature)
-        :this(prefabPath, str, bal, vtp, potential, nature)
+        : this(prefabPath, str, bal, vtp, potential, nature)
     {
         LevelUp(level);
     }
@@ -39,7 +39,7 @@ public class Character
         if (GetReqExp() > exp)
             return;
 
-        level++; 
+        level++;
         int statusSum = (int)(Math.Log10(100 + level) * 15 + potential * 1.2);
         str += statusSum / 3;
         vtp += statusSum / 3;
@@ -108,5 +108,9 @@ public class Character
         int minDamage = str * 15 * bal / 2;
 
         return UnityEngine.Random.Range(minDamage, maxDamage);
+    }
+    public int GetMaxDamage()
+    {
+        return str * 15;
     }
 }
