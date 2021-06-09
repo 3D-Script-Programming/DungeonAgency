@@ -14,6 +14,7 @@ public class HeroState : MonoBehaviour
 
     public enum CharacterState
     {
+        READY,
         TURNCHECK,
         WAITING,
         ACTION
@@ -26,14 +27,17 @@ public class HeroState : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
-        startPosition = transform.position;
-        currentState = CharacterState.TURNCHECK;
+        currentState = CharacterState.READY;
     }
 
     private void Update()
     {
         switch (currentState)
         {
+            case (CharacterState.READY):
+                StartCoroutine(TimeForReady());
+                currentState = CharacterState.TURNCHECK;
+                break;
             case (CharacterState.TURNCHECK):
                 if (battleManager.myTurn == false)
                 {
@@ -51,6 +55,14 @@ public class HeroState : MonoBehaviour
                 currentState = CharacterState.TURNCHECK;
                 break;
         }
+    }
+
+    private IEnumerator TimeForReady() 
+    {
+        animator.SetTrigger("Forward");
+        while (MoveTowardBack()) { yield return null; }
+        animator.SetTrigger("Idle");
+        yield break;
     }
 
     void ChooseAction()
@@ -148,5 +160,8 @@ public class HeroState : MonoBehaviour
     public void SetSpawnNumber(int value)
     {
         spawnNumber = value;
+    }
+    public void SetStartPosition(Vector3 startPosition) {
+        this.startPosition = startPosition;
     }
 }

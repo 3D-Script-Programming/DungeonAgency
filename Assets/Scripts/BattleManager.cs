@@ -7,6 +7,7 @@ public class BattleManager : MonoBehaviour
 {
     public enum PerformAction
     {
+        READY,
         WAIT,
         TAKEACTION,
         PERFORMACTION 
@@ -34,6 +35,10 @@ public class BattleManager : MonoBehaviour
     {
         switch (battleStates)
         {
+            case (PerformAction.READY):
+                // 이동 완료 시 진행
+                battleStates = PerformAction.WAIT;
+                break;
             case (PerformAction.WAIT):
                 if (performList.Count > 0)
                 {
