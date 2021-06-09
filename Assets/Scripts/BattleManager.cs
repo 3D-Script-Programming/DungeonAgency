@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -8,25 +9,24 @@ public class BattleManager : MonoBehaviour
     {
         WAIT,
         TAKEACTION,
-        PERFORMACTION
+        PERFORMACTION 
     }
     public PerformAction battleStates;
 
     public bool myTurn;
 
-    // 한 턴마다 공격에 대한 정보를 담는 리스트
     public List<HandleTurn> performList = new List<HandleTurn>();
     public List<GameObject> monsterInBattle = new List<GameObject>();
     public List<GameObject> heroesInBattle = new List<GameObject>();
+    public List<int> monsterNumber = new List<int>();
+    public List<int> heroNumber = new List<int>();
+    public List<int> monsterCps = new List<int>();
+    public List<int> heroCps = new List<int>();
 
-    public int monsterPriority = 0;
-    public int heroPriority = 0;
 
     private void Start()
     {
         battleStates = PerformAction.WAIT;
-        monsterInBattle.AddRange(GameObject.FindGameObjectsWithTag("Monster"));
-        heroesInBattle.AddRange(GameObject.FindGameObjectsWithTag("Hero"));
         myTurn = true;
     }
 
@@ -45,38 +45,51 @@ public class BattleManager : MonoBehaviour
                 if (performer.tag == "Monster")
                 {
                     MonsterState monsterState = performer.GetComponent<MonsterState>();
-                    
-                    for(int i=0; i<heroesInBattle.Count; i++)
+                    if (!monsterState.GetIsDead())
                     {
-                        if(!heroesInBattle[i].GetComponent<HeroState>().GetIsDead())
+                        for (int i = 0; i < heroesInBattle.Count; i++)
                         {
-                            monsterState.targetObject = heroesInBattle[i];
-                            break;
+                            if (heroesInBattle[i].GetComponent<HeroState>().GetCharacter().GetCP() == heroCps.Max())
+                            {
+                                monsterState.targetObject = heroesInBattle[i];
+                                break;
+                            }
                         }
+                        monsterState.currentState = MonsterState.CharacterState.ACTION;
+                        battleStates = PerformAction.PERFORMACTION;
+                        myTurn = !myTurn;
+                        movePriority(monsterNumber);
                     }
-                    monsterState.currentState = MonsterState.CharacterState.ACTION;
-                    monsterPriority++;
-                    monsterPriority %= monsterInBattle.Count;
+                    else
+                    {
+                        performList.RemoveAt(0);
+                        battleStates = PerformAction.WAIT;
+                    }
                 }
                 else if(performer.tag == "Hero")
                 {
                     HeroState heroState = performer.GetComponent<HeroState>();
-
-                    for (int i = 0; i < monsterInBattle.Count; i++)
+                    if (!heroState.GetIsDead())
                     {
-                        if (!monsterInBattle[i].GetComponent<MonsterState>().GetIsDead())
+                        for (int i = 0; i < monsterInBattle.Count; i++)
                         {
-                            heroState.targetObject = monsterInBattle[i];
-                            break;
+                            if (monsterInBattle[i].GetComponent<MonsterState>().GetCharacter().GetCP() == monsterCps.Max())
+                            {
+                                heroState.targetObject = monsterInBattle[i];
+                                break;
+                            }
                         }
+                        heroState.currentState = HeroState.CharacterState.ACTION;
+                        battleStates = PerformAction.PERFORMACTION;
+                        myTurn = !myTurn;
+                        movePriority(heroNumber);
                     }
-
-                    heroState.currentState = HeroState.CharacterState.ACTION;
-                    heroPriority++;
-                    heroPriority %= heroesInBattle.Count;
+                    else
+                    {
+                        performList.RemoveAt(0);
+                        battleStates = PerformAction.WAIT;
+                    }
                 }
-                myTurn = !myTurn;
-                battleStates = PerformAction.PERFORMACTION;
                 break;
             case (PerformAction.PERFORMACTION):
                 // idle
@@ -87,5 +100,13 @@ public class BattleManager : MonoBehaviour
     public void CollectActions(HandleTurn input)
     {
         performList.Add(input);
+    }
+
+    private void movePriority(List<int> number)
+    {
+        // 맨 뒤 순서로 이동
+        int currentNumber = number[0];
+        number.RemoveAt(0);
+        number.Add(currentNumber);
     }
 }
