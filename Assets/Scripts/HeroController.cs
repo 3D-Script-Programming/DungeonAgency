@@ -57,7 +57,7 @@ public class HeroController : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         animator.SetTrigger("Forward");
-        while (MoveTowardBack()) { 
+        while (MoveToStartPosition()) { 
             yield return null; 
         }
         animator.SetTrigger("Idle");
@@ -126,7 +126,7 @@ public class HeroController : MonoBehaviour
 
         //제자리로 돌아옴
         animator.SetTrigger("Backward");
-        while (MoveTowardBack()) { yield return null; }
+        while (MoveToStartPosition()) { yield return null; }
 
         animator.SetTrigger("Idle");
 
@@ -144,7 +144,8 @@ public class HeroController : MonoBehaviour
                     new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetObject.transform.position.z + 2.5f);
         return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, animateSpeed * Time.deltaTime));
     }
-    private bool MoveTowardBack()
+
+    private bool MoveToStartPosition()
     {
         return startPosition != (transform.position = Vector3.MoveTowards(transform.position, startPosition, animateSpeed * Time.deltaTime));
     }

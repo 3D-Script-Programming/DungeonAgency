@@ -114,7 +114,7 @@ public class MonsterController : MonoBehaviour
 
         //제자리로 돌아옴
         animator.SetTrigger("Backward");
-        while (MoveTowardBack()) { yield return null; }
+        while (MoveToStartPosition()) { yield return null; }
 
         // 제자리로 돌아와서 idle 애니메이션 실행
         animator.SetTrigger("Idle");
@@ -135,7 +135,7 @@ public class MonsterController : MonoBehaviour
         return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, animateSpeed * Time.deltaTime));
     }
 
-    private bool MoveTowardBack()
+    private bool MoveToStartPosition()
     {
         return startPosition != (transform.position = Vector3.MoveTowards(transform.position, startPosition, animateSpeed * Time.deltaTime));
     }
