@@ -26,6 +26,7 @@ public class HeroSpawner : MonoBehaviour
             spawnUnit.GetComponent<HeroState>().SetCharacter(spawnCharacter);
             spawnUnit.GetComponent<HeroState>().SetSpawnNumber(locationNumber);
             spawnUnit.GetComponent<HeroState>().SetStartPosition(startPosition);
+            spawnUnit.GetComponent<HeroState>().gameObject.SetActive(true);
 
             battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
             battleManager.heroesInBattle.Add(spawnUnit);

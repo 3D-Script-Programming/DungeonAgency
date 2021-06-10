@@ -31,8 +31,6 @@ public class HeroState : MonoBehaviour
         animator = GetComponent<Animator>();
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         currentState = CharacterState.READY;
-        healthSlider.maxValue = character.GetMaxHP();
-        healthSlider.value = character.GetHP();
     }
 
     private void Update()
@@ -166,7 +164,10 @@ public class HeroState : MonoBehaviour
     public void SetCharacter(Character character)
     {
         this.character = character;
+        healthSlider.maxValue = character.GetMaxHP();
+        healthSlider.value = character.GetHP();
     }
+    
     public bool GetIsDead()
     {
         return isDead;
@@ -186,6 +187,7 @@ public class HeroState : MonoBehaviour
     {
         spawnNumber = value;
     }
+
     public void SetStartPosition(Vector3 startPosition) {
         this.startPosition = startPosition;
     }

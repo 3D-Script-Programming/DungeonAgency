@@ -19,6 +19,7 @@ public class MonsterSpawner : MonoBehaviour
             GameObject spawnUnit = Instantiate(prefab, transform.position, Quaternion.identity);
             spawnUnit.GetComponent<MonsterState>().SetCharacter(spawnCharacter);
             spawnUnit.GetComponent<MonsterState>().SetSpawnNumber(locationNumber);
+            spawnUnit.GetComponent<MonsterState>().gameObject.SetActive(true);
 
             battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
             battleManager.monsterInBattle.Add(spawnUnit);

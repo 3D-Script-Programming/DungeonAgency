@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &12352688101214059
 Transform:
   m_ObjectHideFlags: 0
@@ -191,6 +191,7 @@ MonoBehaviour:
   currentState: 0
   targetObject: {fileID: 0}
   animator: {fileID: 0}
+  healthSlider: {fileID: 0}
 --- !u!1 &12352688101317259
 GameObject:
   m_ObjectHideFlags: 0

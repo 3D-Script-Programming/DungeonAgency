@@ -33,8 +33,6 @@ public class MonsterState : MonoBehaviour
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;
         currentState = CharacterState.TURNCHECK;
-        healthSlider.maxValue = character.GetMaxHP();
-        healthSlider.value = character.GetHP();
     }
 
     private void Update()
@@ -157,6 +155,8 @@ public class MonsterState : MonoBehaviour
     public void SetCharacter(Character character)
     {
         this.character = character;
+        healthSlider.maxValue = character.GetMaxHP();
+        healthSlider.value = character.GetHP();
     }
 
     public bool GetIsDead()
