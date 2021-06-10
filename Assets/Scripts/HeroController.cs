@@ -15,13 +15,13 @@ public class HeroController : MonoBehaviour
 
     public CharacterState currentState;
     public GameObject targetObject;
-    public Animator animator;
+    public AnimatorController animatorController;
     public Slider healthSlider;
 
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        animatorController = new AnimatorController(GetComponent<Animator>());
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         currentState = CharacterState.READY;
     }
@@ -56,11 +56,11 @@ public class HeroController : MonoBehaviour
     private IEnumerator TimeForReady() 
     {
         yield return new WaitForSeconds(1f);
-        animator.SetTrigger("Forward");
+        animatorController.MoveFoward();
         while (MoveToStartPosition()) { 
             yield return null; 
         }
-        animator.SetTrigger("Idle");
+        animatorController.StopMove();
         
         yield return new WaitForSeconds(1f);
         if (spawnNumber == battleManager.heroesInBattle.Count - 1) {
@@ -87,13 +87,15 @@ public class HeroController : MonoBehaviour
 
         MonsterController target = targetObject.GetComponent<MonsterController>();
 
-        animator.SetTrigger("Forward");
+        animatorController.MoveFoward();
         while (MoveTowardEnemy()) { yield return null; }
 
         // TODO: attack 애니메이션 실행
         int damage = character.GetDamage();
-        if (damage == character.GetMaxDamage()) animator.SetTrigger("Critical");
-        else animator.SetTrigger("Attack");
+        if (damage == character.GetMaxDamage())
+            animatorController.Critical();
+        else
+            animatorController.Attack();
 
         GameObject effect;
         if (character.GetNature() == Nature.FIRE) effect = battleManager.fireEffect;
@@ -110,7 +112,7 @@ public class HeroController : MonoBehaviour
 
         if (target.GetCharacter().GetHP() == 0)
         {
-            target.animator.SetTrigger("Die");
+            target.animatorController.Die();
             target.SetIsDead(true);
             battleManager.monsterInBattle.Remove(targetObject);
             battleManager.monsterNumber.Remove(target.GetSpawnNumber());
@@ -118,17 +120,17 @@ public class HeroController : MonoBehaviour
         }
         else
         {
-            target.animator.SetTrigger("GetHit");
+            target.animatorController.GetHit();
         }
 
         // 잠깐 기다림
         yield return new WaitForSeconds(1.2f);
 
         //제자리로 돌아옴
-        animator.SetTrigger("Backward");
+        animatorController.MoveBackward();
         while (MoveToStartPosition()) { yield return null; }
 
-        animator.SetTrigger("Idle");
+        animatorController.StopMove();
 
         battleManager.performList.RemoveAt(0);
         

@@ -16,13 +16,13 @@ public class MonsterController : MonoBehaviour
 
     public CharacterState currentState;
     public GameObject targetObject;
-    public Animator animator;
+    public AnimatorController animatorController;
     public Slider healthSlider;
 
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        animatorController = new AnimatorController(GetComponent<Animator>());
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;
         currentState = CharacterState.TURNCHECK;
@@ -68,20 +68,15 @@ public class MonsterController : MonoBehaviour
 
         HeroController target = targetObject.GetComponent<HeroController>();
 
-        animator.SetTrigger("Forward");
+        animatorController.MoveFoward();
         while (MoveTowardEnemy()) { yield return null; }
 
         // 공격 이펙트 실행과 데미지 계산
         int damage = character.GetDamage();
         if(damage == character.GetMaxDamage())
-        {
-            animator.SetTrigger("Critical");
-        }
+            animatorController.Critical();
         else
-        {
-            animator.SetTrigger("Attack");
-
-        }
+            animatorController.Attack();
 
         GameObject effect;
         if (character.GetNature() == Nature.FIRE) effect = battleManager.fireEffect;
@@ -98,7 +93,7 @@ public class MonsterController : MonoBehaviour
 
         if (target.GetCharacter().GetHP() == 0)
         {
-            target.animator.SetTrigger("Die");
+            target.animatorController.Die();
             target.SetIsDead(true);
             battleManager.heroesInBattle.Remove(targetObject);
             battleManager.heroNumber.Remove(target.GetSpawnNumber());
@@ -106,18 +101,18 @@ public class MonsterController : MonoBehaviour
         }
         else
         {
-            target.animator.SetTrigger("GetHit");
+            target.animatorController.GetHit();
         }
 
         // 잠깐 기다림
         yield return new WaitForSeconds(1.2f);
 
         //제자리로 돌아옴
-        animator.SetTrigger("Backward");
+        animatorController.MoveBackward();
         while (MoveToStartPosition()) { yield return null; }
 
         // 제자리로 돌아와서 idle 애니메이션 실행
-        animator.SetTrigger("Idle");
+        animatorController.StopMove();
 
         // BattleManager에 performList에서 하나를 제거
         battleManager.performList.RemoveAt(0);
