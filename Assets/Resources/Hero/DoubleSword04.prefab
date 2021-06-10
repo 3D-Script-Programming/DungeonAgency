@@ -919,7 +919,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4799218252756144
 Transform:
   m_ObjectHideFlags: 0
@@ -1026,9 +1026,6 @@ MonoBehaviour:
   targetObject: {fileID: 0}
   animator: {fileID: 0}
   healthSlider: {fileID: 2673828249072175981}
-  fireEffect: {fileID: 0}
-  waterEffect: {fileID: 0}
-  windEffect: {fileID: 0}
 --- !u!1 &1121085813556524
 GameObject:
   m_ObjectHideFlags: 0

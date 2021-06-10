@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationController : MonoBehaviour
+public class AnimatorController 
 {
     private Animator animator;
 
-    void Start()
-    {
-        animator = GetComponent<Animator>();
+    public AnimatorController(Animator animator) {
+        this.animator = animator;
     }
 
     public void Die() {
@@ -31,7 +30,7 @@ public class AnimationController : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
-    public void CiritcalAttack() {
+    public void Critical() {
         animator.SetTrigger("Critical");
     }
 
