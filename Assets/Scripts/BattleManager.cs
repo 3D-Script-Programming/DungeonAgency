@@ -49,18 +49,18 @@ public class BattleManager : MonoBehaviour
                 GameObject performer = performList[0].attackerGameObject;
                 if (performer.tag == "Monster")
                 {
-                    MonsterState monsterState = performer.GetComponent<MonsterState>();
-                    if (!monsterState.GetIsDead())
+                    MonsterController MonsterController = performer.GetComponent<MonsterController>();
+                    if (!MonsterController.GetIsDead())
                     {
                         for (int i = 0; i < heroesInBattle.Count; i++)
                         {
-                            if (heroesInBattle[i].GetComponent<HeroState>().GetCharacter().GetCP() == heroCps.Max())
+                            if (heroesInBattle[i].GetComponent<HeroController>().GetCharacter().GetCP() == heroCps.Max())
                             {
-                                monsterState.targetObject = heroesInBattle[i];
+                                MonsterController.targetObject = heroesInBattle[i];
                                 break;
                             }
                         }
-                        monsterState.currentState = MonsterState.CharacterState.ACTION;
+                        MonsterController.currentState = CharacterState.ACTION;
                         battleStates = PerformAction.PERFORMACTION;
                         myTurn = !myTurn;
                         movePriority(monsterNumber);
@@ -73,18 +73,18 @@ public class BattleManager : MonoBehaviour
                 }
                 else if(performer.tag == "Hero")
                 {
-                    HeroState heroState = performer.GetComponent<HeroState>();
-                    if (!heroState.GetIsDead())
+                    HeroController HeroController = performer.GetComponent<HeroController>();
+                    if (!HeroController.GetIsDead())
                     {
                         for (int i = 0; i < monsterInBattle.Count; i++)
                         {
-                            if (monsterInBattle[i].GetComponent<MonsterState>().GetCharacter().GetCP() == monsterCps.Max())
+                            if (monsterInBattle[i].GetComponent<MonsterController>().GetCharacter().GetCP() == monsterCps.Max())
                             {
-                                heroState.targetObject = monsterInBattle[i];
+                                HeroController.targetObject = monsterInBattle[i];
                                 break;
                             }
                         }
-                        heroState.currentState = HeroState.CharacterState.ACTION;
+                        HeroController.currentState = CharacterState.ACTION;
                         battleStates = PerformAction.PERFORMACTION;
                         myTurn = !myTurn;
                         movePriority(heroNumber);

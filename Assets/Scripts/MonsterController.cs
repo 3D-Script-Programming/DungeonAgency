@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeroState : MonoBehaviour
+
+public class MonsterController : MonoBehaviour
 {
     private BattleManager battleManager;
     private Character character;
@@ -13,13 +14,6 @@ public class HeroState : MonoBehaviour
     private bool isDead = false;
     private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
 
-    public enum CharacterState
-    {
-        READY,
-        TURNCHECK,
-        WAITING,
-        ACTION
-    }
     public CharacterState currentState;
     public GameObject targetObject;
     public Animator animator;
@@ -30,21 +24,18 @@ public class HeroState : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
-        currentState = CharacterState.READY;
+        startPosition = transform.position;
+        currentState = CharacterState.TURNCHECK;
     }
 
     private void Update()
     {
         switch (currentState)
         {
-            case (CharacterState.READY):
-                StartCoroutine(TimeForReady());
-                currentState = CharacterState.TURNCHECK;
-                break;
             case (CharacterState.TURNCHECK):
-                if (battleManager.myTurn == false)
+                if (battleManager.myTurn == true)
                 {
-                    if (spawnNumber == battleManager.heroNumber[0])
+                    if (spawnNumber == battleManager.monsterNumber[0])
                     {
                         ChooseAction();
                         currentState = CharacterState.WAITING;
@@ -60,29 +51,12 @@ public class HeroState : MonoBehaviour
         }
     }
 
-    private IEnumerator TimeForReady() 
-    {
-        yield return new WaitForSeconds(1f);
-        animator.SetTrigger("Forward");
-        while (MoveTowardBack()) { 
-            yield return null; 
-        }
-        animator.SetTrigger("Idle");
-        
-        yield return new WaitForSeconds(1f);
-        if (spawnNumber == battleManager.heroesInBattle.Count - 1) {
-            battleManager.GetReady();
-        }
-        yield break;
-    }
-
     void ChooseAction()
     {
         HandleTurn myAttack = new HandleTurn();
         myAttack.attackerGameObject = gameObject;
         battleManager.CollectActions(myAttack);
     }
-
 
     private IEnumerator TimeForAction()
     {
@@ -92,15 +66,22 @@ public class HeroState : MonoBehaviour
         }
         actionStarted = true;
 
-        MonsterState target = targetObject.GetComponent<MonsterState>();
+        HeroController target = targetObject.GetComponent<HeroController>();
 
         animator.SetTrigger("Forward");
         while (MoveTowardEnemy()) { yield return null; }
 
-        // TODO: attack 애니메이션 실행
+        // 공격 이펙트 실행과 데미지 계산
         int damage = character.GetDamage();
-        if (damage == character.GetMaxDamage()) animator.SetTrigger("Critical");
-        else animator.SetTrigger("Attack");
+        if(damage == character.GetMaxDamage())
+        {
+            animator.SetTrigger("Critical");
+        }
+        else
+        {
+            animator.SetTrigger("Attack");
+
+        }
 
         GameObject effect;
         if (character.GetNature() == Nature.FIRE) effect = battleManager.fireEffect;
@@ -119,9 +100,9 @@ public class HeroState : MonoBehaviour
         {
             target.animator.SetTrigger("Die");
             target.SetIsDead(true);
-            battleManager.monsterInBattle.Remove(targetObject);
-            battleManager.monsterNumber.Remove(target.GetSpawnNumber());
-            battleManager.monsterCps.Remove(target.GetCharacter().GetCP());
+            battleManager.heroesInBattle.Remove(targetObject);
+            battleManager.heroNumber.Remove(target.GetSpawnNumber());
+            battleManager.heroCps.Remove(target.GetCharacter().GetCP());
         }
         else
         {
@@ -135,10 +116,12 @@ public class HeroState : MonoBehaviour
         animator.SetTrigger("Backward");
         while (MoveTowardBack()) { yield return null; }
 
+        // 제자리로 돌아와서 idle 애니메이션 실행
         animator.SetTrigger("Idle");
 
+        // BattleManager에 performList에서 하나를 제거
         battleManager.performList.RemoveAt(0);
-        
+
         actionStarted = false;
 
         // performList를 Wait로 reset
@@ -148,9 +131,10 @@ public class HeroState : MonoBehaviour
     private bool MoveTowardEnemy()
     {
         Vector3 enemyPosition =
-                    new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetObject.transform.position.z + 2.5f);
+            new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetObject.transform.position.z - 2.5f);
         return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, animateSpeed * Time.deltaTime));
     }
+
     private bool MoveTowardBack()
     {
         return startPosition != (transform.position = Vector3.MoveTowards(transform.position, startPosition, animateSpeed * Time.deltaTime));
@@ -167,7 +151,7 @@ public class HeroState : MonoBehaviour
         healthSlider.maxValue = character.GetMaxHP();
         healthSlider.value = character.GetHP();
     }
-    
+
     public bool GetIsDead()
     {
         return isDead;
@@ -177,7 +161,7 @@ public class HeroState : MonoBehaviour
     {
         isDead = value;
     }
-   
+
     public int GetSpawnNumber()
     {
         return spawnNumber;
@@ -186,9 +170,5 @@ public class HeroState : MonoBehaviour
     public void SetSpawnNumber(int value)
     {
         spawnNumber = value;
-    }
-
-    public void SetStartPosition(Vector3 startPosition) {
-        this.startPosition = startPosition;
     }
 }

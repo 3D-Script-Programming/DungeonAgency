@@ -23,10 +23,10 @@ public class HeroSpawner : MonoBehaviour
 
             // 유닛 생성
             GameObject spawnUnit = Instantiate(prefab, transform.position, Quaternion.Euler(0, 180, 0));
-            spawnUnit.GetComponent<HeroState>().SetCharacter(spawnCharacter);
-            spawnUnit.GetComponent<HeroState>().SetSpawnNumber(locationNumber);
-            spawnUnit.GetComponent<HeroState>().SetStartPosition(startPosition);
-            spawnUnit.GetComponent<HeroState>().gameObject.SetActive(true);
+            spawnUnit.GetComponent<HeroController>().SetCharacter(spawnCharacter);
+            spawnUnit.GetComponent<HeroController>().SetSpawnNumber(locationNumber);
+            spawnUnit.GetComponent<HeroController>().SetStartPosition(startPosition);
+            spawnUnit.GetComponent<HeroController>().gameObject.SetActive(true);
 
             battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
             battleManager.heroesInBattle.Add(spawnUnit);
