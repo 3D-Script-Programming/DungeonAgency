@@ -27,7 +27,7 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        battleStates = PerformAction.WAIT;
+        battleStates = PerformAction.READY;
         myTurn = true;
     }
 
@@ -36,8 +36,6 @@ public class BattleManager : MonoBehaviour
         switch (battleStates)
         {
             case (PerformAction.READY):
-                // 이동 완료 시 진행
-                battleStates = PerformAction.WAIT;
                 break;
             case (PerformAction.WAIT):
                 if (performList.Count > 0)
@@ -113,5 +111,9 @@ public class BattleManager : MonoBehaviour
         int currentNumber = number[0];
         number.RemoveAt(0);
         number.Add(currentNumber);
+    }
+
+    public void GetReady() {
+        battleStates = PerformAction.WAIT;
     }
 }

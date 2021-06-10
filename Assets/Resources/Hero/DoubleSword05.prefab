@@ -11538,9 +11538,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dddbdf893e3183d499601ebe7d40dc12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chracter: {fileID: 0}
+  heroCount: 6
   currentState: 0
-  attackTarget: {fileID: 0}
+  targetObject: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!1 &1940262280019192
 GameObject:
   m_ObjectHideFlags: 0
