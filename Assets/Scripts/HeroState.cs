@@ -11,7 +11,6 @@ public class HeroState : MonoBehaviour
     private float animateSpeed = 10f;
     private bool isDead = false;
     private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
-    public int heroCount;
 
     public enum CharacterState
     {
@@ -68,7 +67,7 @@ public class HeroState : MonoBehaviour
         animator.SetTrigger("Idle");
         
         yield return new WaitForSeconds(1f);
-        if (spawnNumber == heroCount - 1) {
+        if (spawnNumber == battleManager.heroesInBattle.Count - 1) {
             battleManager.GetReady();
         }
         yield break;
