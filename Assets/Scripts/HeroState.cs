@@ -60,11 +60,14 @@ public class HeroState : MonoBehaviour
 
     private IEnumerator TimeForReady() 
     {
+        yield return new WaitForSeconds(1f);
         animator.SetTrigger("Forward");
         while (MoveTowardBack()) { 
             yield return null; 
         }
         animator.SetTrigger("Idle");
+        
+        yield return new WaitForSeconds(1f);
         if (spawnNumber == heroCount - 1) {
             battleManager.GetReady();
         }
