@@ -32,9 +32,14 @@ public class BattleManager : MonoBehaviour
     public GameObject gameWinUI;
     public GameObject gameOverUI;
     public GameObject monsterSpawner;
+    public GameObject bossSpawner;
     public GameObject heroSpawner;
-    public bool reloadMonsterLock = false;
-    public bool reloadHeroLock = false;
+    public bool reloadMonsterLock = true;
+    public bool reloadHeroLock = true;
+    public int sumMonsterCp = 0;
+    public int sumHeroCp = 0;
+    public int avgHeroCp;
+    public int avgMonsterCp;
 
     private void Awake()
     {
@@ -44,7 +49,7 @@ public class BattleManager : MonoBehaviour
         monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
 
         int evilPoint = player.GetEvilPoint();
-        double rank = evilPoint / Math.Pow(10, Math.Log(evilPoint) + 2);
+        double rank = evilPoint % Math.Pow(10, Math.Log(evilPoint) + 2);
         for (int i = 0; i < 6; i++)
         {
             heroes[i] = CharacterFactory.CreateHero((int)rank);
@@ -66,7 +71,6 @@ public class BattleManager : MonoBehaviour
     {
         if (!reloadMonsterLock && !reloadHeroLock)
         {
-            // 몬스터가 다 죽은 경우
             if (monsterInBattle.Count == 0)
             {
                 currentRoom++;
@@ -179,16 +183,30 @@ public class BattleManager : MonoBehaviour
 
     private void GameWin()
     {
-        gameWinUI.SetActive(true);
-        // TODO: 경험치, 악명, 골드 획득
+        avgHeroCp = sumHeroCp / 6;
+        avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
+        for (int i=0; i<player.GetMonsterList().Count; i++)
+        {
+            player.GetMonster(i).AddExp(1500 * (avgHeroCp / avgMonsterCp));
+        }
+        player.AddGold(1500 * (avgHeroCp / avgMonsterCp));
+        player.AddEvilPoint(100 * (avgHeroCp / avgMonsterCp));
+        gameWinUI.SetActive(true);
     }
 
     private void GameOver()
     {
-        gameOverUI.SetActive(true);
-        // TODO: 경험치, 악명, 골드 획득
+        avgHeroCp = sumHeroCp / 6;
+        avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
+        for (int i = 0; i < player.GetMonsterList().Count; i++)
+        {
+            player.GetMonster(i).AddExp(1000 * (avgHeroCp / avgMonsterCp));
+        }
+        player.AddGold(800 * (avgHeroCp / avgMonsterCp));
+        player.AddEvilPoint(50 * (avgHeroCp / avgMonsterCp));
+        gameOverUI.SetActive(true);
     }
 
     private void ReloadInit()
@@ -233,9 +251,18 @@ public class BattleManager : MonoBehaviour
             Destroy(removeHero[i]);
         }
 
-        monsterSpawner.SetActive(false);
-        monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
-        monsterSpawner.SetActive(true);
+        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        {
+            bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
+            bossSpawner.SetActive(true);
+        }
+        else
+        {
+            monsterSpawner.SetActive(false);
+            monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
+            monsterSpawner.SetActive(true);
+        }
+
         heroSpawner.SetActive(false);
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
         heroSpawner.SetActive(true);

@@ -109,8 +109,29 @@ public class Character
 
         return UnityEngine.Random.Range(minDamage, maxDamage);
     }
+
     public int GetMaxDamage()
     {
         return str * 15;
+    }
+
+    public void SetBoss()
+    {
+        str = str * 4;
+        bal = bal * 4;
+        vtp = vtp * 4;
+    }
+
+    public void AddExp(int addExp)
+    {
+        int reqExp = GetReqExp();
+        exp += addExp;
+        while(reqExp < exp)
+        {
+            int remainExp = exp - reqExp;
+            LevelUp();
+            reqExp = GetReqExp();
+            exp += remainExp;
+        }
     }
 }

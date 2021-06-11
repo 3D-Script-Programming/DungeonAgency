@@ -42,10 +42,10 @@ public class GameManager : MonoBehaviour
         player.GetRoom(1).PlaceMonster(1, player.GetMonster(4));
         player.GetRoom(1).PlaceMonster(2, player.GetMonster(5));
 
-        // 3번 룸
-        player.GetRoom(2).PlaceMonster(3, player.GetMonster(6));
-        player.GetRoom(2).PlaceMonster(4, player.GetMonster(7));
-        player.GetRoom(2).PlaceMonster(5, player.GetMonster(8));
+
+        // 3번 룸 보스방 보스는 몬스터 리스트 0번으로 배치할 것!
+        player.GetRoom(2).Item = Item.CROWN;
+        player.GetRoom(2).PlaceMonster(0, player.GetMonster(8));
     }
     void Start()
     {

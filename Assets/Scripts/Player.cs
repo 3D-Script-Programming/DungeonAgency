@@ -75,4 +75,14 @@ public class Player
         return evilPoint;
     }
 
+    public void AddGold(int gold)
+    {
+        this.gold += gold;
+    }
+
+    public void AddEvilPoint(int evilPoint)
+    {
+        this.evilPoint = evilPoint;
+    }
+
 }
