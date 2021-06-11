@@ -9,7 +9,7 @@ public class HeroController : MonoBehaviour
     private Character character;
     private Vector3 startPosition;
     private bool actionStarted = false;
-    private float animateSpeed = 15f;
+    private float animateSpeed = 20f;
     private bool isDead = false;
     private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
 
@@ -28,28 +28,31 @@ public class HeroController : MonoBehaviour
 
     private void Update()
     {
-        switch (currentState)
+        if (!battleManager.reloadHeroLock)
         {
-            case (CharacterState.READY):
-                StartCoroutine(TimeForReady());
-                currentState = CharacterState.TURNCHECK;
-                break;
-            case (CharacterState.TURNCHECK):
-                if (battleManager.myTurn == false)
-                {
-                    if (spawnNumber == battleManager.heroNumber[0])
+            switch (currentState)
+            {
+                case (CharacterState.READY):
+                    StartCoroutine(TimeForReady());
+                    currentState = CharacterState.TURNCHECK;
+                    break;
+                case (CharacterState.TURNCHECK):
+                    if (battleManager.Turn == 1)
                     {
-                        ChooseAction();
-                        currentState = CharacterState.WAITING;
+                        if (spawnNumber == battleManager.heroNumber[0])
+                        {
+                            battleManager.CollectActions(gameObject);
+                            currentState = CharacterState.WAITING;
+                        }
                     }
-                }
-                break;
-            case (CharacterState.WAITING):
-                break;
-            case (CharacterState.ACTION):
-                StartCoroutine(TimeForAction());
-                currentState = CharacterState.TURNCHECK;
-                break;
+                    break;
+                case (CharacterState.WAITING):
+                    break;
+                case (CharacterState.ACTION):
+                    StartCoroutine(TimeForAction());
+                    currentState = CharacterState.TURNCHECK;
+                    break;
+            }
         }
     }
 
@@ -68,14 +71,6 @@ public class HeroController : MonoBehaviour
         }
         yield break;
     }
-
-    void ChooseAction()
-    {
-        HandleTurn myAttack = new HandleTurn();
-        myAttack.attackerGameObject = gameObject;
-        battleManager.CollectActions(myAttack);
-    }
-
 
     private IEnumerator TimeForAction()
     {
@@ -102,10 +97,8 @@ public class HeroController : MonoBehaviour
         else if (character.GetNature() == Nature.WATER) effect = battleManager.waterEffect;
         else effect = battleManager.windEffect;
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.3f);
         GameObject gameObject = Instantiate(effect, targetObject.transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(0.1f);
-        Destroy(gameObject);
 
         target.GetCharacter().GetHit(damage);
         target.healthSlider.value = target.GetCharacter().GetHP();
@@ -123,8 +116,11 @@ public class HeroController : MonoBehaviour
             target.animatorController.GetHit();
         }
 
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
+
         // 잠깐 기다림
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(0.5f);
 
         //제자리로 돌아옴
         animatorController.MoveBackward();

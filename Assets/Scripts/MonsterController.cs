@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class MonsterController : MonoBehaviour
     private Character character;
     private Vector3 startPosition;
     private bool actionStarted = false;
-    private float animateSpeed = 15f;
+    private float animateSpeed = 20f;
     private bool isDead = false;
     private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
 
@@ -30,32 +31,28 @@ public class MonsterController : MonoBehaviour
 
     private void Update()
     {
-        switch (currentState)
+        if (!battleManager.reloadMonsterLock)
         {
-            case (CharacterState.TURNCHECK):
-                if (battleManager.myTurn == true)
-                {
-                    if (spawnNumber == battleManager.monsterNumber[0])
+            switch (currentState)
+            {
+                case (CharacterState.TURNCHECK):
+                    if (battleManager.Turn == 0)
                     {
-                        ChooseAction();
-                        currentState = CharacterState.WAITING;
+                        if (spawnNumber == battleManager.monsterNumber[0])
+                        {
+                            battleManager.CollectActions(gameObject);
+                            currentState = CharacterState.WAITING;
+                        }
                     }
-                }
-                break;
-            case (CharacterState.WAITING):
-                break;
-            case (CharacterState.ACTION):
-                StartCoroutine(TimeForAction());
-                currentState = CharacterState.TURNCHECK;
-                break;
+                    break;
+                case (CharacterState.WAITING):
+                    break;
+                case (CharacterState.ACTION):
+                    StartCoroutine(TimeForAction());
+                    currentState = CharacterState.TURNCHECK;
+                    break;
+            }
         }
-    }
-
-    void ChooseAction()
-    {
-        HandleTurn myAttack = new HandleTurn();
-        myAttack.attackerGameObject = gameObject;
-        battleManager.CollectActions(myAttack);
     }
 
     private IEnumerator TimeForAction()
@@ -83,10 +80,8 @@ public class MonsterController : MonoBehaviour
         else if (character.GetNature() == Nature.WATER) effect = battleManager.waterEffect;
         else effect = battleManager.windEffect;
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.3f);
         GameObject gameObject = Instantiate(effect, targetObject.transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(0.1f);
-        Destroy(gameObject);
 
         target.GetCharacter().GetHit(damage);
         target.healthSlider.value = target.GetCharacter().GetHP();
@@ -98,14 +93,18 @@ public class MonsterController : MonoBehaviour
             battleManager.heroesInBattle.Remove(targetObject);
             battleManager.heroNumber.Remove(target.GetSpawnNumber());
             battleManager.heroCps.Remove(target.GetCharacter().GetCP());
+            
         }
         else
         {
             target.animatorController.GetHit();
         }
 
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
+
         // 잠깐 기다림
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(0.5f);
 
         //제자리로 돌아옴
         animatorController.MoveBackward();
