@@ -22,6 +22,7 @@ public class BossSpawner : MonoBehaviour
         battleManager.monsterInBattle.Add(spawnUnit);
         battleManager.monsterNumber.Add(0);
         battleManager.monsterCps.Add(spawnUnit.GetComponent<MonsterController>().GetCharacter().GetCP());
+        battleManager.sumMonsterCp += boss.GetCP();
 
         battleManager.reloadMonsterLock = false;
     }

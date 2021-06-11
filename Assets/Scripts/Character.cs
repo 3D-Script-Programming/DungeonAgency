@@ -121,4 +121,17 @@ public class Character
         bal = bal * 4;
         vtp = vtp * 4;
     }
+
+    public void AddExp(int addExp)
+    {
+        int reqExp = GetReqExp();
+        exp += addExp;
+        while(reqExp < exp)
+        {
+            int remainExp = exp - reqExp;
+            LevelUp();
+            reqExp = GetReqExp();
+            exp += remainExp;
+        }
+    }
 }

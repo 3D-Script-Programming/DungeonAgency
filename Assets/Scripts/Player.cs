@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Player
 {
     int gold;
-    int evilPoint = 10; // 임시 악명 설정
+    int evilPoint = 1; // 임시 악명 설정
 
     private List<Character> monsters = new List<Character>();
     private List<DungeonRoom> dungeon = new List<DungeonRoom>
@@ -73,6 +73,16 @@ public class Player
     public int GetEvilPoint()
     {
         return evilPoint;
+    }
+
+    public void AddGold(int gold)
+    {
+        this.gold += gold;
+    }
+
+    public void AddEvilPoint(int evilPoint)
+    {
+        this.evilPoint = evilPoint;
     }
 
 }
