@@ -31,7 +31,7 @@ public class MonsterController : MonoBehaviour
 
     private void Update()
     {
-        if (!battleManager.reloadMonsterLock)
+        if (!battleManager.reloadMonsterLock && !battleManager.reloadHeroLock)
         {
             switch (currentState)
             {
