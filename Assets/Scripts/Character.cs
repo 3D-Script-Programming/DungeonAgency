@@ -109,8 +109,16 @@ public class Character
 
         return UnityEngine.Random.Range(minDamage, maxDamage);
     }
+
     public int GetMaxDamage()
     {
         return str * 15;
+    }
+
+    public void SetBoss()
+    {
+        str = str * 4;
+        bal = bal * 4;
+        vtp = vtp * 4;
     }
 }

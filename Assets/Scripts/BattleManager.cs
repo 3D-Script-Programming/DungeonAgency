@@ -8,6 +8,8 @@ public class BattleManager : MonoBehaviour
 
     private int currentRoom;
     private Player player;
+    private double monsterAvgCp;
+    private double heroAvgCp;
     public Character[] heroes = new Character[6];
 
     public enum PerformAction
@@ -32,9 +34,10 @@ public class BattleManager : MonoBehaviour
     public GameObject gameWinUI;
     public GameObject gameOverUI;
     public GameObject monsterSpawner;
+    public GameObject bossSpawner;
     public GameObject heroSpawner;
-    public bool reloadMonsterLock = false;
-    public bool reloadHeroLock = false;
+    public bool reloadMonsterLock = true;
+    public bool reloadHeroLock = true;
 
     private void Awake()
     {
@@ -60,13 +63,14 @@ public class BattleManager : MonoBehaviour
     {
         battleStates = PerformAction.READY;
         Turn = 0;
+        monsterAvgCp = monsterCps.Average();
+        heroAvgCp = heroCps.Average();
     }
 
     private void Update()
     {
         if (!reloadMonsterLock && !reloadHeroLock)
         {
-            // 몬스터가 다 죽은 경우
             if (monsterInBattle.Count == 0)
             {
                 currentRoom++;
@@ -182,6 +186,7 @@ public class BattleManager : MonoBehaviour
         gameWinUI.SetActive(true);
         // TODO: 경험치, 악명, 골드 획득
 
+
     }
 
     private void GameOver()
@@ -233,9 +238,18 @@ public class BattleManager : MonoBehaviour
             Destroy(removeHero[i]);
         }
 
-        monsterSpawner.SetActive(false);
-        monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
-        monsterSpawner.SetActive(true);
+        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        {
+            bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
+            bossSpawner.SetActive(true);
+        }
+        else
+        {
+            monsterSpawner.SetActive(false);
+            monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
+            monsterSpawner.SetActive(true);
+        }
+
         heroSpawner.SetActive(false);
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
         heroSpawner.SetActive(true);

@@ -40313,6 +40313,49 @@ Transform:
   m_Father: {fileID: 195986874}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &497023264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 497023265}
+  - component: {fileID: 497023266}
+  m_Layer: 0
+  m_Name: Boss Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &497023265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497023264}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -6.5, z: -4}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &497023266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497023264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d1af8cf2a5834593ba383756594a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &503116728
 GameObject:
   m_ObjectHideFlags: 0
@@ -74686,7 +74729,7 @@ RectTransform:
   m_Children:
   - {fileID: 218353137}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -117188,7 +117231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleStates: 0
-  myTurn: 0
+  Turn: 0
   performList: []
   monsterInBattle: []
   heroesInBattle: []
@@ -117203,6 +117246,7 @@ MonoBehaviour:
   gameWinUI: {fileID: 463025913}
   gameOverUI: {fileID: 433563303}
   monsterSpawner: {fileID: 780851530}
+  bossSpawner: {fileID: 497023264}
   heroSpawner: {fileID: 45031867}
   reloadMonsterLock: 0
   reloadHeroLock: 0
