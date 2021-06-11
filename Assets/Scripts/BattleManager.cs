@@ -38,7 +38,8 @@ public class BattleManager : MonoBehaviour
     public bool reloadHeroLock = true;
     public int sumMonsterCp = 0;
     public int sumHeroCp = 0;
-
+    public int avgHeroCp;
+    public int avgMonsterCp;
 
     private void Awake()
     {
@@ -182,8 +183,8 @@ public class BattleManager : MonoBehaviour
 
     private void GameWin()
     {
-        int avgHeroCp = sumHeroCp / 6;
-        int avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
+        avgHeroCp = sumHeroCp / 6;
+        avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
         for (int i=0; i<player.GetMonsterList().Count; i++)
         {
@@ -196,8 +197,8 @@ public class BattleManager : MonoBehaviour
 
     private void GameOver()
     {
-        int avgHeroCp = sumHeroCp / 6;
-        int avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
+        avgHeroCp = sumHeroCp / 6;
+        avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
         for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
