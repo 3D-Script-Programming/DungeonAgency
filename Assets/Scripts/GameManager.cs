@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         player = new Player();
 
         // 임시 몬스터 9마리 생성
-        int[] rank = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        int[] rank = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         player.AddRangeMonster(CharacterFactory.CreateMonsterList(rank));
 
         // 임시 각 룸에 몬스터 배치

@@ -210,6 +210,18 @@ public class BattleManager : MonoBehaviour
             heroesInBattle.RemoveAt(0);
         }
 
+        int heroNumberCount = heroNumber.Count;
+        for (int i = 0; i < heroNumberCount; i++)
+        {
+            heroNumber.RemoveAt(0);
+        }
+
+        int heroCpsCount = heroCps.Count;
+        for (int i = 0; i < heroCpsCount; i++)
+        {
+            heroCps.RemoveAt(0);
+        }
+
         GameObject[] removeMonster = GameObject.FindGameObjectsWithTag("Monster");
         GameObject[] removeHero = GameObject.FindGameObjectsWithTag("Hero");
         for (int i = 0; i < removeMonster.Length; i++)
