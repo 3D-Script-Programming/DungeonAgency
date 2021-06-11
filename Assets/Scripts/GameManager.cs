@@ -26,7 +26,26 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         player = new Player();
-        player.AddRangeMonster(CharacterFactory.CreateMonsterList(6));
+
+        // 임시 몬스터 9마리 생성
+        int[] rank = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        player.AddRangeMonster(CharacterFactory.CreateMonsterList(rank));
+
+        // 임시 각 룸에 몬스터 배치
+        // 1번 룸
+        player.GetRoom(0).PlaceMonster(0, player.GetMonster(0));
+        player.GetRoom(0).PlaceMonster(2, player.GetMonster(1));
+        player.GetRoom(0).PlaceMonster(5, player.GetMonster(2));
+
+        // 2번 룸
+        player.GetRoom(1).PlaceMonster(0, player.GetMonster(3));
+        player.GetRoom(1).PlaceMonster(1, player.GetMonster(4));
+        player.GetRoom(1).PlaceMonster(2, player.GetMonster(5));
+
+        // 3번 룸
+        player.GetRoom(2).PlaceMonster(3, player.GetMonster(6));
+        player.GetRoom(2).PlaceMonster(4, player.GetMonster(7));
+        player.GetRoom(2).PlaceMonster(5, player.GetMonster(8));
     }
     void Start()
     {
