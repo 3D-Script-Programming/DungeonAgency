@@ -16,7 +16,11 @@ public class MainManager : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.instance;
-        
+        SpawnMonsters();
+        ApplyUIEvents();
+    }
+
+    private void SpawnMonsters() {
         monsters = gameManager.Player.GetMonsterList();
         Shuffle(monsters);
 
@@ -26,10 +30,6 @@ public class MainManager : MonoBehaviour
             Vector3 spawnPosition = new Vector3(-3.5f + (i * 3.5f), 0, 0);
             SpawnMonster(monsters[i], spawnPosition);
         }
-
-        playButton.onClick.AddListener(GameManager.MoveManageScene);
-        shopButton.onClick.AddListener(GameManager.MoveShopScene);
-        settingButton.onClick.AddListener(GameManager.MoveSettingScene);
     }
      
     private void Shuffle<T>(List<T> list)
@@ -52,5 +52,11 @@ public class MainManager : MonoBehaviour
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.SetActive(true);
+    }
+
+    private void ApplyUIEvents() {
+        playButton.onClick.AddListener(GameManager.MoveManageScene);
+        shopButton.onClick.AddListener(GameManager.MoveShopScene);
+        settingButton.onClick.AddListener(GameManager.MoveSettingScene);
     }
 }
