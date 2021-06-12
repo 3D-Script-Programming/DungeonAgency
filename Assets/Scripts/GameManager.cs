@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -47,13 +48,26 @@ public class GameManager : MonoBehaviour
         player.GetRoom(2).Item = Item.CROWN;
         player.GetRoom(2).PlaceMonster(0, player.GetMonster(8));
     }
-    void Start()
+
+    public void moveMainScene()
     {
+        SceneManager.LoadScene("MainScene");
     }
 
-    void Update()
+    public void moveBattleScene()
     {
+        SceneManager.LoadScene("BattleScene");
 
+    }
+
+    public void moveManageScene()
+    {
+        SceneManager.LoadScene("ManageScene");
+    }
+
+    public void moveShopScene()
+    {
+        SceneManager.LoadScene("ShopScene");
     }
 
     public void SaveData() { }
