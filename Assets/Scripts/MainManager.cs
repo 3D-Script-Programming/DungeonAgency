@@ -2,26 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
-    GameManager gameManager;
+    private GameManager gameManager;
+    private Player player;
     private List<Character> monsters;
 
     public Button playButton;
     public Button shopButton;
     public Button settingButton;
 
+    public TextMeshProUGUI evilPointText;
+    public TextMeshProUGUI goldText;
+
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameManager.instance;
+        player = gameManager.Player;
+        monsters = player.GetMonsterList();
+
+        evilPointText.text = player.GetEvilPoint().ToString();
+        goldText.text = player.GetGold().ToString();
+
         SpawnMonsters();
         ApplyUIEvents();
     }
 
     private void SpawnMonsters() {
-        monsters = gameManager.Player.GetMonsterList();
         Shuffle(monsters);
 
         monsters = monsters.GetRange(0, 3);

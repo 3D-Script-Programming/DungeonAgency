@@ -4983,6 +4983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 437acbd862c391e46aa7a6ebd1b312e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonSound: {fileID: 0}
 --- !u!4 &50749644
 Transform:
   m_ObjectHideFlags: 0
@@ -21620,7 +21621,7 @@ GameObject:
   - component: {fileID: 991447050}
   - component: {fileID: 991447049}
   m_Layer: 5
-  m_Name: Text_Value
+  m_Name: Text_Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42782,7 +42783,7 @@ GameObject:
   - component: {fileID: 1699917516}
   - component: {fileID: 1699917515}
   m_Layer: 5
-  m_Name: Status Coin
+  m_Name: Status Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43986,6 +43987,8 @@ MonoBehaviour:
   playButton: {fileID: 1208316998}
   shopButton: {fileID: 413986766}
   settingButton: {fileID: 1997857496}
+  evilPointText: {fileID: 1226285173182813934}
+  goldText: {fileID: 991447049}
 --- !u!1 &1997857494
 GameObject:
   m_ObjectHideFlags: 0
@@ -44530,7 +44533,7 @@ GameObject:
   - component: {fileID: 1226285173182813935}
   - component: {fileID: 1226285173182813934}
   m_Layer: 5
-  m_Name: Text_Value
+  m_Name: Text_Evil_Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44701,7 +44704,7 @@ GameObject:
   - component: {fileID: 1226285173632687973}
   - component: {fileID: 1226285173632687972}
   m_Layer: 5
-  m_Name: Status Notorious
+  m_Name: Status Evil Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
