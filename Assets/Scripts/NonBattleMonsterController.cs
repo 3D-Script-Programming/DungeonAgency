@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class NonBattleMonsterController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject slider;
+
+    void OnEnable()
     {
-        
+        slider.SetActive(false);
     }
 
     // Update is called once per frame
