@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 1798744183359333626}
   - component: {fileID: -783865901834089582}
   - component: {fileID: 5212526894136689174}
+  - component: {fileID: 2657889532347909994}
   m_Layer: 0
   m_Name: ChestMonster01
   m_TagString: Monster
@@ -709,6 +710,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2657889532347909994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798744183352039230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 7242445716580081430}
 --- !u!1 &1798744183352039248
 GameObject:
   m_ObjectHideFlags: 0

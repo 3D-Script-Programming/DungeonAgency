@@ -1493,6 +1493,7 @@ GameObject:
   - component: {fileID: 3468772178885773114}
   - component: {fileID: 4026629518195509968}
   - component: {fileID: 3997740021319658249}
+  - component: {fileID: 3958774839077624440}
   m_Layer: 0
   m_Name: FlyingDemon02
   m_TagString: Monster
@@ -1649,6 +1650,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3958774839077624440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3468772178893206774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 4081372649244859560}
 --- !u!1 &3468772178893206776
 GameObject:
   m_ObjectHideFlags: 0
