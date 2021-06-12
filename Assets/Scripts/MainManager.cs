@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainManager : MonoBehaviour
 {
     GameManager gameManager;
     private List<Character> monsters;
+
+    public Button playButton;
+    public Button shopButton;
+    public Button settingButton;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +26,10 @@ public class MainManager : MonoBehaviour
             Vector3 spawnPosition = new Vector3(-3.5f + (i * 3.5f), 0, 0);
             SpawnMonster(monsters[i], spawnPosition);
         }
+
+        playButton.onClick.AddListener(GameManager.MoveManageScene);
+        shopButton.onClick.AddListener(GameManager.MoveShopScene);
+        settingButton.onClick.AddListener(GameManager.MoveSettingScene);
     }
      
     private void Shuffle<T>(List<T> list)
