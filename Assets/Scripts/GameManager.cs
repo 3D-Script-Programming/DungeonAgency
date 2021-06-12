@@ -35,8 +35,6 @@ public class GameManager : MonoBehaviour
         // 임시 각 룸에 몬스터 배치
         // 1번 룸
         player.GetRoom(0).PlaceMonster(0, player.GetMonster(0));
-        player.GetRoom(0).PlaceMonster(2, player.GetMonster(1));
-        player.GetRoom(0).PlaceMonster(5, player.GetMonster(2));
 
         // 2번 룸
         player.GetRoom(1).PlaceMonster(0, player.GetMonster(3));
