@@ -1076,6 +1076,7 @@ GameObject:
   - component: {fileID: 7302528051342962357}
   - component: {fileID: -2629159579145063723}
   - component: {fileID: 6945051984387389645}
+  - component: {fileID: -2334761579793408142}
   m_Layer: 0
   m_Name: Specter01
   m_TagString: Monster
@@ -1232,6 +1233,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2334761579793408142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7302528051333438687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 860735017082295596}
 --- !u!1 &7302528051333438709
 GameObject:
   m_ObjectHideFlags: 0

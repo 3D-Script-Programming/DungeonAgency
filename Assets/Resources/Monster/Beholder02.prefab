@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 6917496432039520498}
   - component: {fileID: -6112672523379421326}
   - component: {fileID: 2814426864704650289}
+  - component: {fileID: 1629628264212464152}
   m_Layer: 0
   m_Name: Beholder02
   m_TagString: Monster
@@ -908,6 +909,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1629628264212464152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917496432029997874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1385846024}
 --- !u!1 &6917496432029997876
 GameObject:
   m_ObjectHideFlags: 0

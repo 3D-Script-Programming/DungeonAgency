@@ -1716,6 +1716,7 @@ GameObject:
   - component: {fileID: 3443190119480786188}
   - component: {fileID: -3868038617368914699}
   - component: {fileID: 1607168931598350266}
+  - component: {fileID: -2809890679571564911}
   m_Layer: 0
   m_Name: CrabMonster01
   m_TagString: Monster
@@ -1872,6 +1873,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2809890679571564911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443190119473352412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 8540367457398579105}
 --- !u!1 &3443190119473352414
 GameObject:
   m_ObjectHideFlags: 0

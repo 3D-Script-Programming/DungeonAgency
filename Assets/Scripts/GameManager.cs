@@ -51,27 +51,31 @@ public class GameManager : MonoBehaviour
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
-    public void moveMainScene()
+    public static void MoveMainScene()
     {
         SceneManager.LoadScene("MainScene");
     }
 
-    public void moveBattleScene()
+    public static void MoveBattleScene()
     {
         SceneManager.LoadScene("BattleScene");
-
     }
 
-    public void moveManageScene()
+    public static void MoveManageScene()
     {
         SceneManager.LoadScene("ManageScene");
     }
 
-    public void moveShopScene()
+    public static void MoveShopScene()
     {
         SceneManager.LoadScene("ShopScene");
     }
 
+    public static void MoveSettingScene()
+    {
+        SceneManager.LoadScene("SettingScene");
+    }
+    
     public void ButtonSound()
     {
         audioSource.PlayOneShot(buttonSound);
