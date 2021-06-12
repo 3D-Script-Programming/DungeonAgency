@@ -24,7 +24,7 @@ public class Character
         this.vtp = vtp;
         this.nature = nature;
         this.potential = potential;
-        hp = vtp * 400;
+        hp = GetMaxHP();
         prefab = Resources.Load<GameObject>(prefabPath);
     }
 
@@ -44,7 +44,7 @@ public class Character
         str += statusSum / 3;
         vtp += statusSum / 3;
         bal += statusSum / 3;
-
+        hp = GetMaxHP();
         exp = 0;
     }
 

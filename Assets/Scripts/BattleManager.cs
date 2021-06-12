@@ -8,7 +8,7 @@ public class BattleManager : MonoBehaviour
 
     private int currentRoom;
     private Player player;
-    public Character[] heroes = new Character[6];
+    private UIBattleManager UI;
 
     public enum PerformAction
     {
@@ -18,6 +18,7 @@ public class BattleManager : MonoBehaviour
         PERFORMACTION 
     }
     public PerformAction battleStates;
+    public Character[] heroes = new Character[6];
     public int Turn; // -1: 전투 종료, 0: 몬스터 턴, 1: 용사 턴
     public List<GameObject> performList = new List<GameObject>();
     public List<GameObject> monsterInBattle = new List<GameObject>();
@@ -29,22 +30,25 @@ public class BattleManager : MonoBehaviour
     public GameObject fireEffect;
     public GameObject waterEffect;
     public GameObject windEffect;
-    public GameObject gameWinUI;
-    public GameObject gameOverUI;
     public GameObject monsterSpawner;
     public GameObject bossSpawner;
     public GameObject heroSpawner;
     public bool reloadMonsterLock = true;
     public bool reloadHeroLock = true;
-    public int sumMonsterCp = 0;
-    public int sumHeroCp = 0;
-    public int avgHeroCp;
-    public int avgMonsterCp;
+    public double sumMonsterCp = 0;
+    public double sumHeroCp = 0;
+    public double avgHeroCp;
+    public double avgMonsterCp;
 
     private void Awake()
     {
         player = GameManager.instance.Player;
         currentRoom = 0;
+
+        // 임시로 몬스터를 강하게
+        //player.GetRoom(0).Monsters[0].LevelUp(100);
+        //player.GetRoom(0).Monsters[2].LevelUp(100);
+        //player.GetRoom(0).Monsters[5].LevelUp(100);
 
         monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
 
@@ -65,6 +69,7 @@ public class BattleManager : MonoBehaviour
     {
         battleStates = PerformAction.READY;
         Turn = 0;
+        UI = gameObject.GetComponent<UIBattleManager>();
     }
 
     private void Update()
@@ -186,13 +191,18 @@ public class BattleManager : MonoBehaviour
         avgHeroCp = sumHeroCp / 6;
         avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
+        int addExp = (int)(1500 * (avgHeroCp / avgMonsterCp));
+        int addGold = (int)(1500 * (avgHeroCp / avgMonsterCp));
+        int addEvilPoint = (int)(100 * (avgHeroCp / avgMonsterCp));
+
         for (int i=0; i<player.GetMonsterList().Count; i++)
         {
-            player.GetMonster(i).AddExp(1500 * (avgHeroCp / avgMonsterCp));
+            player.GetMonster(i).AddExp(addExp);
         }
-        player.AddGold(1500 * (avgHeroCp / avgMonsterCp));
-        player.AddEvilPoint(100 * (avgHeroCp / avgMonsterCp));
-        gameWinUI.SetActive(true);
+        player.AddGold(addGold);
+        player.AddEvilPoint(addEvilPoint);
+        UI.SetWinText(addExp, addGold, addEvilPoint);
+        UI.winUI.SetActive(true);
     }
 
     private void GameOver()
@@ -200,13 +210,18 @@ public class BattleManager : MonoBehaviour
         avgHeroCp = sumHeroCp / 6;
         avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
+        int addExp = (int)(1500 * (avgHeroCp / avgMonsterCp));
+        int addGold = (int)(1500 * (avgHeroCp / avgMonsterCp));
+        int addEvilPoint = (int)(100 * (avgHeroCp / avgMonsterCp));
+
         for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
-            player.GetMonster(i).AddExp(1000 * (avgHeroCp / avgMonsterCp));
+            player.GetMonster(i).AddExp(addExp);
         }
-        player.AddGold(800 * (avgHeroCp / avgMonsterCp));
-        player.AddEvilPoint(50 * (avgHeroCp / avgMonsterCp));
-        gameOverUI.SetActive(true);
+        player.AddGold(addGold);
+        player.AddEvilPoint(addEvilPoint);
+        UI.SetFailText(addExp, addGold, addEvilPoint);
+        UI.failUI.SetActive(true);
     }
 
     private void ReloadInit()
