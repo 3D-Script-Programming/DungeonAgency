@@ -13,7 +13,6 @@ public class MainManager : MonoBehaviour
         gameManager = GameManager.instance;
         
         monsters = gameManager.Player.GetMonsterList();
-        Debug.Log(monsters.Count);
         Shuffle(monsters);
 
         monsters = monsters.GetRange(0, 3);
