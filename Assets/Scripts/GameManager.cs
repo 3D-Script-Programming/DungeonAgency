@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private Player player;
+    private AudioSource audioSource;
 
     public static GameManager instance
     {
@@ -20,9 +21,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public Player Player { get => player; set => player = value; }
-
     private static GameManager m_instance;
+
+    public Player Player { get => player; set => player = value; }
+    public AudioClip buttonSound;
 
     private void Awake()
     {
@@ -45,6 +47,8 @@ public class GameManager : MonoBehaviour
         // 3번 룸 보스방 보스는 몬스터 리스트 0번으로 배치할 것!
         player.GetRoom(2).Item = Item.CROWN;
         player.GetRoom(2).PlaceMonster(0, player.GetMonster(8));
+
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     public static void MoveMainScene()
@@ -70,6 +74,11 @@ public class GameManager : MonoBehaviour
     public static void MoveSettingScene()
     {
         SceneManager.LoadScene("SettingScene");
+    }
+    
+    public void ButtonSound()
+    {
+        audioSource.PlayOneShot(buttonSound);
     }
 
     public void SaveData() { }
