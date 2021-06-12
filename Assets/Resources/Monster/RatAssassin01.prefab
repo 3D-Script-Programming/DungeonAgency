@@ -1859,6 +1859,7 @@ GameObject:
   - component: {fileID: 5007196103531378072}
   - component: {fileID: 5007196103521851936}
   - component: {fileID: 8625107182435785336}
+  - component: {fileID: 7988366656081855318}
   m_Layer: 0
   m_Name: RatAssassin01
   m_TagString: Monster
@@ -1916,8 +1917,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   targetObject: {fileID: 0}
-  animator: {fileID: 0}
   healthSlider: {fileID: 7562009532833707971}
+--- !u!114 &7988366656081855318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5007196103531211192}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5007196103531211194
 GameObject:
   m_ObjectHideFlags: 0

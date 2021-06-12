@@ -2371,6 +2371,7 @@ GameObject:
   - component: {fileID: 806720960803373332}
   - component: {fileID: 806720960795963094}
   - component: {fileID: 5652228726389065431}
+  - component: {fileID: 2494531713507777632}
   m_Layer: 0
   m_Name: LizardWarrior02
   m_TagString: Monster
@@ -2428,8 +2429,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   targetObject: {fileID: 0}
-  animator: {fileID: 0}
   healthSlider: {fileID: 1893702002487304594}
+--- !u!114 &2494531713507777632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806720960803347828}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &806720960803347830
 GameObject:
   m_ObjectHideFlags: 0

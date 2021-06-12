@@ -1755,6 +1755,7 @@ GameObject:
   - component: {fileID: 8037379983249300719}
   - component: {fileID: 8037379983259087627}
   - component: {fileID: -3835901956484214620}
+  - component: {fileID: 2366028695119800138}
   m_Layer: 0
   m_Name: BlackKnight02
   m_TagString: Monster
@@ -1812,8 +1813,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   targetObject: {fileID: 0}
-  animator: {fileID: 0}
   healthSlider: {fileID: 8041043494877792082}
+--- !u!114 &2366028695119800138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037379983249719503}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8037379983249719505
 GameObject:
   m_ObjectHideFlags: 0

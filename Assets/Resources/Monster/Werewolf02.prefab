@@ -936,6 +936,7 @@ GameObject:
   - component: {fileID: 2794474322536244420}
   - component: {fileID: 2794474322527242928}
   - component: {fileID: -4333833895230156164}
+  - component: {fileID: 7184021293644409123}
   m_Layer: 0
   m_Name: Werewolf02
   m_TagString: Monster
@@ -993,8 +994,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   targetObject: {fileID: 0}
-  animator: {fileID: 0}
   healthSlider: {fileID: 1597629462}
+--- !u!114 &7184021293644409123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2794474322536610020}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94ace78269964e78a24e80d97841895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2794474322536610022
 GameObject:
   m_ObjectHideFlags: 0
