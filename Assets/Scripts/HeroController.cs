@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,21 +8,24 @@ public class HeroController : MonoBehaviour
     private Character character;
     private Vector3 startPosition;
     private bool actionStarted = false;
-    private float animateSpeed = 20f;
+    private float animateSpeed = 20;
     private bool isDead = false;
     private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
+    private AudioSource audioPlayer;
 
     public CharacterState currentState;
     public GameObject targetObject;
     public AnimatorController animatorController;
     public Slider healthSlider;
-
+    public AudioClip deathSound;
+    public AudioClip hitSound;
 
     private void Start()
     {
         animatorController = new AnimatorController(GetComponent<Animator>());
         battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         currentState = CharacterState.READY;
+        audioPlayer = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -102,10 +104,12 @@ public class HeroController : MonoBehaviour
 
         target.GetCharacter().GetHit(damage);
         target.healthSlider.value = target.GetCharacter().GetHP();
+        audioPlayer.PlayOneShot(hitSound);
 
         if (target.GetCharacter().GetHP() == 0)
         {
             target.animatorController.Die();
+            audioPlayer.PlayOneShot(target.deathSound);
             target.SetIsDead(true);
             battleManager.monsterInBattle.Remove(targetObject);
             battleManager.monsterNumber.Remove(target.GetSpawnNumber());
@@ -115,12 +119,10 @@ public class HeroController : MonoBehaviour
         {
             target.animatorController.GetHit();
         }
-
-        yield return new WaitForSeconds(0.5f);
-        Destroy(gameObject);
+        Destroy(gameObject, 0.5f);
 
         // 잠깐 기다림
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.8f);
 
         //제자리로 돌아옴
         animatorController.MoveBackward();

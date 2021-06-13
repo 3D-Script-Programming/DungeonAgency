@@ -9,6 +9,7 @@ public class BattleManager : MonoBehaviour
     private int currentRoom;
     private Player player;
     private UIBattleManager UI;
+    private bool playingAudio = false;
 
     public enum PerformAction
     {
@@ -39,16 +40,14 @@ public class BattleManager : MonoBehaviour
     public double sumHeroCp = 0;
     public double avgHeroCp;
     public double avgMonsterCp;
+    public AudioClip backgroundSound;
+    public AudioClip winSound;
+    public AudioClip failSound;
 
     private void Awake()
     {
         player = GameManager.instance.Player;
         currentRoom = 0;
-
-        // 임시로 몬스터를 강하게
-        //player.GetRoom(0).Monsters[0].LevelUp(100);
-        //player.GetRoom(0).Monsters[2].LevelUp(100);
-        //player.GetRoom(0).Monsters[5].LevelUp(100);
 
         monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
 
@@ -70,6 +69,7 @@ public class BattleManager : MonoBehaviour
         battleStates = PerformAction.READY;
         Turn = 0;
         UI = gameObject.GetComponent<UIBattleManager>();
+        GameManager.instance.SetMusic(backgroundSound);
     }
 
     private void Update()
@@ -123,7 +123,9 @@ public class BattleManager : MonoBehaviour
                             {
                                 for (int i = 0; i < heroesInBattle.Count; i++)
                                 {
-                                    if (heroesInBattle[i].GetComponent<HeroController>().GetCharacter().GetCP() == heroCps.Max())
+                                    HeroController target = heroesInBattle[i].GetComponent<HeroController>();
+                                    int heroCpMax = heroCps.Max();
+                                    if (target.GetCharacter().GetCP() == heroCpMax)
                                     {
                                         MonsterController.targetObject = heroesInBattle[i];
                                         break;
@@ -147,7 +149,8 @@ public class BattleManager : MonoBehaviour
                             {
                                 for (int i = 0; i < monsterInBattle.Count; i++)
                                 {
-                                    if (monsterInBattle[i].GetComponent<MonsterController>().GetCharacter().GetCP() == monsterCps.Max())
+                                    MonsterController target = monsterInBattle[i].GetComponent<MonsterController>();
+                                    if (target.GetCharacter().GetCP() == monsterCps.Max())
                                     {
                                         HeroController.targetObject = monsterInBattle[i];
                                         break;
@@ -188,6 +191,11 @@ public class BattleManager : MonoBehaviour
 
     private void GameWin()
     {
+        if (!playingAudio)
+        {
+            GameManager.instance.SetMusic(winSound);
+            playingAudio = true;
+        }
         avgHeroCp = sumHeroCp / 6;
         avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
@@ -201,18 +209,23 @@ public class BattleManager : MonoBehaviour
         }
         player.AddGold(addGold);
         player.AddEvilPoint(addEvilPoint);
-        UI.SetWinText(addExp, addGold, addEvilPoint);
+        UI.SetWinText(addGold, addEvilPoint);
         UI.winUI.SetActive(true);
     }
 
     private void GameOver()
     {
+        if (!playingAudio)
+        {
+            GameManager.instance.SetMusic(failSound);
+            playingAudio = true;
+        }
         avgHeroCp = sumHeroCp / 6;
         avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
 
-        int addExp = (int)(1500 * (avgHeroCp / avgMonsterCp));
-        int addGold = (int)(1500 * (avgHeroCp / avgMonsterCp));
-        int addEvilPoint = (int)(100 * (avgHeroCp / avgMonsterCp));
+        int addExp = (int)(1000 * (avgHeroCp / avgMonsterCp));
+        int addGold = (int)(800 * (avgHeroCp / avgMonsterCp));
+        int addEvilPoint = (int)(-50 * (avgHeroCp / avgMonsterCp));
 
         for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
@@ -220,7 +233,7 @@ public class BattleManager : MonoBehaviour
         }
         player.AddGold(addGold);
         player.AddEvilPoint(addEvilPoint);
-        UI.SetFailText(addExp, addGold, addEvilPoint);
+        UI.SetFailText(addGold, addEvilPoint);
         UI.failUI.SetActive(true);
     }
 

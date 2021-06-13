@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private Player player;
+    private AudioSource audioSource;
 
     public static GameManager instance
     {
@@ -20,9 +21,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public Player Player { get => player; set => player = value; }
-
     private static GameManager m_instance;
+
+    public Player Player { get => player; set => player = value; }
+    public AudioClip buttonSound;
 
     private void Awake()
     {
@@ -35,8 +37,6 @@ public class GameManager : MonoBehaviour
         // 임시 각 룸에 몬스터 배치
         // 1번 룸
         player.GetRoom(0).PlaceMonster(0, player.GetMonster(0));
-        player.GetRoom(0).PlaceMonster(2, player.GetMonster(1));
-        player.GetRoom(0).PlaceMonster(5, player.GetMonster(2));
 
         // 2번 룸
         player.GetRoom(1).PlaceMonster(0, player.GetMonster(3));
@@ -47,27 +47,55 @@ public class GameManager : MonoBehaviour
         // 3번 룸 보스방 보스는 몬스터 리스트 0번으로 배치할 것!
         player.GetRoom(2).Item = Item.CROWN;
         player.GetRoom(2).PlaceMonster(0, player.GetMonster(8));
+
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
-    public void moveMainScene()
+    public static void MoveMainScene()
     {
         SceneManager.LoadScene("MainScene");
     }
 
-    public void moveBattleScene()
+    public static void MoveBattleScene()
     {
         SceneManager.LoadScene("BattleScene");
-
     }
 
-    public void moveManageScene()
+    public static void MoveManageScene()
     {
         SceneManager.LoadScene("ManageScene");
     }
 
-    public void moveShopScene()
+    public static void MoveShopScene()
     {
         SceneManager.LoadScene("ShopScene");
+    }
+
+    public static void MoveSettingScene()
+    {
+        SceneManager.LoadScene("SettingScene");
+    }
+
+    public void OnPause()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void OffPause()
+    {
+        Time.timeScale = 1f;
+    }
+
+    public void ButtonSound()
+    {
+        gameObject.GetComponent<AudioSource>().PlayOneShot(buttonSound);
+    }
+
+    public void SetMusic(AudioClip audio)
+    {
+        audioSource.Stop();
+        audioSource.clip = audio;
+        audioSource.Play();
     }
 
     public void SaveData() { }
