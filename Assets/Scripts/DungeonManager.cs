@@ -8,6 +8,9 @@ public class DungeonManager : MonoBehaviour
     public Text[] monsterSpawnButtons = new Text[6];
     public Button prevRoomButton;
     public Button nextRoomButton;
+    public Button homeButton;
+    public Button playButton;
+    public Button marketButton;
     public Text roomNumberText;
 
     private int selectedRoomNumber = 0;
@@ -30,6 +33,9 @@ public class DungeonManager : MonoBehaviour
         }
         prevRoomButton.onClick.AddListener(OnClickPrevRoomButton);
         nextRoomButton.onClick.AddListener(OnClickNextRoomButton);
+        homeButton.onClick.AddListener(GameManager.MoveMainScene);
+        marketButton.onClick.AddListener(GameManager.MoveMarketScene);
+        playButton.onClick.AddListener(GameManager.MoveBattleScene);
     }
 
     void OnClickSpawner(int selected) {

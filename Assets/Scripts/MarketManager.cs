@@ -49,7 +49,6 @@ public class MarketManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        Debug.Log(GameManager.instance.Player.GetGold());
         statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetGold();
         statusEvil.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetEvilPoint();
     }

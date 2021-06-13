@@ -25,6 +25,7 @@ public class HeroSpawner : MonoBehaviour
             else {
                 Vector3 startPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
                 Character spawnCharacter = heroes[locationNumber];
+                Debug.Log(spawnCharacter);
                 GameObject prefab = spawnCharacter.Prefab;
                 GameObject spawnUnit = Instantiate(prefab, transform.position, Quaternion.Euler(0, 180, 0));
                 spawnUnit.GetComponent<HeroController>().SetCharacter(spawnCharacter);
