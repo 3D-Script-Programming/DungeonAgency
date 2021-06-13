@@ -22,14 +22,4 @@ public class UIBattleManager : MonoBehaviour
         failEvilPointText.text = evilPoint.ToString();
     }
 
-    public void OnPause()
-    {
-        Time.timeScale = 0f;
-    }
-
-    public void OffPause()
-    {
-        Time.timeScale = 1f;
-    }
-
 }
