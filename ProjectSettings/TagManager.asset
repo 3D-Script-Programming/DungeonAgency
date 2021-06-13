@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Monster
   - Hero
+  - Text
+  - Button
   layers:
   - Default
   - TransparentFX
