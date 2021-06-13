@@ -51,11 +51,9 @@ public class BattleManager : MonoBehaviour
 
         monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
 
-        int evilPoint = player.GetEvilPoint();
-        double rank = evilPoint % Math.Pow(10, Math.Log(evilPoint) + 2);
         for (int i = 0; i < 6; i++)
         {
-            heroes[i] = CharacterFactory.CreateHero((int)rank);
+            heroes[i] = CharacterFactory.CreateHero(player.GetHeroRank());
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 

@@ -38,7 +38,7 @@ public class Player
 
     public List<Character> GetMonsterList()
     {
-        if(monsters.Count > 0)
+        if (monsters.Count > 0)
             return monsters;
 
         return null;
@@ -56,11 +56,11 @@ public class Player
 
     public void RemoveMonster(int index)
     {
-        if(monsters.Count > index)
+        if (monsters.Count > index)
             monsters.RemoveAt(index);
     }
 
-    public void AddRoom() 
+    public void AddRoom()
     {
         dungeon.Add(new DungeonRoom());
     }
@@ -88,4 +88,20 @@ public class Player
             this.evilPoint = 0;
         }
     }
+
+    public int GetHeroRank()
+    {
+        int count = 0;
+        for (int i = 0; i < dungeon.Count; i++)
+        {
+            if(dungeon[i].Item == Item.TREASURE)
+            {
+                count += 500;
+            }
+        }
+
+        double rank = (evilPoint + count) / Math.Pow(10, Math.Log(evilPoint + count) + 2);
+        return (int)rank;
+    }
+
 }
