@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public static class CharacterFactory
 {
-    private static System.Random random = new System.Random();
+    public static System.Random random = new System.Random();
     public static Character CreateMonster(int rank)
     {
         return Create(true, rank);
