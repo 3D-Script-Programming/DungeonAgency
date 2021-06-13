@@ -49,6 +49,9 @@ public class DungeonManager : MonoBehaviour
     }
 
     public void OnClickListItem(Character monster) {
+        if (selectedPosition == -1) {
+            return;
+        }
         selectedRoom.RemoveMonster(monster);
         selectedRoom.PlaceMonster(selectedPosition, monster);
         SpawnMonsters();
