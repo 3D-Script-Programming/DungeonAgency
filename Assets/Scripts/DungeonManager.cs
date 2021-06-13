@@ -19,6 +19,8 @@ public class DungeonManager : MonoBehaviour
     public Text roomNumberText;
     public TextMeshProUGUI crownCountText;
     public TextMeshProUGUI treasureCountText;
+    public TextMeshProUGUI evilPointText;
+    public TextMeshProUGUI goldText;
     public AudioClip backgroundSound;
     public AudioClip buttonSound;
 
@@ -41,6 +43,8 @@ public class DungeonManager : MonoBehaviour
         }
         crownCountText.text = player.GetItem(Item.CROWN).ToString();
         treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
+        evilPointText.text = player.GetEvilPoint().ToString();
+        goldText.text = player.GetGold().ToString();
         GameManager.instance.SetMusic(backgroundSound);
         audioSource = GetComponent<AudioSource>();
     }

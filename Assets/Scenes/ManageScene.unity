@@ -11376,6 +11376,8 @@ MonoBehaviour:
   roomNumberText: {fileID: 51385999}
   crownCountText: {fileID: 1817656117}
   treasureCountText: {fileID: 1446479319}
+  evilPointText: {fileID: 566999699}
+  goldText: {fileID: 40461997}
   backgroundSound: {fileID: 8300000, guid: 2338c9abc2dfcf24983f87dd051a9560, type: 3}
   buttonSound: {fileID: 8300000, guid: 9954a4ea2ababdf41a3dda6a1ea96e25, type: 3}
 --- !u!4 &421145503
@@ -41553,7 +41555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00006185082}
+  m_AnchoredPosition: {x: 0, y: -0.00026322127}
   m_SizeDelta: {x: 145.27591, y: 41}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1898747688
