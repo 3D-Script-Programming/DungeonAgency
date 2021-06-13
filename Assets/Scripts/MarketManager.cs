@@ -18,6 +18,9 @@ public class MarketManager : MonoBehaviour
     private GameObject spawnUnit;
 
     public Button homeButton;
+    public Button manageButton;
+
+    public GameObject popup_Warning;
 
 
     // Start is called before the first frame update
@@ -56,5 +59,17 @@ public class MarketManager : MonoBehaviour
     private void ApplyUIEvents()
     {
         homeButton.onClick.AddListener(GameManager.MoveMainScene);
+        manageButton.onClick.AddListener(ChangeScreen);
+    }
+
+    private void ChangeScreen()
+    {
+        if (GameManager.instance.Player.GetMonsterList() == null)
+        {
+            Debug.Log("aaa");
+            popup_Warning.SetActive(true);
+            return;
+        }
+        GameManager.MoveManageScene();
     }
 }
