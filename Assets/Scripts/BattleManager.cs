@@ -59,7 +59,15 @@ public class BattleManager : MonoBehaviour
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 
-        monsterSpawner.SetActive(true);
+        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        {
+            bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
+            bossSpawner.SetActive(true);
+        }
+        else
+        {
+            monsterSpawner.SetActive(true);
+        }
         heroSpawner.SetActive(true);
 
     }
