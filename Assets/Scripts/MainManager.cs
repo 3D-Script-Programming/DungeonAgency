@@ -11,7 +11,8 @@ public class MainManager : MonoBehaviour
     private List<Character> monsters;
 
     public Button playButton;
-    public Button shopButton;
+    public Button marketButton;
+    public Button manageButton;
     public Button settingButton;
 
     public TextMeshProUGUI evilPointText;
@@ -64,8 +65,10 @@ public class MainManager : MonoBehaviour
         spawnUnit.SetActive(true);
     }
 
-    private void ApplyUIEvents() {
+    private void ApplyUIEvents()
+    {
         playButton.onClick.AddListener(GameManager.MoveManageScene);
-        shopButton.onClick.AddListener(GameManager.MoveMarketScene);
+        marketButton.onClick.AddListener(GameManager.MoveMarketScene);
+        manageButton.onClick.AddListener(GameManager.MoveManageScene);
     }
 }

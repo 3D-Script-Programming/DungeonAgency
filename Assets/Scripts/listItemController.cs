@@ -15,7 +15,6 @@ public class ListItemController : MonoBehaviour
 
     public void SetText(Character monster)
     {
-        Debug.Log("hi");
         this.monster = monster;
         if (monster.GetNature() == Nature.FIRE)
         {
@@ -50,7 +49,8 @@ public class ListItemController : MonoBehaviour
         GameManager.instance.Player.AddMonster(monster);
         GameManager.instance.Player.AddGold(-1 * monster.GetPrice());
         btnHire.SetActive(false);
-        GetComponentInParent<ListController>().UpdateUI();
+        GetComponentInParent<ListController>().UpdateUI(); 
+        ListItemOnClick();
     }
 
     public void ListItemOnClick()
