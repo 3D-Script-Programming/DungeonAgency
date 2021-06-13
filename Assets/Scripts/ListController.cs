@@ -40,7 +40,6 @@ public class ListController : MonoBehaviour
 
     public void ReSpawnMonster(Character monster) 
     {
-        Debug.Log(monster);
         GameObject.Find("Market Manager").GetComponent<MarketManager>().SpawnMonster(monster);
     }
 
