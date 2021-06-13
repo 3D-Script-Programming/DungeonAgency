@@ -56,7 +56,7 @@ public class DungeonManager : MonoBehaviour
     }
 
     private void SpawnMonster(Character monster) {
-        GameObject spawnUnit = Instantiate(monster.Prefab, monsterSpanwers[selectedPosition].transform.position, Quaternion.identity);
+        GameObject spawnUnit = Instantiate(monster.Prefab, monsterSpanwers[monster.GetPosition()].transform.position, Quaternion.identity);
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.SetActive(true);

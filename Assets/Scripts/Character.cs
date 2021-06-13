@@ -187,4 +187,8 @@ public class Character
     public bool IsSamePosition(int roomNumber, int position) {
         return this.roomNumber == roomNumber && this.position == position;
     }
+
+    public int GetPosition() {
+        return position;
+    }
 }
