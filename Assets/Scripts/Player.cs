@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Player
 {
     int gold = 0;
-    int evilPoint = 0; // 임시 악명 설정
+    int evilPoint = 1;
     int[] items = {0, 0};
 
     private List<Character> monsters = new List<Character>();
