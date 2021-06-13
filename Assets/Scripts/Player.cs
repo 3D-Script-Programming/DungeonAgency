@@ -83,10 +83,17 @@ public class Player
     public void AddEvilPoint(int evilPoint)
     {
         this.evilPoint += evilPoint;
-        if(evilPoint < 0)
+        if (evilPoint < 0)
         {
             this.evilPoint = 0;
         }
     }
 
+    public List<Character> GetSpawnedMonster() {
+        return monsters.FindAll((monster) => monster.IsSpawned());
+    }
+
+    public Character FindMonsterByPosition(int roomNumber, int posiiton) {
+        return monsters.Find((monster) => monster.IsSamePosition(roomNumber, posiiton));
+    }
 }

@@ -10,8 +10,8 @@ public class Character
     private Nature nature;
     private int hp;
     private int rank, potential;
-    private int roomNumber;
-    private int position;
+    private int roomNumber = -1;
+    private int position = -1;
     private string name;
 
     private GameObject prefab;
@@ -165,5 +165,26 @@ public class Character
             reqExp = GetReqExp();
             exp += remainExp;
         }
+    }
+
+    public void SetPosition(int position) {
+        this.position = position;
+    }
+
+    public void SetRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public void ResetPosition() {
+        this.position = -1;
+        this.roomNumber = -1;
+    }
+
+    public bool IsSpawned() {
+        return this.position != -1 && this.roomNumber != -1;
+    }
+
+    public bool IsSamePosition(int roomNumber, int position) {
+        return this.roomNumber == roomNumber && this.position == position;
     }
 }
