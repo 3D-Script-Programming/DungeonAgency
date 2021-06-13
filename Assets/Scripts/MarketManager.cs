@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class MarketManager : MonoBehaviour
@@ -10,37 +11,51 @@ public class MarketManager : MonoBehaviour
 
     private List<Character> newMonsters;
 
-    public GameObject goldUI;
+    public GameObject statusGold;
+    public GameObject statusEvil;
     public GameObject monsterList;
     public GameObject positionPivot;
+    private GameObject spawnUnit;
+
+    public Button homeButton;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameManager.instance.Player;
-        goldUI.GetComponentInChildren<TextMeshProUGUI>().text = "" + GameManager.instance.Player.GetGold();
-        //GameObject.Find("MonsterList").GetComponent<ListController>().SetData(player.GetMonsterList(), player.GetGold());
+        ApplyUIEvents();
         newMonsters = CharacterFactory.CreateMonsterList(10);
-        Debug.Log(newMonsters);
-        monsterList.GetComponent<ListController>().SetData(newMonsters, player.GetGold());
+        player = GameManager.instance.Player;
+        statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetGold();
+        statusEvil.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetEvilPoint();
+        //GameObject.Find("MonsterList").GetComponent<ListController>().SetData(player.GetMonsterList(), player.GetGold());
+        monsterList.GetComponent<ListController>().SetData(newMonsters);
         SpawnMonster(newMonsters[0]);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-
-    private void SpawnMonster(Character monster)
+    public void SpawnMonster(Character monster)
     {
-        GameObject spawnUnit = Instantiate(monster.Prefab);
+        if (spawnUnit != null)
+            Destroy(spawnUnit);
+
+        spawnUnit = Instantiate(monster.Prefab);
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.transform.position = positionPivot.transform.position;
         spawnUnit.transform.rotation = positionPivot.transform.rotation;
         spawnUnit.SetActive(true);
+    }
+
+    public void UpdateUI()
+    {
+        Debug.Log(GameManager.instance.Player.GetGold());
+        statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetGold();
+        statusEvil.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetEvilPoint();
+    }
+
+    private void ApplyUIEvents()
+    {
+        homeButton.onClick.AddListener(GameManager.MoveMainScene);
     }
 }
