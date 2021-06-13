@@ -108,7 +108,7 @@ public class Player
         }
     }
 
-    public int HeroRank()
+    public int GetHeroRank()
     {
         int count = 0;
         for (int i = 0; i < dungeon.Count; i++)

@@ -10,8 +10,6 @@ public class Character
     private Nature nature;
     private int hp;
     private int rank, potential;
-    private int roomNumber;
-    private int position;
     private string name;
 
     private GameObject prefab;
@@ -32,8 +30,6 @@ public class Character
         prefab = Resources.Load<GameObject>(prefabPath);
         name = prefabPath.Split('/')[1];
         name = Regex.Replace(name, @"\d", "");
-        roomNumber = -1;//-1이면 배치되지 않음
-        position = -1;
     }
 
     public Character(string prefabPath, int level, int str, int bal, int vtp, int potential, Nature nature)
