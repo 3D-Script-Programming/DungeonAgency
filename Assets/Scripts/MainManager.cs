@@ -10,6 +10,8 @@ public class MainManager : MonoBehaviour
     private Player player;
     private List<Character> monsters;
 
+    public GameObject popup_Warning;
+
     public Button playButton;
     public Button marketButton;
     public Button manageButton;
@@ -67,8 +69,18 @@ public class MainManager : MonoBehaviour
 
     private void ApplyUIEvents()
     {
-        playButton.onClick.AddListener(GameManager.MoveManageScene);
+        playButton.onClick.AddListener(ChangeScreen);
         marketButton.onClick.AddListener(GameManager.MoveMarketScene);
-        manageButton.onClick.AddListener(GameManager.MoveManageScene);
+        manageButton.onClick.AddListener(ChangeScreen);
+    }
+
+    private void ChangeScreen() 
+    {
+        if (monsters == null)
+        {
+            popup_Warning.SetActive(true);
+            return;
+        }
+        GameManager.MoveManageScene();
     }
 }
