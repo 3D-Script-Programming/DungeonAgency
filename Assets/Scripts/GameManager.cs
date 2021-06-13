@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
         player = new Player();
         player.AddGold(5000);
+
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.Play();
     }

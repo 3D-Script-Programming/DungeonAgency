@@ -15,6 +15,8 @@ public class HeroSpawner : MonoBehaviour
 
     void OnEnable() 
     {
+        battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
+
         for (locationNumber = 0; locationNumber < 6; locationNumber++)
         {
             if (heroes[locationNumber] == null) continue;
@@ -25,7 +27,6 @@ public class HeroSpawner : MonoBehaviour
             else {
                 Vector3 startPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
                 Character spawnCharacter = heroes[locationNumber];
-                Debug.Log(spawnCharacter);
                 GameObject prefab = spawnCharacter.Prefab;
                 GameObject spawnUnit = Instantiate(prefab, transform.position, Quaternion.Euler(0, 180, 0));
                 spawnUnit.GetComponent<HeroController>().SetCharacter(spawnCharacter);
@@ -33,7 +34,6 @@ public class HeroSpawner : MonoBehaviour
                 spawnUnit.GetComponent<HeroController>().SetStartPosition(startPosition);
                 spawnUnit.GetComponent<HeroController>().gameObject.SetActive(true);
 
-                battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
                 battleManager.heroesInBattle.Add(spawnUnit);
                 battleManager.heroNumber.Add(locationNumber);
                 battleManager.heroNumber.Sort();
