@@ -10,8 +10,6 @@ public class Character
     private Nature nature;
     private int hp;
     private int rank, potential;
-    private int roomNumber = -1;
-    private int position = -1;
     private string name;
 
     private GameObject prefab;
@@ -32,8 +30,6 @@ public class Character
         prefab = Resources.Load<GameObject>(prefabPath);
         name = prefabPath.Split('/')[1];
         name = Regex.Replace(name, @"\d", "");
-        roomNumber = -1;//-1이면 배치되지 않음
-        position = -1;
     }
 
     public Character(string prefabPath, int level, int str, int bal, int vtp, int potential, Nature nature)
@@ -165,30 +161,5 @@ public class Character
             reqExp = GetReqExp();
             exp += remainExp;
         }
-    }
-
-    public void SetPosition(int position) {
-        this.position = position;
-    }
-
-    public void SetRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public void ResetPosition() {
-        this.position = -1;
-        this.roomNumber = -1;
-    }
-
-    public bool IsSpawned() {
-        return this.position != -1 && this.roomNumber != -1;
-    }
-
-    public bool IsSamePosition(int roomNumber, int position) {
-        return this.roomNumber == roomNumber && this.position == position;
-    }
-
-    public int GetPosition() {
-        return position;
     }
 }

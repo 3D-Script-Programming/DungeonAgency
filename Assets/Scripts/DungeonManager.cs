@@ -6,14 +6,16 @@ public class DungeonManager : MonoBehaviour
 {
     public GameObject[] monsterSpanwers = new GameObject[6];
     public Text[] monsterSpawnButtons = new Text[6];
-    public int selectedRoomNumber = 0;
+    public DungeonRoom selectedRoom;
     public int selectedPosition = -1;
     public Player player;
 
     void Start()
     {
         player = GameManager.instance.Player;
+        selectedRoom = player.GetRoom(0);
         ApplyEvents();
+        SpawnMonsters();
     }
 
     void ApplyEvents() {
@@ -37,12 +39,8 @@ public class DungeonManager : MonoBehaviour
     }
 
     public void OnClickListItem(Character monster) {
-        Character spawnedMonster = player.FindMonsterByPosition(selectedRoomNumber, selectedPosition);
-        if (spawnedMonster != null) {
-            spawnedMonster.ResetPosition();
-        }
-        monster.SetRoomNumber(selectedRoomNumber);
-        monster.SetPosition(selectedPosition);
+        selectedRoom.RemoveMonster(monster);
+        selectedRoom.PlaceMonster(selectedPosition, monster);
         SpawnMonsters();
     }
 
@@ -50,13 +48,19 @@ public class DungeonManager : MonoBehaviour
         foreach(GameObject spawnedMonster in GameObject.FindGameObjectsWithTag("Monster")) {
             Destroy(spawnedMonster);
         }
-        foreach(Character monster in player.GetSpawnedMonster()) {
-            SpawnMonster(monster);
+
+        Character[] monsters = selectedRoom.Monsters;
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            if (monsters[i] != null)
+            {
+                SpawnMonster(monsters[i], i);
+            }
         }
     }
 
-    private void SpawnMonster(Character monster) {
-        GameObject spawnUnit = Instantiate(monster.Prefab, monsterSpanwers[monster.GetPosition()].transform.position, Quaternion.identity);
+    private void SpawnMonster(Character monster, int position) {
+        GameObject spawnUnit = Instantiate(monster.Prefab, monsterSpanwers[position].transform.position, Quaternion.identity);
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.SetActive(true);

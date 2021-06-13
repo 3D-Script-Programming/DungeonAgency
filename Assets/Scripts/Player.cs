@@ -88,12 +88,4 @@ public class Player
             this.evilPoint = 0;
         }
     }
-
-    public List<Character> GetSpawnedMonster() {
-        return monsters.FindAll((monster) => monster.IsSpawned());
-    }
-
-    public Character FindMonsterByPosition(int roomNumber, int posiiton) {
-        return monsters.Find((monster) => monster.IsSamePosition(roomNumber, posiiton));
-    }
 }
