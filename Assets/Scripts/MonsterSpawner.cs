@@ -22,6 +22,7 @@ public class MonsterSpawner : MonoBehaviour
             {
                 Character spawnCharacter = monster[locationNumber];
                 GameObject prefab = spawnCharacter.Prefab;
+                spawnCharacter.SetResetHp();
 
                 Vector3 sqawnPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
                 GameObject spawnUnit = Instantiate(prefab, sqawnPosition, Quaternion.identity);

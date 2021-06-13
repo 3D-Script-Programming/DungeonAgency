@@ -19,11 +19,14 @@ public class DungeonManager : MonoBehaviour
     public Text roomNumberText;
     public TextMeshProUGUI crownCountText;
     public TextMeshProUGUI treasureCountText;
+    public AudioClip backgroundSound;
+    public AudioClip buttonSound;
 
     private int selectedRoomNumber = 0;
     private DungeonRoom selectedRoom;
     private int selectedPosition = -1;
     private Player player;
+    private AudioSource audioSource;
 
     void Start()
     {
@@ -32,14 +35,17 @@ public class DungeonManager : MonoBehaviour
         ApplyEvents();
         CheckItems();
         SpawnMonsters();
-        foreach (GameObject spawner in monsterSpanwers) {
+        foreach (GameObject spawner in monsterSpanwers)
+        {
             spawner.GetComponent<Renderer>().material.color = new Color(255, 255, 255);
         }
         crownCountText.text = player.GetItem(Item.CROWN).ToString();
         treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
+        GameManager.instance.SetMusic(backgroundSound);
+        audioSource = GetComponent<AudioSource>();
     }
 
-    void ApplyEvents() {
+        void ApplyEvents() {
         for (int i = 0; i < 6; i++) {
             int now = i;
             monsterSpawnButtons[i].GetComponent<Button>().onClick.AddListener(() => OnClickSpawner(now));
@@ -178,6 +184,11 @@ public class DungeonManager : MonoBehaviour
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.SetActive(true);
+    }
+
+    public void ButtonSound()
+    {
+        audioSource.PlayOneShot(buttonSound);
     }
 }
 
