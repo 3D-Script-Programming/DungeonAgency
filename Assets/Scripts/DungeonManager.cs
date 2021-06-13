@@ -13,6 +13,9 @@ public class DungeonManager : MonoBehaviour
     public GameObject treasureCheckIcon;
     public Button prevRoomButton;
     public Button nextRoomButton;
+    public Button homeButton;
+    public Button playButton;
+    public Button marketButton;
     public Text roomNumberText;
     public TextMeshProUGUI crownCountText;
     public TextMeshProUGUI treasureCountText;
@@ -45,6 +48,9 @@ public class DungeonManager : MonoBehaviour
         treasureButton.GetComponent<Button>().onClick.AddListener(OnClickTreasure);
         prevRoomButton.onClick.AddListener(OnClickPrevRoomButton);
         nextRoomButton.onClick.AddListener(OnClickNextRoomButton);
+        homeButton.onClick.AddListener(GameManager.MoveMainScene);
+        marketButton.onClick.AddListener(GameManager.MoveMarketScene);
+        playButton.onClick.AddListener(GameManager.MoveBattleScene);
     }
 
     void OnClickSpawner(int selected) {

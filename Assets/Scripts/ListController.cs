@@ -18,7 +18,7 @@ public class ListController : MonoBehaviour
     {
         ListItems = new List<GameObject>();
         scrollViewContent = GameObject.Find("Content").GetComponent<RectTransform>();
-        scrollViewContent.sizeDelta = new Vector2(145.2759f, 0);
+        scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, 60 * monsters.Count);
         InstantiateItems();
         UpdateUI();
 
@@ -40,7 +40,6 @@ public class ListController : MonoBehaviour
 
     public void ReSpawnMonster(Character monster) 
     {
-        Debug.Log(monster);
         GameObject.Find("Market Manager").GetComponent<MarketManager>().SpawnMonster(monster);
     }
 
@@ -60,7 +59,7 @@ public class ListController : MonoBehaviour
             ListItems[i].transform.SetParent(GameObject.Find("Content").transform);
         }
 
-        scrollViewContent.sizeDelta = new Vector2(145.2759f, 60 * monsters.Count);
+        scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, 60 * monsters.Count);
     }
 
     public void SetItemButton() 
