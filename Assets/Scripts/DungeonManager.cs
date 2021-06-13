@@ -6,9 +6,14 @@ public class DungeonManager : MonoBehaviour
 {
     public GameObject[] monsterSpanwers = new GameObject[6];
     public Text[] monsterSpawnButtons = new Text[6];
-    public DungeonRoom selectedRoom;
-    public int selectedPosition = -1;
-    public Player player;
+    public Button prevRoomButton;
+    public Button nextRoomButton;
+    public Text roomNumberText;
+
+    private int selectedRoomNumber = 0;
+    private DungeonRoom selectedRoom;
+    private int selectedPosition = -1;
+    private Player player;
 
     void Start()
     {
@@ -23,6 +28,8 @@ public class DungeonManager : MonoBehaviour
             int now = i;
             monsterSpawnButtons[i].GetComponent<Button>().onClick.AddListener(() => OnClickSpawner(now));
         }
+        prevRoomButton.onClick.AddListener(OnClickPrevRoomButton);
+        nextRoomButton.onClick.AddListener(OnClickNextRoomButton);
     }
 
     void OnClickSpawner(int selected) {
@@ -44,6 +51,32 @@ public class DungeonManager : MonoBehaviour
         SpawnMonsters();
     }
 
+    public void OnClickPrevRoomButton() {
+        selectedRoomNumber--;
+        if (selectedRoomNumber < 0) {
+            selectedRoomNumber = player.GetRoomCount() - 1;
+        }
+        if (selectedRoomNumber >= player.GetRoomCount()) {
+            selectedRoomNumber = 0;
+        }
+        selectedRoom = player.GetRoom(selectedRoomNumber);
+        roomNumberText.text = selectedRoomNumber.ToString();
+        SpawnMonsters();
+    }
+
+    public void OnClickNextRoomButton() {
+        selectedRoomNumber++;
+        if (selectedRoomNumber < 0) {
+            selectedRoomNumber = player.GetRoomCount() - 1;
+        }
+        if (selectedRoomNumber >= player.GetRoomCount()) {
+            selectedRoomNumber = 0;
+        }
+        selectedRoom = player.GetRoom(selectedRoomNumber);
+        roomNumberText.text = selectedRoomNumber.ToString();
+        SpawnMonsters();
+    }
+    
     private void SpawnMonsters() {
         foreach(GameObject spawnedMonster in GameObject.FindGameObjectsWithTag("Monster")) {
             Destroy(spawnedMonster);
