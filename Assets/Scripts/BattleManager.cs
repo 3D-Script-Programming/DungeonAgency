@@ -59,7 +59,15 @@ public class BattleManager : MonoBehaviour
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 
-        monsterSpawner.SetActive(true);
+        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        {
+            bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
+            bossSpawner.SetActive(true);
+        }
+        else
+        {
+            monsterSpawner.SetActive(true);
+        }
         heroSpawner.SetActive(true);
 
     }
@@ -214,6 +222,10 @@ public class BattleManager : MonoBehaviour
         player.AddEvilPoint(addEvilPoint);
         UI.SetWinText(addGold, addEvilPoint);
         UI.winUI.SetActive(true);
+        for (int i = 0; i < player.GetRoomCount(); i++)
+        {
+            player.GetRoom(i).Item = Item.NONE;
+        }
     }
 
     private void GameOver()
@@ -240,6 +252,10 @@ public class BattleManager : MonoBehaviour
         player.AddEvilPoint(addEvilPoint);
         UI.SetFailText(addGold, addEvilPoint);
         UI.failUI.SetActive(true);
+        for (int i = 0; i < player.GetRoomCount(); i++)
+        {
+            player.GetRoom(i).Item = Item.NONE;
+        }
     }
 
     private void ReloadInit()
