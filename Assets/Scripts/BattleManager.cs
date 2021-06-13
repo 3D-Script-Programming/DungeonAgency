@@ -56,6 +56,7 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             heroes[i] = CharacterFactory.CreateHero((int)rank);
+            heroes[i].LevelUp(20);
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 
@@ -69,7 +70,7 @@ public class BattleManager : MonoBehaviour
         battleStates = PerformAction.READY;
         Turn = 0;
         UI = gameObject.GetComponent<UIBattleManager>();
-        SoundManager.instance.SetMusic(backgroundSound);
+        GameManager.instance.SetMusic(backgroundSound);
     }
 
     private void Update()
@@ -193,7 +194,7 @@ public class BattleManager : MonoBehaviour
     {
         if (!playingAudio)
         {
-            SoundManager.instance.SetMusic(winSound);
+            GameManager.instance.SetMusic(winSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;
@@ -217,7 +218,7 @@ public class BattleManager : MonoBehaviour
     {
         if (!playingAudio)
         {
-            SoundManager.instance.SetMusic(failSound);
+            GameManager.instance.SetMusic(failSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;

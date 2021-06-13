@@ -2431,7 +2431,7 @@ MonoBehaviour:
   currentState: 0
   targetObject: {fileID: 0}
   healthSlider: {fileID: 1893702002487304594}
-  deathSound: {fileID: 8300000, guid: 0ff2ab3824000474eaac26ee6cff3055, type: 3}
+  deathSound: {fileID: 8300000, guid: aa099de59b686ce4a86218707a2b1cb9, type: 3}
   hitSound: {fileID: 8300000, guid: 47b3135a3cbee1e429ba4cd3598395f3, type: 3}
 --- !u!82 &8344594444013129099
 AudioSource:
