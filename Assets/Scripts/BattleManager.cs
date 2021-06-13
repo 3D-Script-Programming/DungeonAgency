@@ -192,6 +192,8 @@ public class BattleManager : MonoBehaviour
 
     private void GameWin()
     {
+        if (isEnd) return;
+        isEnd = true;
         if (!playingAudio)
         {
             GameManager.instance.SetMusic(winSound);
@@ -202,7 +204,7 @@ public class BattleManager : MonoBehaviour
 
         int addExp = (int)(1500 * (avgHeroCp / avgMonsterCp));
         int addGold = (int)(1500 * (avgHeroCp / avgMonsterCp));
-        int addEvilPoint = (int)(100 * (avgHeroCp / avgMonsterCp));
+        int addEvilPoint = (int)(300 * (avgHeroCp / avgMonsterCp));
 
         for (int i=0; i<player.GetMonsterList().Count; i++)
         {
