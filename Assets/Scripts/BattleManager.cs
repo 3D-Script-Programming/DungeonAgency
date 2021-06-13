@@ -224,6 +224,8 @@ public class BattleManager : MonoBehaviour
         UI.winUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {
+            if (player.GetRoom(i).Item == Item.CROWN)
+                player.GetRoom(i).Monsters[0].FinishBoss();
             player.GetRoom(i).Item = Item.NONE;
         }
     }
@@ -254,6 +256,8 @@ public class BattleManager : MonoBehaviour
         UI.failUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {
+            if (player.GetRoom(i).Item == Item.CROWN)
+                player.GetRoom(i).Monsters[0].FinishBoss();
             player.GetRoom(i).Item = Item.NONE;
         }
     }

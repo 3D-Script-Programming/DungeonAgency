@@ -150,6 +150,13 @@ public class Character
         vtp = vtp * 4;
     }
 
+    public void FinishBoss()
+    {
+        str = str / 4;
+        bal = bal / 4;
+        vtp = vtp / 4;
+    }
+
     public void AddExp(int addExp)
     {
         int reqExp = GetReqExp();
