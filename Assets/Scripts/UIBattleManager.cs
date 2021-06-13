@@ -4,13 +4,13 @@ using TMPro;
 
 public class UIBattleManager : MonoBehaviour
 {
+    private AudioSource audioSource;
     public GameObject winUI;
     public GameObject failUI;
     public TextMeshProUGUI winGoldText;
     public TextMeshProUGUI WinEvilPointText;
     public TextMeshProUGUI failGoldText;
     public TextMeshProUGUI failEvilPointText;
-
     public Button winHome;
     public Button winRestart;
     public Button winNext;
@@ -18,10 +18,13 @@ public class UIBattleManager : MonoBehaviour
     public Button failRestart;
     public Button failNext;
     public Button quitOK;
+    public AudioClip buttonSound;
+
 
     private void Start()
     {
         ApplyUIEvents();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void SetWinText(int gold, int evilPoint)
@@ -45,6 +48,11 @@ public class UIBattleManager : MonoBehaviour
         failRestart.onClick.AddListener(GameManager.MoveBattleScene);
         failNext.onClick.AddListener(GameManager.MoveManageScene);
         quitOK.onClick.AddListener(GameManager.MoveMainScene);
+    }
+
+    public void ButtonSound()
+    {
+        audioSource.PlayOneShot(buttonSound);
     }
 
 }

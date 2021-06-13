@@ -9,6 +9,7 @@ public class MainManager : MonoBehaviour
     private GameManager gameManager;
     private Player player;
     private List<Character> monsters;
+    private AudioSource audioSource;
 
     public GameObject popup_Warning;
 
@@ -19,6 +20,8 @@ public class MainManager : MonoBehaviour
 
     public TextMeshProUGUI evilPointText;
     public TextMeshProUGUI goldText;
+    public AudioClip backgroundSound;
+    public AudioClip buttonSound;
 
     void Start()
     {
@@ -30,6 +33,8 @@ public class MainManager : MonoBehaviour
 
         SpawnMonsters();
         ApplyUIEvents();
+        GameManager.instance.SetMusic(backgroundSound);
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void SpawnMonsters() {
@@ -82,5 +87,10 @@ public class MainManager : MonoBehaviour
             return;
         }
         GameManager.MoveManageScene();
+    }
+
+    public void ButtonSound()
+    {
+        audioSource.PlayOneShot(buttonSound);
     }
 }

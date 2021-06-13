@@ -162,4 +162,9 @@ public class Character
             exp += remainExp;
         }
     }
+
+    public void SetResetHp()
+    {
+        hp = GetMaxHP();
+    }
 }

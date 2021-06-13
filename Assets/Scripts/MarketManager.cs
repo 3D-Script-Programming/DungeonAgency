@@ -8,18 +8,18 @@ using TMPro;
 public class MarketManager : MonoBehaviour
 {
     private Player player;
-
     private List<Character> newMonsters;
+    private GameObject spawnUnit;
+    private AudioSource audioSource;
 
     public GameObject statusGold;
     public GameObject statusEvil;
     public GameObject monsterList;
     public GameObject positionPivot;
-    private GameObject spawnUnit;
-
     public Button homeButton;
     public Button manageButton;
-
+    public AudioClip backgroundSound;
+    public AudioClip buttonSound;
     public GameObject popup_Warning;
 
 
@@ -34,6 +34,8 @@ public class MarketManager : MonoBehaviour
         //GameObject.Find("MonsterList").GetComponent<ListController>().SetData(player.GetMonsterList(), player.GetGold());
         monsterList.GetComponent<ListController>().SetData(newMonsters);
         SpawnMonster(newMonsters[0]);
+        GameManager.instance.SetMusic(backgroundSound);
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -71,5 +73,10 @@ public class MarketManager : MonoBehaviour
             return;
         }
         GameManager.MoveManageScene();
+    }
+
+    public void ButtonSound()
+    {
+        audioSource.PlayOneShot(buttonSound);
     }
 }
