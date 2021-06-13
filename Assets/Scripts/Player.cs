@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class Player
 {
     int gold = 0;
-    int evilPoint = 1; // 임시 악명 설정
+    int evilPoint = 0; // 임시 악명 설정
+    int[] items = {0,0};
 
     private List<Character> monsters = new List<Character>();
     private List<DungeonRoom> dungeon = new List<DungeonRoom>
@@ -42,6 +43,24 @@ public class Player
             return monsters;
 
         return null;
+    }
+
+    public void AddItem(Item item, int count)
+    {
+        if (item == Item.CROWN)
+            items[0] += count;
+        if (item == Item.TREASURE)
+            items[1] += count;
+    }
+
+    public int GetItem(Item item)
+    {
+        if (item == Item.CROWN)
+            return items[0];
+        else if(item == Item.TREASURE)
+            return items[1];
+        Debug.Log("Hi");
+        return 0;
     }
 
     public void AddMonster(Character monster)

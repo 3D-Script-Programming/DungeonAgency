@@ -9,32 +9,25 @@ public class GameManager : MonoBehaviour
     private Player player;
     private AudioSource audioSource;
 
-    public static GameManager instance
-    {
-        get
-        {
-            if (m_instance == null)
-            {
-                m_instance = FindObjectOfType<GameManager>();
-            }
-            return m_instance;
-        }
-    }
-
-    private static GameManager m_instance;
+    public static GameManager instance;
 
     public Player Player { get => player; set => player = value; }
     public AudioClip buttonSound;
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
         player = new Player();
-
-        // 임시 몬스터 9마리 생성
-        int[] rank = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-        player.AddRangeMonster(CharacterFactory.CreateMonsterList(rank));
-
+        player.AddGold(5000);
         audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.Play();
     }
 
     public static void MoveMainScene()
@@ -52,7 +45,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("ManageScene");
     }
 
-    public static void MoveShopScene()
+    public static void MoveMarketScene()
     {
         SceneManager.LoadScene("MarketScene");
     }
