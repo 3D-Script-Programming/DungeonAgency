@@ -11,9 +11,9 @@ public class ListController : MonoBehaviour
     private RectTransform scrollViewContent;
     void Start()
     {
-        scrollViewContent = GameObject.Find("Content").GetComponent<RectTransform>();
-        scrollViewContent.sizeDelta = new Vector2(145.2759f, 30 * monsters.Count);
         listItems = new List<GameObject>();
+        scrollViewContent = GameObject.Find("Content").GetComponent<RectTransform>();
+        scrollViewContent.sizeDelta = new Vector2(145.2759f, 0);
         InstantiateItems();
 
     }
@@ -34,7 +34,6 @@ public class ListController : MonoBehaviour
     {
         while (listItems.Count > 0)
             Destroy(listItems[listItems.Count - 1]);
-
         for (int i = 0; i < monsters.Count; i++) 
         {
             listItems.Add(Instantiate(Resources.Load<GameObject>("UI/listItem")));

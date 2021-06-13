@@ -11,18 +11,6 @@ public class listItemController : MonoBehaviour
     public GameObject natureHolder;
     public GameObject natureIcon;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetText(Character character, int money)
     {
         if (character.GetNature() == Nature.FIRE)
