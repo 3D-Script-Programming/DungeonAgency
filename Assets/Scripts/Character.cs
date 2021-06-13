@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class Character
@@ -9,6 +10,9 @@ public class Character
     private Nature nature;
     private int hp;
     private int rank, potential;
+    private int roomNumber;
+    private int position;
+    private string name;
 
     private GameObject prefab;
 
@@ -26,6 +30,10 @@ public class Character
         this.potential = potential;
         hp = GetMaxHP();
         prefab = Resources.Load<GameObject>(prefabPath);
+        name = prefabPath.Split('/')[1];
+        name = Regex.Replace(name, @"\d", "");
+        roomNumber = -1;//-1이면 배치되지 않음
+        position = -1;
     }
 
     public Character(string prefabPath, int level, int str, int bal, int vtp, int potential, Nature nature)
@@ -65,6 +73,11 @@ public class Character
     public Nature GetNature()
     {
         return nature;
+    }
+
+    public string GetName()
+    {
+        return name;
     }
 
     public int GetLevel()
@@ -113,6 +126,25 @@ public class Character
     public int GetMaxDamage()
     {
         return str * 15;
+    }
+
+    public int GetSTR()
+    {
+        return str;
+    }
+
+    public int GetBAL()
+    {
+        return bal;
+    }
+
+    public int GetVTP()
+    {
+        return vtp;
+    }
+    public int GetPrice()
+    {
+        return (int)Math.Pow(GetCP(), 1.2);
     }
 
     public void SetBoss()
