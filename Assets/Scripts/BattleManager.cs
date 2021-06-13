@@ -222,6 +222,10 @@ public class BattleManager : MonoBehaviour
         player.AddEvilPoint(addEvilPoint);
         UI.SetWinText(addGold, addEvilPoint);
         UI.winUI.SetActive(true);
+        for (int i = 0; i < player.GetRoomCount(); i++)
+        {
+            player.GetRoom(i).Item = Item.NONE;
+        }
     }
 
     private void GameOver()
@@ -248,6 +252,10 @@ public class BattleManager : MonoBehaviour
         player.AddEvilPoint(addEvilPoint);
         UI.SetFailText(addGold, addEvilPoint);
         UI.failUI.SetActive(true);
+        for (int i = 0; i < player.GetRoomCount(); i++)
+        {
+            player.GetRoom(i).Item = Item.NONE;
+        }
     }
 
     private void ReloadInit()
