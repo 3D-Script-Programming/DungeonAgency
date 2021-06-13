@@ -27,10 +27,6 @@ public class GameManager : MonoBehaviour
         player = new Player();
         player.AddGold(5000);
 
-        // 임시 몬스터 9마리 생성
-        int[] rank = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-        player.AddRangeMonster(CharacterFactory.CreateMonsterList(rank));
-
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.Play();
     }

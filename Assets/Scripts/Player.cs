@@ -6,7 +6,7 @@ public class Player
 {
     int gold = 0;
     int evilPoint = 0; // 임시 악명 설정
-    int[] items = {1, 1};
+    int[] items = {0, 0};
 
     private List<Character> monsters = new List<Character>();
     private List<DungeonRoom> dungeon = new List<DungeonRoom>
