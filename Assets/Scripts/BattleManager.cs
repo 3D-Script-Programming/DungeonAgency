@@ -56,7 +56,6 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             heroes[i] = CharacterFactory.CreateHero((int)rank);
-            heroes[i].LevelUp(20);
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 
