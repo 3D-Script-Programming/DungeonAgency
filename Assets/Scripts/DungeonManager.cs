@@ -21,6 +21,9 @@ public class DungeonManager : MonoBehaviour
         selectedRoom = player.GetRoom(0);
         ApplyEvents();
         SpawnMonsters();
+        foreach (GameObject spawner in monsterSpanwers) {
+            spawner.GetComponent<Renderer>().material.color = new Color(255, 255, 255);
+        }
     }
 
     void ApplyEvents() {
