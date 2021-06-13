@@ -117,9 +117,9 @@ public class Player
     public void AddEvilPoint(int evilPoint)
     {
         this.evilPoint += evilPoint;
-        if (evilPoint < 0)
+        if (evilPoint <= 0)
         {
-            this.evilPoint = 0;
+            this.evilPoint = 1;
         }
     }
 
