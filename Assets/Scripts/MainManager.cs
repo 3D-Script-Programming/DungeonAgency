@@ -17,13 +17,11 @@ public class MainManager : MonoBehaviour
     public TextMeshProUGUI evilPointText;
     public TextMeshProUGUI goldText;
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameManager.instance;
         player = gameManager.Player;
         monsters = player.GetMonsterList();
-
         evilPointText.text = player.GetEvilPoint().ToString();
         goldText.text = player.GetGold().ToString();
 
@@ -32,6 +30,8 @@ public class MainManager : MonoBehaviour
     }
 
     private void SpawnMonsters() {
+        if (monsters == null)
+            return;
         Shuffle(monsters);
 
         monsters = monsters.GetRange(0, 3);
@@ -66,6 +66,6 @@ public class MainManager : MonoBehaviour
 
     private void ApplyUIEvents() {
         playButton.onClick.AddListener(GameManager.MoveManageScene);
-        shopButton.onClick.AddListener(GameManager.MoveShopScene);
+        shopButton.onClick.AddListener(GameManager.MoveMarketScene);
     }
 }
