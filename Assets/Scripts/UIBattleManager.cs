@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIBattleManager : MonoBehaviour
@@ -10,6 +11,19 @@ public class UIBattleManager : MonoBehaviour
     public TextMeshProUGUI failGoldText;
     public TextMeshProUGUI failEvilPointText;
 
+    public Button winHome;
+    public Button winRestart;
+    public Button winNext;
+    public Button failHome;
+    public Button failRestart;
+    public Button failNext;
+    public Button quitOK;
+
+    private void Start()
+    {
+        ApplyUIEvents();
+    }
+
     public void SetWinText(int gold, int evilPoint)
     {
         winGoldText.text = gold.ToString();
@@ -20,6 +34,17 @@ public class UIBattleManager : MonoBehaviour
     {
         failGoldText.text = gold.ToString();
         failEvilPointText.text = evilPoint.ToString();
+    }
+
+    private void ApplyUIEvents()
+    {
+        winHome.onClick.AddListener(GameManager.MoveMainScene);
+        winRestart.onClick.AddListener(GameManager.MoveBattleScene);
+        winNext.onClick.AddListener(GameManager.MoveManageScene);
+        failHome.onClick.AddListener(GameManager.MoveMainScene);
+        failRestart.onClick.AddListener(GameManager.MoveBattleScene);
+        failNext.onClick.AddListener(GameManager.MoveManageScene);
+        quitOK.onClick.AddListener(GameManager.MoveMainScene);
     }
 
 }
