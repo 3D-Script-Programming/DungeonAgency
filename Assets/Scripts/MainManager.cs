@@ -67,6 +67,5 @@ public class MainManager : MonoBehaviour
     private void ApplyUIEvents() {
         playButton.onClick.AddListener(GameManager.MoveManageScene);
         shopButton.onClick.AddListener(GameManager.MoveShopScene);
-        settingButton.onClick.AddListener(GameManager.MoveSettingScene);
     }
 }

@@ -9,7 +9,6 @@ public class BattleManager : MonoBehaviour
     private int currentRoom;
     private Player player;
     private UIBattleManager UI;
-    private AudioSource audioSource;
     private bool playingAudio = false;
 
     public enum PerformAction
@@ -70,10 +69,7 @@ public class BattleManager : MonoBehaviour
         battleStates = PerformAction.READY;
         Turn = 0;
         UI = gameObject.GetComponent<UIBattleManager>();
-        audioSource = gameObject.GetComponent<AudioSource>();
-        audioSource.clip = backgroundSound;
-        audioSource.loop = true;
-        audioSource.Play();
+        SoundManager.instance.SetMusic(backgroundSound);
     }
 
     private void Update()
@@ -197,9 +193,7 @@ public class BattleManager : MonoBehaviour
     {
         if (!playingAudio)
         {
-            audioSource.clip = winSound;
-            audioSource.loop = false;
-            audioSource.Play();
+            SoundManager.instance.SetMusic(winSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;
@@ -223,9 +217,7 @@ public class BattleManager : MonoBehaviour
     {
         if (!playingAudio)
         {
-            audioSource.clip = failSound;
-            audioSource.loop = false;
-            audioSource.Play();
+            SoundManager.instance.SetMusic(failSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;
