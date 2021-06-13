@@ -33,8 +33,8 @@ public class MainManager : MonoBehaviour
         if (monsters == null)
             return;
         Shuffle(monsters);
+        monsters = monsters.GetRange(0, monsters.Count < 3 ? monsters.Count : 3);
 
-        monsters = monsters.GetRange(0, 3);
         for (int i = 0; i < monsters.Count; i++)
         {
             Vector3 spawnPosition = new Vector3(-3.5f + (i * 3.5f), 0, 0);

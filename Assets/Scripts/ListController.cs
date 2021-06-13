@@ -8,7 +8,7 @@ public class ListController : MonoBehaviour
 {
     // Start is called before the first frame update
     private List<Character> monsters;
-    private List<GameObject> listItems;
+    private List<GameObject> ListItems;
     private int money;
     private RectTransform scrollViewContent;
 
@@ -16,11 +16,11 @@ public class ListController : MonoBehaviour
     public TextMeshProUGUI countCrown, countTreasure;
     void Start()
     {
-        listItems = new List<GameObject>();
+        ListItems = new List<GameObject>();
         scrollViewContent = GameObject.Find("Content").GetComponent<RectTransform>();
         scrollViewContent.sizeDelta = new Vector2(145.2759f, 0);
-        UpdateUI();
         InstantiateItems();
+        UpdateUI();
 
     }
 
@@ -32,7 +32,7 @@ public class ListController : MonoBehaviour
 
     public void UpdateUI() 
     {
-        foreach (GameObject obj in listItems)
+        foreach (GameObject obj in ListItems)
             obj.GetComponent<ListItemController>().SetButton();
         SetItemButton();
         GameObject.Find("Market Manager").GetComponent<MarketManager>().UpdateUI();
@@ -51,13 +51,13 @@ public class ListController : MonoBehaviour
 
     public void InstantiateItems()
     {
-        while (listItems.Count > 0)
-            Destroy(listItems[listItems.Count - 1]);
+        while (ListItems.Count > 0)
+            Destroy(ListItems[ListItems.Count - 1]);
         for (int i = 0; i < monsters.Count; i++) 
         {
-            listItems.Add(Instantiate(Resources.Load<GameObject>("UI/listItem")));
-            listItems[i].GetComponent<ListItemController>().SetText(monsters[i]);
-            listItems[i].transform.SetParent(GameObject.Find("Content").transform);
+            ListItems.Add(Instantiate(Resources.Load<GameObject>("UI/listItem")));
+            ListItems[i].GetComponent<ListItemController>().SetText(monsters[i]);
+            ListItems[i].transform.SetParent(GameObject.Find("Content").transform);
         }
 
         scrollViewContent.sizeDelta = new Vector2(145.2759f, 60 * monsters.Count);

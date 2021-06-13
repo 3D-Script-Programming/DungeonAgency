@@ -15,6 +15,7 @@ public class ListItemController : MonoBehaviour
 
     public void SetText(Character monster)
     {
+        Debug.Log("hi");
         this.monster = monster;
         if (monster.GetNature() == Nature.FIRE)
         {
