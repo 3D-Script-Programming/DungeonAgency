@@ -35,4 +35,8 @@
     {
         item = Item.NONE; 
     }
+
+    public Item GetItem() {
+        return item;
+    }
 }

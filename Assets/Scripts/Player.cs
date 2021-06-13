@@ -6,7 +6,7 @@ public class Player
 {
     int gold = 0;
     int evilPoint = 0; // 임시 악명 설정
-    int[] items = {0,0};
+    int[] items = {1, 1};
 
     private List<Character> monsters = new List<Character>();
     private List<DungeonRoom> dungeon = new List<DungeonRoom>
@@ -59,8 +59,23 @@ public class Player
             return items[0];
         else if(item == Item.TREASURE)
             return items[1];
-        Debug.Log("Hi");
         return 0;
+    }
+
+    public void UseCrown() {
+        items[0]--;
+    }
+
+    public void UnuseCrown() {
+        items[0]++;
+    }
+
+    public void UseTreasure() {
+        items[1]--;
+    }
+
+    public void UnuseTreasure() {
+        items[1]++;
     }
 
     public void AddMonster(Character monster)

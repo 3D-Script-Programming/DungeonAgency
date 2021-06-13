@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DungeonManager : MonoBehaviour
 {
     public GameObject[] monsterSpanwers = new GameObject[6];
     public Text[] monsterSpawnButtons = new Text[6];
+    public GameObject crownButton;
+    public GameObject crownCheckIcon;
+    public GameObject treasureButton;
+    public GameObject treasureCheckIcon;
     public Button prevRoomButton;
     public Button nextRoomButton;
     public Text roomNumberText;
+    public TextMeshProUGUI crownCountText;
+    public TextMeshProUGUI treasureCountText;
 
     private int selectedRoomNumber = 0;
     private DungeonRoom selectedRoom;
@@ -20,10 +27,13 @@ public class DungeonManager : MonoBehaviour
         player = GameManager.instance.Player;
         selectedRoom = player.GetRoom(0);
         ApplyEvents();
+        CheckItems();
         SpawnMonsters();
         foreach (GameObject spawner in monsterSpanwers) {
             spawner.GetComponent<Renderer>().material.color = new Color(255, 255, 255);
         }
+        crownCountText.text = player.GetItem(Item.CROWN).ToString();
+        treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
     }
 
     void ApplyEvents() {
@@ -31,6 +41,8 @@ public class DungeonManager : MonoBehaviour
             int now = i;
             monsterSpawnButtons[i].GetComponent<Button>().onClick.AddListener(() => OnClickSpawner(now));
         }
+        crownButton.GetComponent<Button>().onClick.AddListener(OnClickCrown);
+        treasureButton.GetComponent<Button>().onClick.AddListener(OnClickTreasure);
         prevRoomButton.onClick.AddListener(OnClickPrevRoomButton);
         nextRoomButton.onClick.AddListener(OnClickNextRoomButton);
     }
@@ -57,6 +69,48 @@ public class DungeonManager : MonoBehaviour
         SpawnMonsters();
     }
 
+    public void OnClickCrown() {
+        if (crownCheckIcon.activeSelf) {
+            player.UnuseCrown();
+            crownCheckIcon.SetActive(false);
+            crownCountText.text = player.GetItem(Item.CROWN).ToString();
+            return;
+        }
+        if (player.GetItem(Item.CROWN) <= 0) {
+            return;
+        }
+        if (treasureCheckIcon.activeSelf) {
+            player.UnuseTreasure();
+            treasureCheckIcon.SetActive(false);
+            treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
+        }
+        player.UseCrown();
+        crownCountText.text = player.GetItem(Item.CROWN).ToString();
+        selectedRoom.PlaceItem(Item.CROWN);
+        crownCheckIcon.SetActive(true);
+    }
+
+    public void OnClickTreasure() {
+        if (treasureCheckIcon.activeSelf) {
+            player.UnuseTreasure();
+            treasureCheckIcon.SetActive(false);
+            treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
+            return;
+        }
+        if (player.GetItem(Item.TREASURE) <= 0) {
+            return;
+        }
+        if (crownCheckIcon.activeSelf) {
+            player.UnuseCrown();
+            crownCheckIcon.SetActive(false);
+            crownCountText.text = player.GetItem(Item.CROWN).ToString();
+        }
+        player.UseTreasure();
+        treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
+        selectedRoom.PlaceItem(Item.TREASURE);
+        treasureCheckIcon.SetActive(true);
+    }
+
     public void OnClickPrevRoomButton() {
         selectedRoomNumber--;
         if (selectedRoomNumber < 0) {
@@ -67,6 +121,7 @@ public class DungeonManager : MonoBehaviour
         }
         selectedRoom = player.GetRoom(selectedRoomNumber);
         roomNumberText.text = selectedRoomNumber.ToString();
+        CheckItems();
         SpawnMonsters();
     }
 
@@ -80,7 +135,21 @@ public class DungeonManager : MonoBehaviour
         }
         selectedRoom = player.GetRoom(selectedRoomNumber);
         roomNumberText.text = selectedRoomNumber.ToString();
+        CheckItems();
         SpawnMonsters();
+    }
+
+    private void CheckItems() {
+        crownCheckIcon.SetActive(false);
+        treasureCheckIcon.SetActive(false);
+        if (selectedRoom.GetItem() == Item.CROWN) {
+            crownCheckIcon.SetActive(true);
+            treasureCheckIcon.SetActive(false);
+        }
+        else if (selectedRoom.GetItem() == Item.TREASURE) {
+            crownCheckIcon.SetActive(false);
+            treasureCheckIcon.SetActive(true);
+        }
     }
     
     private void SpawnMonsters() {
