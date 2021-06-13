@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     public static void MoveShopScene()
     {
-        SceneManager.LoadScene("ShopScene");
+        SceneManager.LoadScene("MarketScene");
     }
 
     public static void MoveSettingScene()
