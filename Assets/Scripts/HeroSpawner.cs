@@ -13,10 +13,11 @@ public class HeroSpawner : MonoBehaviour
     public int locationNumber; // 012 전열 345 후열 
     BattleManager battleManager;
 
-    void OnEnable()
+    void OnEnable() 
     {
         for (locationNumber = 0; locationNumber < 6; locationNumber++)
         {
+            if (heroes[locationNumber] == null) continue;
             if (heroes[locationNumber].GetHP() == 0)
             {
                 heroes[locationNumber] = null;
