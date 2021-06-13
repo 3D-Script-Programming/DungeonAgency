@@ -98,7 +98,7 @@ public class Character
 
     public int GetMaxHP()
     {
-        return vtp * 400;
+        return vtp * 50;
     }
 
     public int GetHP()
@@ -118,9 +118,9 @@ public class Character
     public int GetDamage()
     {
         int maxDamage = str * 15;
-        int minDamage = str * 15 * bal / 2;
+        int minDamage = maxDamage / (1 + (int)(Math.Log(bal,2) * 20));
 
-        return UnityEngine.Random.Range(minDamage, maxDamage);
+        return CharacterFactory.random.Next(minDamage, maxDamage);
     }
 
     public int GetMaxDamage()
