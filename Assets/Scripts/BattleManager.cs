@@ -11,6 +11,8 @@ public class BattleManager : MonoBehaviour
     private UIBattleManager UI;
     private bool playingAudio = false;
 
+    private bool isEnd;
+
     public enum PerformAction
     {
         READY,
@@ -64,6 +66,7 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        isEnd = false;
         battleStates = PerformAction.READY;
         Turn = 0;
         UI = gameObject.GetComponent<UIBattleManager>();
@@ -213,6 +216,8 @@ public class BattleManager : MonoBehaviour
 
     private void GameOver()
     {
+        if (isEnd) return;
+        isEnd = true;
         if (!playingAudio)
         {
             GameManager.instance.SetMusic(failSound);
