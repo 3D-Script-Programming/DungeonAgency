@@ -51,11 +51,11 @@ public static class CharacterFactory
 
         statusSum -= defaultStatus;
 
-        int str = random.Next(statusSum);
-        int bal = random.Next(statusSum -= str);
+        int str = random.Next(statusSum) + 1;
+        int bal = random.Next(statusSum - str) + 1;
         int vtp = statusSum - bal;
 
-        int potential = 10 - (int)Math.Log(random.Next(2048), 2);
+        int potential = 10 - (int)Math.Log(random.Next(2048) + 1, 2);
 
         Nature nature = (Nature)Enum.ToObject(typeof(Nature), random.Next(Enum.GetValues(typeof(Nature)).Length));
 
@@ -85,7 +85,7 @@ public static class CharacterFactory
     private static List<Character> CreateList(bool isMonster, int count)
     {
         List<Character> characters = new List<Character>();
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             characters.Add(Create(isMonster, random.Next(21)));
         }
@@ -96,7 +96,7 @@ public static class CharacterFactory
     private static string GetPrefabPath(bool isMonster, int prefabCode)
     {
         if (isMonster)
-           return "Monster/"+((Monster)Enum.ToObject(typeof(Monster), prefabCode)).ToString();
+            return "Monster/" + ((Monster)Enum.ToObject(typeof(Monster), prefabCode)).ToString();
         else
             return "Hero/" + ((Hero)Enum.ToObject(typeof(Hero), prefabCode)).ToString();
     }
