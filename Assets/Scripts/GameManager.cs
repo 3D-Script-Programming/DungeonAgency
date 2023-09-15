@@ -71,7 +71,4 @@ public class GameManager : MonoBehaviour
         audioSource.clip = audio;
         audioSource.Play();
     }
-
-    public void SaveData() { }
-    public void LoadData() { }
 }
