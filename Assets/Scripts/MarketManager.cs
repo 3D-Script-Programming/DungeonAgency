@@ -60,7 +60,7 @@ public class MarketManager : MonoBehaviour
 
     private void ApplyUIEvents()
     {
-        homeButton.onClick.AddListener(GameManager.MoveMainScene);
+        homeButton.onClick.AddListener(() => GameManager.MoveScene("MainScene")); ;
         manageButton.onClick.AddListener(ChangeScreen);
     }
 
@@ -72,7 +72,7 @@ public class MarketManager : MonoBehaviour
             popup_Warning.SetActive(true);
             return;
         }
-        GameManager.MoveManageScene();
+        GameManager.MoveScene("ManageScene");
     }
 
     public void ButtonSound()

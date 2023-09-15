@@ -32,7 +32,7 @@ public class UIBattleManager : MonoBehaviour
         winGoldText.text = gold.ToString();
         WinEvilPointText.text = evilPoint.ToString();
     }
-    
+
     public void SetFailText(int gold, int evilPoint)
     {
         failGoldText.text = gold.ToString();
@@ -41,13 +41,13 @@ public class UIBattleManager : MonoBehaviour
 
     private void ApplyUIEvents()
     {
-        winHome.onClick.AddListener(GameManager.MoveMainScene);
-        winRestart.onClick.AddListener(GameManager.MoveBattleScene);
-        winNext.onClick.AddListener(GameManager.MoveManageScene);
-        failHome.onClick.AddListener(GameManager.MoveMainScene);
-        failRestart.onClick.AddListener(GameManager.MoveBattleScene);
-        failNext.onClick.AddListener(GameManager.MoveManageScene);
-        quitOK.onClick.AddListener(GameManager.MoveMainScene);
+        winHome.onClick.AddListener(() => GameManager.MoveScene("MainScene"));
+        winRestart.onClick.AddListener(() => GameManager.MoveScene("BattleScene"));
+        winNext.onClick.AddListener(() => GameManager.MoveScene("ManageScene"));
+        failHome.onClick.AddListener(() => GameManager.MoveScene("MainScene"));
+        failRestart.onClick.AddListener(() => GameManager.MoveScene("BattleScene"));
+        failNext.onClick.AddListener(() => GameManager.MoveScene("ManageScene"));
+        quitOK.onClick.AddListener(() => GameManager.MoveScene("MainScene"));
     }
 
     public void ButtonSound()

@@ -1,23 +1,22 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] public AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip buttonSound;
+    public static GameManager instance { get; set; }
     public Player player { get; set; }
-    public AudioClip buttonSound;
 
-    public static GameManager instance;
     private void Awake()
     {
         if (instance != null)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
+
         instance = this;
         DontDestroyOnLoad(gameObject);
         player = new Player();
@@ -25,44 +24,24 @@ public class GameManager : MonoBehaviour
         audioSource.Play();
     }
 
-    public static void MoveMainScene()
+    private void Start()
     {
         SceneManager.LoadScene("MainScene");
     }
 
-    public static void MoveBattleScene()
+    public static void MoveScene(string sceneName)
     {
-        SceneManager.LoadScene("BattleScene");
+        SceneManager.LoadScene(sceneName);
     }
 
-    public static void MoveManageScene()
+    public void TogglePause()
     {
-        SceneManager.LoadScene("ManageScene");
+        Time.timeScale = Time.timeScale == 0f ? 1f : 0f;
     }
 
-    public static void MoveMarketScene()
+    public void PlayButtonSound()
     {
-        SceneManager.LoadScene("MarketScene");
-    }
-
-    public static void MoveSettingScene()
-    {
-        SceneManager.LoadScene("SettingScene");
-    }
-
-    public void OnPause()
-    {
-        Time.timeScale = 0f;
-    }
-
-    public void OffPause()
-    {
-        Time.timeScale = 1f;
-    }
-
-    public void ButtonSound()
-    {
-        gameObject.GetComponent<AudioSource>().PlayOneShot(buttonSound);
+        audioSource.PlayOneShot(buttonSound);
     }
 
     public void SetMusic(AudioClip audio)

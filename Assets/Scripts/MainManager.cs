@@ -77,7 +77,7 @@ public class MainManager : MonoBehaviour
     private void ApplyUIEvents()
     {
         playButton.onClick.AddListener(ChangeScreen);
-        marketButton.onClick.AddListener(GameManager.MoveMarketScene);
+        marketButton.onClick.AddListener(() => GameManager.MoveScene("MarketScene"));
         manageButton.onClick.AddListener(ChangeScreen);
     }
 
@@ -88,7 +88,7 @@ public class MainManager : MonoBehaviour
             popup_Warning.SetActive(true);
             return;
         }
-        GameManager.MoveManageScene();
+        GameManager.MoveScene("ManageScene");
     }
 
     public void ButtonSound()
