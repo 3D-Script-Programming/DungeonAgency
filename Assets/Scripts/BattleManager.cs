@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-
     private int currentRoom;
     private Player player;
     private UIBattleManager UI;
@@ -18,7 +17,7 @@ public class BattleManager : MonoBehaviour
         READY,
         WAIT,
         TAKEACTION,
-        PERFORMACTION 
+        PERFORMACTION
     }
     public PerformAction battleStates;
     public Character[] heroes = new Character[6];
@@ -48,7 +47,7 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        player = GameManager.instance.Player;
+        player = GameManager.instance.player;
         currentRoom = 0;
 
         monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
@@ -59,7 +58,7 @@ public class BattleManager : MonoBehaviour
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 
-        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        if (player.GetRoom(currentRoom).Item == Item.CROWN)
         {
             bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
             bossSpawner.SetActive(true);
@@ -184,7 +183,7 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    
+
     public void CollectActions(GameObject input)
     {
         performList.Add(input);
@@ -214,7 +213,7 @@ public class BattleManager : MonoBehaviour
         int addGold = (int)(1500 * (avgHeroCp / avgMonsterCp));
         int addEvilPoint = (int)(300 * (avgHeroCp / avgMonsterCp));
 
-        for (int i=0; i<player.GetMonsterList().Count; i++)
+        for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
             player.GetMonster(i).AddExp(addExp);
         }
@@ -304,7 +303,7 @@ public class BattleManager : MonoBehaviour
             Destroy(removeHero[i]);
         }
 
-        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        if (player.GetRoom(currentRoom).Item == Item.CROWN)
         {
             bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
             bossSpawner.SetActive(true);
@@ -321,7 +320,8 @@ public class BattleManager : MonoBehaviour
         heroSpawner.SetActive(true);
     }
 
-    public void GetReady() {
+    public void GetReady()
+    {
         battleStates = PerformAction.WAIT;
     }
 }

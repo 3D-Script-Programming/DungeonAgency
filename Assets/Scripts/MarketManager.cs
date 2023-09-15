@@ -28,7 +28,7 @@ public class MarketManager : MonoBehaviour
     {
         ApplyUIEvents();
         newMonsters = CharacterFactory.CreateMonsterList(10);
-        player = GameManager.instance.Player;
+        player = GameManager.instance.player;
         statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetGold();
         statusEvil.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetEvilPoint();
         //GameObject.Find("MonsterList").GetComponent<ListController>().SetData(player.GetMonsterList(), player.GetGold());
@@ -66,7 +66,7 @@ public class MarketManager : MonoBehaviour
 
     private void ChangeScreen()
     {
-        if (GameManager.instance.Player.GetMonsterList() == null)
+        if (GameManager.instance.player.GetMonsterList() == null)
         {
             Debug.Log("aaa");
             popup_Warning.SetActive(true);

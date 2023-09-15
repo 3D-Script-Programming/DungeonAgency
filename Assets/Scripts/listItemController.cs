@@ -44,12 +44,12 @@ public class ListItemController : MonoBehaviour
 
     public void HireMonster()
     {
-        if (monster.GetPrice() > GameManager.instance.Player.GetGold())
+        if (monster.GetPrice() > GameManager.instance.player.GetGold())
             return;
-        GameManager.instance.Player.AddMonster(monster);
-        GameManager.instance.Player.AddGold(-1 * monster.GetPrice());
+        GameManager.instance.player.AddMonster(monster);
+        GameManager.instance.player.AddGold(-1 * monster.GetPrice());
         btnHire.SetActive(false);
-        GetComponentInParent<ListController>().UpdateUI(); 
+        GetComponentInParent<ListController>().UpdateUI();
         ListItemOnClick();
     }
 
@@ -60,7 +60,7 @@ public class ListItemController : MonoBehaviour
 
     public void SetButton()
     {
-        if (monster.GetPrice() > GameManager.instance.Player.GetGold())
+        if (monster.GetPrice() > GameManager.instance.player.GetGold())
             btnHire.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
         else
             btnHire.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_green", typeof(Sprite)) as Sprite;

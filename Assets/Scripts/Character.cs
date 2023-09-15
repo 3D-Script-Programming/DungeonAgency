@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -114,7 +114,7 @@ public class Character
     public int GetDamage()
     {
         int maxDamage = str * 15;
-        int minDamage = maxDamage / (1 + (int)(Math.Log(bal,2) * 20));
+        int minDamage = maxDamage / (1 + (int)(Math.Log(bal, 2) * 20));
 
         return CharacterFactory.random.Next(minDamage, maxDamage);
     }
@@ -161,7 +161,7 @@ public class Character
     {
         int reqExp = GetReqExp();
         exp += addExp;
-        while(reqExp < exp)
+        while (reqExp < exp)
         {
             int remainExp = exp - reqExp;
             LevelUp();

@@ -32,7 +32,7 @@ public class DungeonManager : MonoBehaviour
 
     void Start()
     {
-        player = GameManager.instance.Player;
+        player = GameManager.instance.player;
         selectedRoom = player.GetRoom(0);
         ApplyEvents();
         CheckItems();
@@ -49,8 +49,10 @@ public class DungeonManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-        void ApplyEvents() {
-        for (int i = 0; i < 6; i++) {
+    void ApplyEvents()
+    {
+        for (int i = 0; i < 6; i++)
+        {
             int now = i;
             monsterSpawnButtons[i].GetComponent<Button>().onClick.AddListener(() => OnClickSpawner(now));
         }
@@ -63,12 +65,15 @@ public class DungeonManager : MonoBehaviour
         playButton.onClick.AddListener(GameManager.MoveBattleScene);
     }
 
-    void OnClickSpawner(int selected) {
-        foreach (GameObject spawner in monsterSpanwers) {
+    void OnClickSpawner(int selected)
+    {
+        foreach (GameObject spawner in monsterSpanwers)
+        {
             spawner.GetComponent<Renderer>().material.color = new Color(255, 255, 255);
         }
 
-        if (this.selectedPosition == selected) {
+        if (this.selectedPosition == selected)
+        {
             this.selectedPosition = -1;
             return;
         }
@@ -76,8 +81,10 @@ public class DungeonManager : MonoBehaviour
         monsterSpanwers[selected].GetComponent<Renderer>().material.color = new Color(255, 0, 0);
     }
 
-    public void OnClickListItem(Character monster) {
-        if (selectedPosition == -1) {
+    public void OnClickListItem(Character monster)
+    {
+        if (selectedPosition == -1)
+        {
             return;
         }
         selectedRoom.RemoveMonster(monster);
@@ -85,17 +92,21 @@ public class DungeonManager : MonoBehaviour
         SpawnMonsters();
     }
 
-    public void OnClickCrown() {
-        if (crownCheckIcon.activeSelf) {
+    public void OnClickCrown()
+    {
+        if (crownCheckIcon.activeSelf)
+        {
             player.UnuseCrown();
             crownCheckIcon.SetActive(false);
             crownCountText.text = player.GetItem(Item.CROWN).ToString();
             return;
         }
-        if (player.GetItem(Item.CROWN) <= 0) {
+        if (player.GetItem(Item.CROWN) <= 0)
+        {
             return;
         }
-        if (treasureCheckIcon.activeSelf) {
+        if (treasureCheckIcon.activeSelf)
+        {
             player.UnuseTreasure();
             treasureCheckIcon.SetActive(false);
             treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
@@ -106,17 +117,21 @@ public class DungeonManager : MonoBehaviour
         crownCheckIcon.SetActive(true);
     }
 
-    public void OnClickTreasure() {
-        if (treasureCheckIcon.activeSelf) {
+    public void OnClickTreasure()
+    {
+        if (treasureCheckIcon.activeSelf)
+        {
             player.UnuseTreasure();
             treasureCheckIcon.SetActive(false);
             treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
             return;
         }
-        if (player.GetItem(Item.TREASURE) <= 0) {
+        if (player.GetItem(Item.TREASURE) <= 0)
+        {
             return;
         }
-        if (crownCheckIcon.activeSelf) {
+        if (crownCheckIcon.activeSelf)
+        {
             player.UnuseCrown();
             crownCheckIcon.SetActive(false);
             crownCountText.text = player.GetItem(Item.CROWN).ToString();
@@ -127,12 +142,15 @@ public class DungeonManager : MonoBehaviour
         treasureCheckIcon.SetActive(true);
     }
 
-    public void OnClickPrevRoomButton() {
+    public void OnClickPrevRoomButton()
+    {
         selectedRoomNumber--;
-        if (selectedRoomNumber < 0) {
+        if (selectedRoomNumber < 0)
+        {
             selectedRoomNumber = player.GetRoomCount() - 1;
         }
-        if (selectedRoomNumber >= player.GetRoomCount()) {
+        if (selectedRoomNumber >= player.GetRoomCount())
+        {
             selectedRoomNumber = 0;
         }
         selectedRoom = player.GetRoom(selectedRoomNumber);
@@ -141,12 +159,15 @@ public class DungeonManager : MonoBehaviour
         SpawnMonsters();
     }
 
-    public void OnClickNextRoomButton() {
+    public void OnClickNextRoomButton()
+    {
         selectedRoomNumber++;
-        if (selectedRoomNumber < 0) {
+        if (selectedRoomNumber < 0)
+        {
             selectedRoomNumber = player.GetRoomCount() - 1;
         }
-        if (selectedRoomNumber >= player.GetRoomCount()) {
+        if (selectedRoomNumber >= player.GetRoomCount())
+        {
             selectedRoomNumber = 0;
         }
         selectedRoom = player.GetRoom(selectedRoomNumber);
@@ -155,21 +176,26 @@ public class DungeonManager : MonoBehaviour
         SpawnMonsters();
     }
 
-    private void CheckItems() {
+    private void CheckItems()
+    {
         crownCheckIcon.SetActive(false);
         treasureCheckIcon.SetActive(false);
-        if (selectedRoom.GetItem() == Item.CROWN) {
+        if (selectedRoom.GetItem() == Item.CROWN)
+        {
             crownCheckIcon.SetActive(true);
             treasureCheckIcon.SetActive(false);
         }
-        else if (selectedRoom.GetItem() == Item.TREASURE) {
+        else if (selectedRoom.GetItem() == Item.TREASURE)
+        {
             crownCheckIcon.SetActive(false);
             treasureCheckIcon.SetActive(true);
         }
     }
-    
-    private void SpawnMonsters() {
-        foreach(GameObject spawnedMonster in GameObject.FindGameObjectsWithTag("Monster")) {
+
+    private void SpawnMonsters()
+    {
+        foreach (GameObject spawnedMonster in GameObject.FindGameObjectsWithTag("Monster"))
+        {
             Destroy(spawnedMonster);
         }
 
@@ -183,7 +209,8 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
-    private void SpawnMonster(Character monster, int position) {
+    private void SpawnMonster(Character monster, int position)
+    {
         GameObject spawnUnit = Instantiate(monster.Prefab, monsterSpanwers[position].transform.position, Quaternion.identity);
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;

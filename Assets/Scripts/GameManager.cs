@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,14 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private Player player;
-    private AudioSource audioSource;
-
-    public static GameManager instance;
-
-    public Player Player { get => player; set => player = value; }
+    [SerializeField] public AudioSource audioSource;
+    public Player player { get; set; }
     public AudioClip buttonSound;
 
+    public static GameManager instance;
     private void Awake()
     {
         if (instance != null)
@@ -23,11 +20,8 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
-
         player = new Player();
         player.AddGold(5000);
-
-        audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.Play();
     }
 

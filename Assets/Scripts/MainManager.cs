@@ -26,7 +26,7 @@ public class MainManager : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.instance;
-        player = gameManager.Player;
+        player = gameManager.player;
         monsters = player.GetMonsterList();
         evilPointText.text = player.GetEvilPoint().ToString();
         goldText.text = player.GetGold().ToString();
@@ -37,7 +37,8 @@ public class MainManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void SpawnMonsters() {
+    private void SpawnMonsters()
+    {
         if (monsters == null)
             return;
         Shuffle(monsters);
@@ -49,12 +50,12 @@ public class MainManager : MonoBehaviour
             SpawnMonster(monsters[i], spawnPosition);
         }
     }
-     
+
     private void Shuffle<T>(List<T> list)
     {
         int random;
         T tmp;
- 
+
         for (int i = 0; i < list.Count; i++)
         {
             random = Random.Range(0, list.Count);
@@ -65,8 +66,9 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    private void SpawnMonster(Character monster, Vector3 spawnPosition) {
-        GameObject spawnUnit = Instantiate(monster.Prefab, spawnPosition,Quaternion.identity);
+    private void SpawnMonster(Character monster, Vector3 spawnPosition)
+    {
+        GameObject spawnUnit = Instantiate(monster.Prefab, spawnPosition, Quaternion.identity);
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.SetActive(true);
@@ -79,7 +81,7 @@ public class MainManager : MonoBehaviour
         manageButton.onClick.AddListener(ChangeScreen);
     }
 
-    private void ChangeScreen() 
+    private void ChangeScreen()
     {
         if (monsters == null)
         {
