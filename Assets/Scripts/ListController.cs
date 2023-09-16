@@ -65,7 +65,7 @@ public class ListController : MonoBehaviour
     public void SetItemButton()
     {
 
-        if (500 > GameManager.instance.player.GetGold())
+        if (500 > GameManager.s_Instance.player.GetGold())
         {
 
             btnTreasure.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
@@ -73,9 +73,9 @@ public class ListController : MonoBehaviour
         else
             btnTreasure.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_green", typeof(Sprite)) as Sprite;
 
-        countTreasure.text = GameManager.instance.player.GetItem(Item.TREASURE).ToString();
+        countTreasure.text = GameManager.s_Instance.player.GetItem(Item.TREASURE).ToString();
 
-        if (1000 > GameManager.instance.player.GetGold())
+        if (1000 > GameManager.s_Instance.player.GetGold())
         {
 
             btnCrown.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
@@ -83,26 +83,26 @@ public class ListController : MonoBehaviour
         else
             btnCrown.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_green", typeof(Sprite)) as Sprite;
 
-        countCrown.text = GameManager.instance.player.GetItem(Item.CROWN).ToString();
+        countCrown.text = GameManager.s_Instance.player.GetItem(Item.CROWN).ToString();
     }
 
     public void BuyCrown()
     {
-        if (1000 > GameManager.instance.player.GetGold())
+        if (1000 > GameManager.s_Instance.player.GetGold())
             return;
 
-        GameManager.instance.player.AddItem(Item.CROWN, 1);
-        GameManager.instance.player.AddGold(-1 * 1000);
+        GameManager.s_Instance.player.AddItem(Item.CROWN, 1);
+        GameManager.s_Instance.player.AddGold(-1 * 1000);
         GetComponentInParent<ListController>().UpdateUI();
     }
 
     public void BuyTreasure()
     {
-        if (500 > GameManager.instance.player.GetGold())
+        if (500 > GameManager.s_Instance.player.GetGold())
             return;
 
-        GameManager.instance.player.AddItem(Item.TREASURE, 1);
-        GameManager.instance.player.AddGold(-1 * 500);
+        GameManager.s_Instance.player.AddItem(Item.TREASURE, 1);
+        GameManager.s_Instance.player.AddGold(-1 * 500);
         GetComponentInParent<ListController>().UpdateUI();
     }
 

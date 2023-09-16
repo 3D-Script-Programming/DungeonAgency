@@ -16,27 +16,27 @@ public class ListItemController : MonoBehaviour
     public void SetText(Character monster)
     {
         this.monster = monster;
-        if (monster.GetNature() == Nature.FIRE)
+        if (monster.Nature == Nature.FIRE)
         {
             natureIcon.GetComponent<Image>().sprite = Resources.Load("UI/fire", typeof(Sprite)) as Sprite;
             natureHolder.GetComponent<Image>().sprite = Resources.Load("UI/slider_skill_frame_red", typeof(Sprite)) as Sprite;
         }
-        else if (monster.GetNature() == Nature.WATER)
+        else if (monster.Nature == Nature.WATER)
         {
             natureIcon.GetComponent<Image>().sprite = Resources.Load("UI/water", typeof(Sprite)) as Sprite;
             natureHolder.GetComponent<Image>().sprite = Resources.Load("UI/slider_skill_frame_blue", typeof(Sprite)) as Sprite;
         }
-        else if (monster.GetNature() == Nature.WIND)
+        else if (monster.Nature == Nature.WIND)
         {
             natureIcon.GetComponent<Image>().sprite = Resources.Load("UI/wind", typeof(Sprite)) as Sprite;
             natureHolder.GetComponent<Image>().sprite = Resources.Load("UI/slider_skill_frame_green", typeof(Sprite)) as Sprite;
         }
 
-        name.text = monster.GetName();
-        level.text = monster.GetLevel().ToString();
-        str.text = monster.GetSTR().ToString();
-        bal.text = monster.GetBAL().ToString();
-        vtp.text = monster.GetVTP().ToString();
+        name.text = monster.Name;
+        level.text = monster.Level.ToString();
+        str.text = monster.Strength.ToString();
+        bal.text = monster.Balance.ToString();
+        vtp.text = monster.Vitality.ToString();
         cp.text = monster.GetCP().ToString();
 
         btnHire.GetComponentInChildren<TextMeshProUGUI>().text = monster.GetPrice().ToString();
@@ -44,10 +44,10 @@ public class ListItemController : MonoBehaviour
 
     public void HireMonster()
     {
-        if (monster.GetPrice() > GameManager.instance.player.GetGold())
+        if (monster.GetPrice() > GameManager.s_Instance.player.GetGold())
             return;
-        GameManager.instance.player.AddMonster(monster);
-        GameManager.instance.player.AddGold(-1 * monster.GetPrice());
+        GameManager.s_Instance.player.AddMonster(monster);
+        GameManager.s_Instance.player.AddGold(-1 * monster.GetPrice());
         btnHire.SetActive(false);
         GetComponentInParent<ListController>().UpdateUI();
         ListItemOnClick();
@@ -60,7 +60,7 @@ public class ListItemController : MonoBehaviour
 
     public void SetButton()
     {
-        if (monster.GetPrice() > GameManager.instance.player.GetGold())
+        if (monster.GetPrice() > GameManager.s_Instance.player.GetGold())
             btnHire.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
         else
             btnHire.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_green", typeof(Sprite)) as Sprite;

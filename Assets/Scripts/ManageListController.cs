@@ -9,7 +9,7 @@ public class ManageListController : MonoBehaviour
 
     void Start()
     {
-        monsters = GameManager.instance.player.GetMonsterList();
+        monsters = GameManager.s_Instance.player.GetMonsterList();
         scrollViewContent = GameObject.Find("Content").GetComponent<RectTransform>();
         scrollViewContent.sizeDelta = new Vector2(145.2759f, 0);
         InstantiateItems();

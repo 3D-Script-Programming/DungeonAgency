@@ -32,7 +32,7 @@ public class DungeonManager : MonoBehaviour
 
     void Start()
     {
-        player = GameManager.instance.player;
+        player = GameManager.s_Instance.player;
         selectedRoom = player.GetRoom(0);
         ApplyEvents();
         CheckItems();
@@ -45,7 +45,7 @@ public class DungeonManager : MonoBehaviour
         treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
         evilPointText.text = player.GetEvilPoint().ToString();
         goldText.text = player.GetGold().ToString();
-        GameManager.instance.SetMusic(backgroundSound);
+        GameManager.s_Instance.SetMusic(backgroundSound);
         audioSource = GetComponent<AudioSource>();
     }
 

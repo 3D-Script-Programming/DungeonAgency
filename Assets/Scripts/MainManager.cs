@@ -25,7 +25,7 @@ public class MainManager : MonoBehaviour
 
     void Start()
     {
-        gameManager = GameManager.instance;
+        gameManager = GameManager.s_Instance;
         player = gameManager.player;
         monsters = player.GetMonsterList();
         evilPointText.text = player.GetEvilPoint().ToString();
@@ -33,7 +33,7 @@ public class MainManager : MonoBehaviour
 
         SpawnMonsters();
         ApplyUIEvents();
-        GameManager.instance.SetMusic(backgroundSound);
+        GameManager.s_Instance.SetMusic(backgroundSound);
         audioSource = GetComponent<AudioSource>();
     }
 

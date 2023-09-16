@@ -47,7 +47,7 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        player = GameManager.instance.player;
+        player = GameManager.s_Instance.player;
         currentRoom = 0;
 
         monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
@@ -77,7 +77,7 @@ public class BattleManager : MonoBehaviour
         battleStates = PerformAction.READY;
         Turn = 0;
         UI = gameObject.GetComponent<UIBattleManager>();
-        GameManager.instance.SetMusic(backgroundSound);
+        GameManager.s_Instance.SetMusic(backgroundSound);
     }
 
     private void Update()
@@ -203,7 +203,7 @@ public class BattleManager : MonoBehaviour
         isEnd = true;
         if (!playingAudio)
         {
-            GameManager.instance.SetMusic(winSound);
+            GameManager.s_Instance.SetMusic(winSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;
@@ -235,7 +235,7 @@ public class BattleManager : MonoBehaviour
         isEnd = true;
         if (!playingAudio)
         {
-            GameManager.instance.SetMusic(failSound);
+            GameManager.s_Instance.SetMusic(failSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;

@@ -58,17 +58,19 @@ public class HeroController : MonoBehaviour
         }
     }
 
-    private IEnumerator TimeForReady() 
+    private IEnumerator TimeForReady()
     {
         yield return new WaitForSeconds(1f);
         animatorController.MoveFoward();
-        while (MoveToStartPosition()) { 
-            yield return null; 
+        while (MoveToStartPosition())
+        {
+            yield return null;
         }
         animatorController.StopMove();
-        
+
         yield return new WaitForSeconds(1f);
-        if (spawnNumber == battleManager.heroesInBattle.Count - 1) {
+        if (spawnNumber == battleManager.heroesInBattle.Count - 1)
+        {
             battleManager.GetReady();
         }
         yield break;
@@ -95,18 +97,18 @@ public class HeroController : MonoBehaviour
             animatorController.Attack();
 
         GameObject effect;
-        if (character.GetNature() == Nature.FIRE) effect = battleManager.fireEffect;
-        else if (character.GetNature() == Nature.WATER) effect = battleManager.waterEffect;
+        if (character.Nature == Nature.FIRE) effect = battleManager.fireEffect;
+        else if (character.Nature == Nature.WATER) effect = battleManager.waterEffect;
         else effect = battleManager.windEffect;
 
         yield return new WaitForSeconds(0.3f);
         GameObject gameObject = Instantiate(effect, targetObject.transform.position, Quaternion.identity);
 
         target.GetCharacter().GetHit(damage);
-        target.healthSlider.value = target.GetCharacter().GetHP();
+        target.healthSlider.value = target.GetCharacter().HP;
         audioPlayer.PlayOneShot(hitSound);
 
-        if (target.GetCharacter().GetHP() == 0)
+        if (target.GetCharacter().HP == 0)
         {
             target.animatorController.Die();
             audioPlayer.PlayOneShot(target.deathSound);
@@ -131,7 +133,7 @@ public class HeroController : MonoBehaviour
         animatorController.StopMove();
 
         battleManager.performList.RemoveAt(0);
-        
+
         actionStarted = false;
 
         // performList를 Wait로 reset
@@ -159,9 +161,9 @@ public class HeroController : MonoBehaviour
     {
         this.character = character;
         healthSlider.maxValue = character.GetMaxHP();
-        healthSlider.value = character.GetHP();
+        healthSlider.value = character.HP;
     }
-    
+
     public bool GetIsDead()
     {
         return isDead;
@@ -171,7 +173,7 @@ public class HeroController : MonoBehaviour
     {
         isDead = value;
     }
-   
+
     public int GetSpawnNumber()
     {
         return spawnNumber;
@@ -182,7 +184,8 @@ public class HeroController : MonoBehaviour
         spawnNumber = value;
     }
 
-    public void SetStartPosition(Vector3 startPosition) {
+    public void SetStartPosition(Vector3 startPosition)
+    {
         this.startPosition = startPosition;
     }
 }
