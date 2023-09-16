@@ -13,7 +13,7 @@ public static class CharacterFactory
         return CreateCharacter(true, rank);
     }
 
-    // 영웅 생성 메서드
+    // 용사(Enemy) 생성 메서드
     public static Character CreateHero(int rank = -1)
     {
         // rank 매개변수가 -1이면 랜덤한 rank로 생성
@@ -26,7 +26,7 @@ public static class CharacterFactory
         return CreateCharacterList(true, ranks);
     }
 
-    // 영웅 리스트 생성 메서드 (여러 랭크에 대한 리스트 생성)
+    // 용사(Enemy) 리스트 생성 메서드 (여러 랭크에 대한 리스트 생성)
     public static List<Character> CreateHeroList(params int[] ranks)
     {
         return CreateCharacterList(false, ranks);
@@ -38,7 +38,7 @@ public static class CharacterFactory
         return CreateCharacterList(true, count);
     }
 
-    // 영웅 리스트 생성 메서드 (개수 지정)
+    // 용사(Enemy) 리스트 생성 메서드 (개수 지정)
     public static List<Character> CreateHeroList(int count)
     {
         return CreateCharacterList(false, count);
@@ -99,7 +99,7 @@ public static class CharacterFactory
     // 프리팹 경로 생성 메서드
     private static string GetPrefabPath(bool isMonster, int prefabCode)
     {
-        // 몬스터 또는 영웅 폴더와 이름을 결합하여 프리팹 경로 생성
+        // 몬스터 또는 용사(Enemy) 폴더와 이름을 결합하여 프리팹 경로 생성
         string type = isMonster ? "Monster" : "Hero";
         string[] names = isMonster ? Enum.GetNames(typeof(Monster)) : Enum.GetNames(typeof(Hero));
         return $"{type}/{names[prefabCode]}";
