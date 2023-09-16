@@ -7,36 +7,26 @@ public static class CharacterFactory
     private static readonly Random random = new Random();
 
     // 몬스터 생성 메서드
-    public static Character CreateMonster(int rank)
+    public static Character CreateMonster(int rank = -1)
     {
+        // rank 매개변수가 -1이면 랜덤한 rank로 생성
         return CreateCharacter(true, rank);
     }
 
     // 영웅 생성 메서드
-    public static Character CreateHero(int rank)
+    public static Character CreateHero(int rank = -1)
     {
+        // rank 매개변수가 -1이면 랜덤한 rank로 생성
         return CreateCharacter(false, rank);
     }
 
-    // 랜덤 몬스터 생성 메서드
-    public static Character CreateMonster()
-    {
-        return CreateCharacter(true, random.Next(21));
-    }
-
-    // 랜덤 영웅 생성 메서드
-    public static Character CreateHero()
-    {
-        return CreateCharacter(false, random.Next(21));
-    }
-
-    // 몬스터 리스트 생성 메서드
+    // 몬스터 리스트 생성 메서드 (여러 랭크에 대한 리스트 생성)
     public static List<Character> CreateMonsterList(params int[] ranks)
     {
         return CreateCharacterList(true, ranks);
     }
 
-    // 영웅 리스트 생성 메서드
+    // 영웅 리스트 생성 메서드 (여러 랭크에 대한 리스트 생성)
     public static List<Character> CreateHeroList(params int[] ranks)
     {
         return CreateCharacterList(false, ranks);
@@ -57,6 +47,12 @@ public static class CharacterFactory
     // 캐릭터 생성 메서드
     private static Character CreateCharacter(bool isMonster, int rank)
     {
+        // rank가 -1인 경우, 랜덤한 rank를 생성
+        if (rank == -1)
+        {
+            rank = random.Next(21);
+        }
+
         // 능력치 계산
         int statusSum = (int)Math.Pow(1.2, rank) * 50;
         int defaultStatus = statusSum * 2 / 5;
@@ -68,11 +64,11 @@ public static class CharacterFactory
         // 잠재력 계산
         int potential = 10 - (int)Math.Log(random.Next(2048) + 1, 2);
 
-        // 자연 속성 설정
+        // 속성 설정
         Nature nature = (Nature)Enum.ToObject(typeof(Nature), random.Next(Enum.GetValues(typeof(Nature)).Length));
 
         // 프리팹 경로 설정
-        string prefabPath = GetPrefabPath(isMonster, random.Next(Enum.GetValues(typeof(Monster)).Length));
+        string prefabPath = GetPrefabPath(isMonster, random.Next(isMonster ? Enum.GetValues(typeof(Monster)).Length : Enum.GetValues(typeof(Hero)).Length));
 
         // 캐릭터 생성 및 반환
         return new Character(prefabPath, str, bal, vtp, potential, nature);
@@ -103,9 +99,9 @@ public static class CharacterFactory
     // 프리팹 경로 생성 메서드
     private static string GetPrefabPath(bool isMonster, int prefabCode)
     {
-        if (isMonster)
-            return "Monster/" + ((Monster)Enum.ToObject(typeof(Monster), prefabCode)).ToString();
-        else
-            return "Hero/" + ((Hero)Enum.ToObject(typeof(Hero), prefabCode)).ToString();
+        // 몬스터 또는 영웅 폴더와 이름을 결합하여 프리팹 경로 생성
+        string type = isMonster ? "Monster" : "Hero";
+        string[] names = isMonster ? Enum.GetNames(typeof(Monster)) : Enum.GetNames(typeof(Hero));
+        return $"{type}/{names[prefabCode]}";
     }
 }
