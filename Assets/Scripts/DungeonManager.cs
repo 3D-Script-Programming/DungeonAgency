@@ -43,8 +43,8 @@ public class DungeonManager : MonoBehaviour
         }
         crownCountText.text = player.GetItem(Item.CROWN).ToString();
         treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
-        evilPointText.text = player.GetEvilPoint().ToString();
-        goldText.text = player.GetGold().ToString();
+        evilPointText.text = player.Infamy.ToString();
+        goldText.text = player.Gold.ToString();
         GameManager.s_Instance.SetMusic(backgroundSound);
         audioSource = GetComponent<AudioSource>();
     }

@@ -65,7 +65,7 @@ public class ListController : MonoBehaviour
     public void SetItemButton()
     {
 
-        if (500 > GameManager.s_Instance.player.GetGold())
+        if (500 > GameManager.s_Instance.player.Gold)
         {
 
             btnTreasure.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
@@ -75,7 +75,7 @@ public class ListController : MonoBehaviour
 
         countTreasure.text = GameManager.s_Instance.player.GetItem(Item.TREASURE).ToString();
 
-        if (1000 > GameManager.s_Instance.player.GetGold())
+        if (1000 > GameManager.s_Instance.player.Gold)
         {
 
             btnCrown.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
@@ -88,7 +88,7 @@ public class ListController : MonoBehaviour
 
     public void BuyCrown()
     {
-        if (1000 > GameManager.s_Instance.player.GetGold())
+        if (1000 > GameManager.s_Instance.player.Gold)
             return;
 
         GameManager.s_Instance.player.AddItem(Item.CROWN, 1);
@@ -98,7 +98,7 @@ public class ListController : MonoBehaviour
 
     public void BuyTreasure()
     {
-        if (500 > GameManager.s_Instance.player.GetGold())
+        if (500 > GameManager.s_Instance.player.Gold)
             return;
 
         GameManager.s_Instance.player.AddItem(Item.TREASURE, 1);

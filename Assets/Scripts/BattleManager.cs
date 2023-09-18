@@ -211,15 +211,15 @@ public class BattleManager : MonoBehaviour
 
         int addExp = (int)(1500 * (avgHeroCp / avgMonsterCp));
         int addGold = (int)(1500 * (avgHeroCp / avgMonsterCp));
-        int addEvilPoint = (int)(300 * (avgHeroCp / avgMonsterCp));
+        int addInfamy = (int)(300 * (avgHeroCp / avgMonsterCp));
 
         for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
             player.GetMonster(i).AddExp(addExp);
         }
         player.AddGold(addGold);
-        player.AddEvilPoint(addEvilPoint);
-        UI.SetWinText(addGold, addEvilPoint);
+        player.AddInfamy(addInfamy);
+        UI.SetWinText(addGold, addInfamy);
         UI.winUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {
@@ -243,15 +243,15 @@ public class BattleManager : MonoBehaviour
 
         int addExp = (int)(1000 * (avgHeroCp / avgMonsterCp));
         int addGold = (int)(800 * (avgHeroCp / avgMonsterCp));
-        int addEvilPoint = (int)(-50 * (avgHeroCp / avgMonsterCp));
+        int addInfamy = (int)(-50 * (avgHeroCp / avgMonsterCp));
 
         for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
             player.GetMonster(i).AddExp(addExp);
         }
         player.AddGold(addGold);
-        player.AddEvilPoint(addEvilPoint);
-        UI.SetFailText(addGold, addEvilPoint);
+        player.AddInfamy(addInfamy);
+        UI.SetFailText(addGold, addInfamy);
         UI.failUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {

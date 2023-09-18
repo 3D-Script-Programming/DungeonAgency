@@ -28,8 +28,8 @@ public class MainManager : MonoBehaviour
         gameManager = GameManager.s_Instance;
         player = gameManager.player;
         monsters = player.GetMonsterList();
-        evilPointText.text = player.GetEvilPoint().ToString();
-        goldText.text = player.GetGold().ToString();
+        evilPointText.text = player.Infamy.ToString();
+        goldText.text = player.Gold.ToString();
 
         SpawnMonsters();
         ApplyUIEvents();

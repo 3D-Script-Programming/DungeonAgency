@@ -13,7 +13,7 @@ public class MarketManager : MonoBehaviour
     private AudioSource audioSource;
 
     public GameObject statusGold;
-    public GameObject statusEvil;
+    public GameObject statusInfamy;
     public GameObject monsterList;
     public GameObject positionPivot;
     public Button homeButton;
@@ -29,8 +29,8 @@ public class MarketManager : MonoBehaviour
         ApplyUIEvents();
         newMonsters = CharacterFactory.CreateMonsterList(10);
         player = GameManager.s_Instance.player;
-        statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetGold();
-        statusEvil.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetEvilPoint();
+        statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.Gold;
+        statusInfamy.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.Infamy;
         //GameObject.Find("MonsterList").GetComponent<ListController>().SetData(player.GetMonsterList(), player.GetGold());
         monsterList.GetComponent<ListController>().SetData(newMonsters);
         SpawnMonster(newMonsters[0]);
@@ -54,8 +54,8 @@ public class MarketManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetGold();
-        statusEvil.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.GetEvilPoint();
+        statusGold.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.Gold;
+        statusInfamy.GetComponentInChildren<TextMeshProUGUI>().text = "" + player.Infamy;
     }
 
     private void ApplyUIEvents()
