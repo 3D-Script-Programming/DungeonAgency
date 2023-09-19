@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +48,7 @@ public class ManageListItemController : MonoBehaviour
 
     public void OnClickItem()
     {
+        Console.WriteLine("OnClickItem 실행되니?");
         dungeonManager.OnClickListItem(monster);
     }
 }

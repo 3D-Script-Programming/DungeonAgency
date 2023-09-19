@@ -24,12 +24,6 @@ public class ListController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void UpdateUI()
     {
         foreach (GameObject obj in ListItems)

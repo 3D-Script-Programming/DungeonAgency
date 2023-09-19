@@ -10,7 +10,7 @@ public class MonsterSpawner : MonoBehaviour
     };
 
     private int locationNumber; // 012 전열 345 후열
-    private Character[] monster;
+    private List<Character> monsters = new List<Character>(6);
 
     BattleManager battleManager;
 
@@ -18,14 +18,14 @@ public class MonsterSpawner : MonoBehaviour
     {
         for (locationNumber = 0; locationNumber < 6; locationNumber++)
         {
-            if(monster[locationNumber] != null)
+            if (monsters[locationNumber] != null)
             {
-                Character spawnCharacter = monster[locationNumber];
+                Character spawnCharacter = monsters[locationNumber];
                 GameObject prefab = spawnCharacter.Prefab;
                 spawnCharacter.SetResetHp();
 
-                Vector3 sqawnPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
-                GameObject spawnUnit = Instantiate(prefab, sqawnPosition, Quaternion.identity);
+                Vector3 spawnPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
+                GameObject spawnUnit = Instantiate(prefab, spawnPosition, Quaternion.identity);
                 spawnUnit.GetComponent<MonsterController>().SetCharacter(spawnCharacter);
                 spawnUnit.GetComponent<MonsterController>().SetSpawnNumber(locationNumber);
                 spawnUnit.GetComponent<MonsterController>().gameObject.SetActive(true);
@@ -36,18 +36,18 @@ public class MonsterSpawner : MonoBehaviour
                 battleManager.monsterNumber.Sort();
                 battleManager.monsterCps.Add(spawnCharacter.GetCP());
                 battleManager.sumMonsterCp += spawnCharacter.GetCP();
-            } 
+            }
         }
         battleManager.reloadMonsterLock = false;
     }
 
-    public Character[] GetMonster()
+    public List<Character> GetMonster()
     {
-        return monster;
+        return monsters;
     }
 
-    public void SetMonster(Character[] value)
+    public void SetMonster(List<Character> value)
     {
-        monster = value;
+        monsters = value;
     }
 }

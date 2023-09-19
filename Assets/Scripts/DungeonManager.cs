@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -83,6 +85,7 @@ public class DungeonManager : MonoBehaviour
 
     public void OnClickListItem(Character monster)
     {
+        Console.WriteLine("OnClickListItem 실행되니?");
         if (selectedPosition == -1)
         {
             return;
@@ -194,24 +197,28 @@ public class DungeonManager : MonoBehaviour
 
     private void SpawnMonsters()
     {
+        // 몬스터 스폰 처리
         foreach (GameObject spawnedMonster in GameObject.FindGameObjectsWithTag("Monster"))
         {
             Destroy(spawnedMonster);
         }
 
-        Character[] monsters = selectedRoom.Monsters;
-        for (int i = 0; i < monsters.Length; i++)
+        foreach (Character monster in selectedRoom.Monsters)
         {
-            if (monsters[i] != null)
+            if (monster != null)
             {
-                SpawnMonster(monsters[i], i);
+                // 수정: 스폰 위치를 선택된 위치(selectedPosition)로 지정
+                Vector3 spawnPosition = monsterSpanwers[selectedPosition].transform.position;
+                // 몬스터 스폰 메서드 호출
+                SpawnMonster(monster, spawnPosition);
             }
         }
     }
 
-    private void SpawnMonster(Character monster, int position)
+    private void SpawnMonster(Character monster, Vector3 spawnPosition)
     {
-        GameObject spawnUnit = Instantiate(monster.Prefab, monsterSpanwers[position].transform.position, Quaternion.identity);
+        // 몬스터를 스폰
+        GameObject spawnUnit = Instantiate(monster.Prefab, spawnPosition, Quaternion.identity);
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.SetActive(true);
