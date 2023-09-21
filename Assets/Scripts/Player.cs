@@ -5,35 +5,53 @@ using System.Collections.Generic;
 public class Player
 {
     // 플레이어의 골드 속성
-    public int Gold { get; private set; } = 0;
+    public int Gold { get; private set; }
 
     // 플레이어의 악명 속성
-    public int Infamy { get; private set; } = 1;
+    public int Infamy { get; private set; }
 
     // 아이템 수량 배열 속성 (index 0: 보스왕관 개수, index 1: 보물상자 개수)
-    public int[] Items { get; private set; } = { 0, 0 };
+    public int[] Items { get; private set; }
 
     // 몬스터 리스트 속성
-    public List<Character> Monsters { get; private set; } = new List<Character>();
+    public List<Character> Monsters { get; private set; }
 
     // 던전 방 리스트 속성
-    public List<DungeonRoom> Dungeon { get; private set; } = new List<DungeonRoom>
+    private List<DungeonRoom> dungeon;
+
+    // 생성자 : 변수 초기화
+    public Player()
     {
-        new DungeonRoom(),
-        new DungeonRoom(),
-        new DungeonRoom()
-    };
+        Gold = 0;
+        Infamy = 1;
+        Items = new int[2];
+        Items[0] = 0;
+        Items[1] = 0;
+        Monsters = new List<Character>();
+        dungeon = new List<DungeonRoom>()
+        {
+            new DungeonRoom(),
+            new DungeonRoom(),
+            new DungeonRoom()
+        };
+    }
 
     // 특정 인덱스의 던전 방 반환
     public DungeonRoom GetRoom(int index)
     {
-        return (index >= 0 && index < Dungeon.Count) ? Dungeon[index] : null;
+        return (index >= 0 && index < dungeon.Count) ? dungeon[index] : null;
+    }
+
+    // 특정 인덱스의 던전 방 반환
+    public List<DungeonRoom> GetRooms()
+    {
+        return dungeon;
     }
 
     // 던전 방의 개수 반환
     public int GetRoomCount()
     {
-        return Dungeon.Count;
+        return dungeon.Count;
     }
 
     // 특정 인덱스의 몬스터 반환
@@ -109,16 +127,16 @@ public class Player
     // 던전에 방 추가 메서드
     public void AddRoom()
     {
-        Dungeon.Add(new DungeonRoom());
+        dungeon.Add(new DungeonRoom());
     }
 
     // 용사(Enemy) 랭크 계산 메서드
     public int GetHeroRank()
     {
         int count = 0;
-        foreach (var room in Dungeon)
+        foreach (var room in dungeon)
         {
-            if (room.Item == Item.TREASURE)
+            if (room.Items == Item.TREASURE)
             {
                 count += 500;
             }

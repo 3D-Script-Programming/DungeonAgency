@@ -70,8 +70,12 @@ public static class CharacterFactory
         // 프리팹 경로 설정
         string prefabPath = GetPrefabPath(isMonster, random.Next(isMonster ? Enum.GetValues(typeof(Monster)).Length : Enum.GetValues(typeof(Hero)).Length));
 
+        // '/' 문자를 기준으로 분할하여 마지막 부분을 추출하여 name 변수에 할당
+        string[] pathParts = prefabPath.Split('/');
+        string name = pathParts[pathParts.Length - 1];
+
         // 캐릭터 생성 및 반환
-        return new Character(prefabPath, str, bal, vtp, potential, nature);
+        return new Character(name, prefabPath, str, bal, vtp, potential, nature);
     }
 
     // 캐릭터 리스트 생성 메서드 (여러 랭크에 대한 리스트 생성)

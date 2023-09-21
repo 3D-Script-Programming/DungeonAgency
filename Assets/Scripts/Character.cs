@@ -17,6 +17,9 @@ public class Character
     public int Potential { get; private set; }
     public string Name { get; private set; }
 
+    // 이 몬스터가 현재 던전 방에 배치되었는지 여부를 나타내는 프로퍼티
+    public bool IsPlacedInRoom { get; private set; }
+
     // 보스 상태 및 일반 상태에서의 능력치 배율을 상수로 정의
     private const float BossMultiplier = 4.0f;
     private const float NormalMultiplier = 1.0f;
@@ -26,8 +29,10 @@ public class Character
     private const int MinDamageDenominator = 20;
 
     // 생성자: 캐릭터 초기화
-    public Character(string prefabPath, int strength, int balance, int vitality, int potential, Nature nature)
+    public Character(string name, string prefabPath, int strength, int balance, int vitality, int potential, Nature nature)
     {
+        Name = name;
+        IsPlacedInRoom = false;
         Level = 1;
         Exp = 0;
         Strength = strength;
@@ -37,12 +42,11 @@ public class Character
         Potential = potential;
         HP = GetMaxHP();
         Prefab = Resources.Load<GameObject>(prefabPath);
-        Name = GetCharacterName(prefabPath);
     }
 
     // 생성자 오버로드: 특정 레벨로 캐릭터 초기화
-    public Character(string prefabPath, int level, int strength, int balance, int vitality, int potential, Nature nature)
-        : this(prefabPath, strength, balance, vitality, potential, nature)
+    public Character(string name, string prefabPath, int level, int strength, int balance, int vitality, int potential, Nature nature)
+        : this(name, prefabPath, strength, balance, vitality, potential, nature)
     {
         LevelUp(level);
     }
@@ -169,5 +173,17 @@ public class Character
     public void SetResetHp()
     {
         HP = GetMaxHP();
+    }
+
+    // 몬스터를 특정 던전 방에 배치하는 메서드
+    public void PlaceInRoom()
+    {
+        IsPlacedInRoom = true;
+    }
+
+    // 몬스터를 던전 방에서 제거하는 메서드
+    public void RemoveFromRoom()
+    {
+        IsPlacedInRoom = false;
     }
 }

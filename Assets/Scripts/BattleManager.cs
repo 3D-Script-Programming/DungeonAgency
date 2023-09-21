@@ -58,7 +58,7 @@ public class BattleManager : MonoBehaviour
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 
-        if (player.GetRoom(currentRoom).Item == Item.CROWN)
+        if (player.GetRoom(currentRoom).Items == Item.CROWN)
         {
             bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
             bossSpawner.SetActive(true);
@@ -223,9 +223,9 @@ public class BattleManager : MonoBehaviour
         UI.winUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {
-            if (player.GetRoom(i).Item == Item.CROWN)
+            if (player.GetRoom(i).Items == Item.CROWN)
                 player.GetRoom(i).Monsters[0].FinishBoss();
-            player.GetRoom(i).Item = Item.NONE;
+            player.GetRoom(i).PlaceItem(Item.NONE);
         }
     }
 
@@ -255,9 +255,9 @@ public class BattleManager : MonoBehaviour
         UI.failUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {
-            if (player.GetRoom(i).Item == Item.CROWN)
+            if (player.GetRoom(i).Items == Item.CROWN)
                 player.GetRoom(i).Monsters[0].FinishBoss();
-            player.GetRoom(i).Item = Item.NONE;
+            player.GetRoom(i).PlaceItem(Item.NONE);
         }
     }
 
@@ -303,7 +303,7 @@ public class BattleManager : MonoBehaviour
             Destroy(removeHero[i]);
         }
 
-        if (player.GetRoom(currentRoom).Item == Item.CROWN)
+        if (player.GetRoom(currentRoom).Items == Item.CROWN)
         {
             bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
             bossSpawner.SetActive(true);
