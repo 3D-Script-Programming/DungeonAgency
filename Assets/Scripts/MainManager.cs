@@ -6,66 +6,80 @@ using TMPro;
 
 public class MainManager : MonoBehaviour
 {
-    private GameManager gameManager;
-    private Player player;
+    // 몬스터 목록
     private List<Character> monsters;
-    private AudioSource audioSource;
 
+    // 경고 팝업 게임 오브젝트
     public GameObject popup_Warning;
 
+    // UI 버튼 : 씬 이동 또는 설정 
     public Button playButton;
     public Button marketButton;
     public Button manageButton;
     public Button settingButton;
 
-    public TextMeshProUGUI evilPointText;
+    // UI 텍스트 : 악명, 골드
+    public TextMeshProUGUI infamyText;
     public TextMeshProUGUI goldText;
+
+    // 오디오 관련 오브젝트
+    private AudioSource audioSource;
     public AudioClip backgroundSound;
-    public AudioClip buttonSound;
 
-    void Start()
+    private void Start()
     {
-        gameManager = GameManager.s_Instance;
-        player = gameManager.player;
-        monsters = player.GetMonsterList();
-        evilPointText.text = player.Infamy.ToString();
-        goldText.text = player.Gold.ToString();
+        // UI 업데이트
+        infamyText.text = GameManager.s_Instance.player.Infamy.ToString();
+        goldText.text = GameManager.s_Instance.player.Gold.ToString();
 
-        SpawnMonsters();
-        ApplyUIEvents();
+        // 배경음악 재생 
         GameManager.s_Instance.SetMusic(backgroundSound);
-        audioSource = GetComponent<AudioSource>();
+
+        // UI 이벤트 등록
+        ApplyUIEvents();
+
+        // 몬스터 스폰
+        SpawnMonsters();
     }
 
+    // 몬스터를 스폰하는 메서드
     private void SpawnMonsters()
     {
+        // 몬스터 리스트 가져오기
+        monsters = GameManager.s_Instance.player.GetMonsterList();
+
         if (monsters == null)
             return;
-        Shuffle(monsters);
-        monsters = monsters.GetRange(0, monsters.Count < 3 ? monsters.Count : 3);
 
-        for (int i = 0; i < monsters.Count; i++)
+        // 몬스터 리스트 섞기
+        Shuffle(monsters);
+
+        // 최대 3개의 몬스터만 스폰
+        int monsterCount = Mathf.Min(monsters.Count, 3);
+
+        for (int i = 0; i < monsterCount; i++)
         {
+            // 스폰 위치 계산
             Vector3 spawnPosition = new Vector3(-3.5f + (i * 3.5f), 0, 0);
+
+            // 몬스터 스폰
             SpawnMonster(monsters[i], spawnPosition);
         }
     }
 
+    // 리스트를 무작위로 섞는 메서드
     private void Shuffle<T>(List<T> list)
     {
-        int random;
-        T tmp;
-
         for (int i = 0; i < list.Count; i++)
         {
-            random = Random.Range(0, list.Count);
-
-            tmp = list[random];
+            int random = Random.Range(i, list.Count);
+            T tmp = list[random];
             list[random] = list[i];
             list[i] = tmp;
         }
     }
 
+    // 몬스터를 스폰하는 메서드
     private void SpawnMonster(Character monster, Vector3 spawnPosition)
     {
         GameObject spawnUnit = Instantiate(monster.Prefab, spawnPosition, Quaternion.identity);
@@ -74,6 +88,7 @@ public class MainManager : MonoBehaviour
         spawnUnit.SetActive(true);
     }
 
+    // UI 이벤트 처리 등록 메서드
     private void ApplyUIEvents()
     {
         playButton.onClick.AddListener(ChangeScreen);
@@ -81,18 +96,16 @@ public class MainManager : MonoBehaviour
         manageButton.onClick.AddListener(ChangeScreen);
     }
 
+    // 화면 전환 메서드
     private void ChangeScreen()
     {
         if (monsters == null)
         {
+            // 경고 팝업 표시
             popup_Warning.SetActive(true);
             return;
         }
+        // 관리 씬으로 이동
         GameManager.MoveScene("ManageScene");
-    }
-
-    public void ButtonSound()
-    {
-        audioSource.PlayOneShot(buttonSound);
     }
 }

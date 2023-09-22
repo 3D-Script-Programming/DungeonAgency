@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 30461023}
   - component: {fileID: 30461024}
   m_Layer: 5
-  m_Name: Text_Evil_Point
+  m_Name: Text_Infamy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5411,7 +5411,7 @@ GameObject:
   - component: {fileID: 75217046}
   - component: {fileID: 75217045}
   m_Layer: 5
-  m_Name: Status Evil Point
+  m_Name: Status Infamy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12912,9 +12912,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1936218625}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ButtonSound
+      - m_Target: {fileID: 50749643}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -28636,9 +28636,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1936218625}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ButtonSound
+      - m_Target: {fileID: 50749643}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29097,9 +29097,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1936218625}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ButtonSound
+      - m_Target: {fileID: 50749643}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29348,9 +29348,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1936218625}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ButtonSound
+      - m_Target: {fileID: 50749643}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -46766,10 +46766,9 @@ MonoBehaviour:
   marketButton: {fileID: 401116967347165046}
   manageButton: {fileID: 401116967225118684}
   settingButton: {fileID: 1109862718}
-  evilPointText: {fileID: 30461024}
+  infamyText: {fileID: 30461024}
   goldText: {fileID: 538621532}
   backgroundSound: {fileID: 8300000, guid: 2338c9abc2dfcf24983f87dd051a9560, type: 3}
-  buttonSound: {fileID: 8300000, guid: 9954a4ea2ababdf41a3dda6a1ea96e25, type: 3}
 --- !u!82 &1936218626
 AudioSource:
   m_ObjectHideFlags: 0
@@ -47808,9 +47807,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1936218625}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ButtonSound
+      - m_Target: {fileID: 50749643}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -48071,9 +48070,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1936218625}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ButtonSound
+      - m_Target: {fileID: 50749643}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
