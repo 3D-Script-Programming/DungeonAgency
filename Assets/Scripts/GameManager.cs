@@ -73,4 +73,9 @@ public class GameManager : MonoBehaviour
         audioSource.clip = audio;
         audioSource.Play();
     }
+
+    public void ChangeVolume(float value)
+    {
+        audioSource.volume = value;
+    }
 }

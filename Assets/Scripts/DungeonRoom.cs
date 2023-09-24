@@ -73,6 +73,7 @@ public class DungeonRoom
         Items = Item.NONE;
     }
 
+    // 룸에 몬스터가 있는지 확인하는 메서드
     public bool NoMonstersInRoom()
     {
         // Monsters 리스트가 null이거나 비어 있는 경우에는 몬스터가 없다고 판단합니다.

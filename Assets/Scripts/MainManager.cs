@@ -1,42 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class MainManager : MonoBehaviour
 {
     // 몬스터 목록
     private List<Character> monsters;
 
-    // 경고 팝업 게임 오브젝트
-    public GameObject popup_Warning;
-
-    // UI 버튼 : 씬 이동 또는 설정 
-    public Button playButton;
-    public Button marketButton;
-    public Button manageButton;
-    public Button settingButton;
-
-    // UI 텍스트 : 악명, 골드
-    public TextMeshProUGUI infamyText;
-    public TextMeshProUGUI goldText;
+    // UI 관리 클래스
+    public MainUIManager uiManager;
 
     // 오디오 관련 오브젝트
-    private AudioSource audioSource;
     public AudioClip backgroundSound;
 
     private void Start()
     {
+        // UI 관리 클래스 초기화
+        uiManager.Initialize();
+
         // UI 업데이트
-        infamyText.text = GameManager.s_Instance.player.Infamy.ToString();
-        goldText.text = GameManager.s_Instance.player.Gold.ToString();
+        uiManager.UpdateInfamyText(GameManager.s_Instance.player.Infamy);
+        uiManager.UpdateGoldText(GameManager.s_Instance.player.Gold);
 
         // 배경음악 재생 
         GameManager.s_Instance.SetMusic(backgroundSound);
-
-        // UI 이벤트 등록
-        ApplyUIEvents();
 
         // 몬스터 스폰
         SpawnMonsters();
@@ -86,26 +73,5 @@ public class MainManager : MonoBehaviour
         spawnUnit.GetComponent<MonsterController>().enabled = false;
         spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
         spawnUnit.SetActive(true);
-    }
-
-    // UI 이벤트 처리 등록 메서드
-    private void ApplyUIEvents()
-    {
-        playButton.onClick.AddListener(ChangeScreen);
-        marketButton.onClick.AddListener(() => GameManager.MoveScene("MarketScene"));
-        manageButton.onClick.AddListener(ChangeScreen);
-    }
-
-    // 화면 전환 메서드
-    private void ChangeScreen()
-    {
-        if (monsters == null)
-        {
-            // 경고 팝업 표시
-            popup_Warning.SetActive(true);
-            return;
-        }
-        // 관리 씬으로 이동
-        GameManager.MoveScene("ManageScene");
     }
 }

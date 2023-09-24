@@ -161,4 +161,22 @@ public class Player
             Infamy = 1;
         }
     }
+
+    // 플레이어가 배틀에 준비되어 있는지 확인하는 메서드
+    public bool NotReadyForBattle()
+    {
+        // dungeon 리스트의 각 room에 대한 반복문 시작
+        foreach (var room in dungeon)
+        {
+            // room에 몬스터가 없는지 확인하는 함수 NoMonstersInRoom() 호출
+            if (!room.NoMonstersInRoom())
+            {
+                // 만약 현재 room에 몬스터가 존재하면 (준비가 됨)
+                return false; // false 반환하고 함수 종료
+            }
+        }
+
+        // 모든 room에 몬스터가 없다면 (준비가 안됨)
+        return true; // true 반환하고 함수 종료
+    }
 }

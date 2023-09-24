@@ -19,12 +19,11 @@ public class MarketManager : MonoBehaviour
     public Button homeButton;
     public Button manageButton;
     public AudioClip backgroundSound;
-    public AudioClip buttonSound;
     public GameObject popup_Warning;
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         ApplyUIEvents();
         newMonsters = CharacterFactory.CreateMonsterList(10);
@@ -73,10 +72,5 @@ public class MarketManager : MonoBehaviour
             return;
         }
         GameManager.MoveScene("ManageScene");
-    }
-
-    public void ButtonSound()
-    {
-        audioSource.PlayOneShot(buttonSound);
     }
 }

@@ -6,19 +6,18 @@ using TMPro;
 
 public class ListController : MonoBehaviour
 {
-    // Start is called before the first frame update
     private List<Character> monsters;
     private List<GameObject> ListItems;
     private int money;
-    private RectTransform scrollViewContent;
+    private Transform scrollViewContent;
 
     public GameObject btnCrown, btnTreasure;
     public TextMeshProUGUI countCrown, countTreasure;
+
     void Start()
     {
         ListItems = new List<GameObject>();
-        scrollViewContent = GameObject.Find("Content").GetComponent<RectTransform>();
-        scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, 60 * monsters.Count);
+        scrollViewContent = GameObject.Find("Content").transform;
         InstantiateItems();
         UpdateUI();
 
@@ -48,12 +47,11 @@ public class ListController : MonoBehaviour
             Destroy(ListItems[ListItems.Count - 1]);
         for (int i = 0; i < monsters.Count; i++)
         {
-            ListItems.Add(Instantiate(Resources.Load<GameObject>("UI/listItem")));
-            ListItems[i].GetComponent<ListItemController>().SetText(monsters[i]);
-            ListItems[i].transform.SetParent(GameObject.Find("Content").transform);
+            GameObject listItemObject = Instantiate(Resources.Load<GameObject>("UI/listItem"), scrollViewContent);
+            listItemObject.GetComponent<ListItemController>().SetText(monsters[i]);
+            ListItems.Add(listItemObject);
         }
 
-        scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, 60 * monsters.Count);
     }
 
     public void SetItemButton()
