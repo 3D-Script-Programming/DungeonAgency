@@ -44567,8 +44567,8 @@ MonoBehaviour:
   goldText: {fileID: 1999666637}
   popupSetting: {fileID: 1870330891}
   popupWarning: {fileID: 331209316}
-  SettingCloseButton: {fileID: 2105623947}
-  WarningCloseButton: {fileID: 243147461}
+  settingCloseButton: {fileID: 2105623947}
+  warningCloseButton: {fileID: 243147461}
 --- !u!114 &1972370122 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7239820662161358614, guid: f84e5bf6a8d338544bf9be78dc27c668,
