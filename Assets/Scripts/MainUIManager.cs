@@ -28,8 +28,18 @@ public class MainUIManager : MonoBehaviour
     // UI 초기화 및 이벤트 등록을 처리하는 메서드입니다.
     public void Initialize()
     {
+        // UI 업데이트
+        UpdateUI();
         // UI 이벤트 등록
         ApplyUIEvents();
+    }
+
+    private void UpdateUI()
+    {
+        // 골드 텍스트 업데이트
+        goldText.text = GameManager.s_Instance.player.Gold.ToString();
+        // 악명 텍스트 업데이트
+        infamyText.text = GameManager.s_Instance.player.Infamy.ToString();
     }
 
     // UI 버튼에 이벤트 리스너를 등록하는 메서드입니다.
@@ -42,20 +52,6 @@ public class MainUIManager : MonoBehaviour
         settingButton.onClick.AddListener(OnClickSettingButton);
         settingCloseButton.onClick.AddListener(OnClickSettingCloseButton);
         warningCloseButton.onClick.AddListener(OnClickWarningCloseButton);
-    }
-
-    // 악명 정보를 업데이트하는 메서드입니다.
-    public void UpdateInfamyText(int infamy)
-    {
-        // 악명 텍스트 업데이트
-        infamyText.text = infamy.ToString();
-    }
-
-    // 골드 정보를 업데이트하는 메서드입니다.
-    public void UpdateGoldText(int gold)
-    {
-        // 골드 텍스트 업데이트
-        goldText.text = gold.ToString();
     }
 
     // Play 버튼 클릭 시 호출되는 메서드입니다.

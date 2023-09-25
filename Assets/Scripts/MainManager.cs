@@ -18,10 +18,6 @@ public class MainManager : MonoBehaviour
         // UI 관리 클래스 초기화
         uiManager.Initialize();
 
-        // UI 업데이트
-        uiManager.UpdateInfamyText(GameManager.s_Instance.player.Infamy);
-        uiManager.UpdateGoldText(GameManager.s_Instance.player.Gold);
-
         // 배경음악 재생 
         GameManager.s_Instance.SetMusic(backgroundSound);
 

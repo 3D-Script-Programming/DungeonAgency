@@ -6,12 +6,43 @@ using TMPro;
 
 public class ListItemController : MonoBehaviour
 {
-    public TextMeshProUGUI name, level, str, bal, vtp, cp;
-    public GameObject btnHire;
+    public TextMeshProUGUI name, level, str, bal, vtp, cp, price;
+    public Button btnListItem;
+    public Button btnHire;
     public GameObject natureHolder;
     public GameObject natureIcon;
 
-    public Character monster;
+    private Character monster;
+    private MarketManager marketManager;
+
+    private void Awake()
+    {
+        ApplyUIEvents();
+    }
+
+    private void ApplyUIEvents()
+    {
+        btnListItem.onClick.AddListener(OnClickListItem);
+        btnHire.onClick.AddListener(OnClickBtnHire);
+    }
+
+    public void OnClickListItem()
+    {
+        GameManager.s_Instance.PlayButtonSound();
+        marketManager.SpawnMonster(monster);
+    }
+
+    public void OnClickBtnHire()
+    {
+        GameManager.s_Instance.PlayButtonSound();
+        if (monster.GetPrice() > GameManager.s_Instance.player.Gold)
+            return;
+        GameManager.s_Instance.player.AddMonster(monster);
+        GameManager.s_Instance.player.AddGold(-monster.GetPrice());
+        btnHire.gameObject.SetActive(false);
+        marketManager.uiManager.UpdateUI();
+        SetButton();
+    }
 
     public void SetText(Character monster)
     {
@@ -38,31 +69,21 @@ public class ListItemController : MonoBehaviour
         bal.text = monster.Balance.ToString();
         vtp.text = monster.Vitality.ToString();
         cp.text = monster.GetCP().ToString();
+        price.text = monster.GetPrice().ToString();
 
-        btnHire.GetComponentInChildren<TextMeshProUGUI>().text = monster.GetPrice().ToString();
-    }
-
-    public void HireMonster()
-    {
-        if (monster.GetPrice() > GameManager.s_Instance.player.Gold)
-            return;
-        GameManager.s_Instance.player.AddMonster(monster);
-        GameManager.s_Instance.player.AddGold(-1 * monster.GetPrice());
-        btnHire.SetActive(false);
-        GetComponentInParent<ListController>().UpdateUI();
-        ListItemOnClick();
-    }
-
-    public void ListItemOnClick()
-    {
-        GetComponentInParent<ListController>().ReSpawnMonster(monster);
+        SetButton();
     }
 
     public void SetButton()
     {
         if (monster.GetPrice() > GameManager.s_Instance.player.Gold)
-            btnHire.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
+            btnHire.gameObject.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_red", typeof(Sprite)) as Sprite;
         else
-            btnHire.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_green", typeof(Sprite)) as Sprite;
+            btnHire.gameObject.GetComponent<Image>().sprite = Resources.Load("UI/btn_color_green", typeof(Sprite)) as Sprite;
+    }
+
+    public void SetMarketManager(MarketManager marketManager)
+    {
+        this.marketManager = marketManager;
     }
 }
