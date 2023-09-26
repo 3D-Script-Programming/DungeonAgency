@@ -57,9 +57,6 @@ public class DungeonManager : MonoBehaviour
     // 플레이어 객체 
     private Player player;
 
-    // 오디오 소스 객체 
-    private AudioSource audioSource;
-
     void Start()
     {
         // GameManager에서 플레이어 객체를 가져옵니다.
@@ -76,9 +73,6 @@ public class DungeonManager : MonoBehaviour
 
         // 배경음악을 설정합니다.
         GameManager.s_Instance.SetMusic(backgroundSound);
-
-        // 오디오 소스를 가져옵니다.
-        audioSource = GetComponent<AudioSource>();
     }
 
     // ApplyEvents 함수는 버튼 및 몬스터 스포너에 대한 이벤트 리스너를 등록합니다.
@@ -408,12 +402,5 @@ public class DungeonManager : MonoBehaviour
 
         // UI에 플레이어의 골드를 업데이트합니다.
         goldText.text = player.Gold.ToString();
-    }
-
-    // ButtonSound 함수는 버튼 클릭 시 버튼 사운드를 재생하는 함수입니다.
-    public void ButtonSound()
-    {
-        // 버튼 사운드를 한 번만 재생합니다.
-        audioSource.PlayOneShot(buttonSound);
     }
 }

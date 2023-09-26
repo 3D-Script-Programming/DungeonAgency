@@ -41,13 +41,6 @@ public class GameManager : MonoBehaviour
         audioSource.Play();
     }
 
-    // Start 함수는 게임 오브젝트가 활성화된 후에 호출됩니다.
-    // 게임 시작 시 MainScene을 로드합니다.
-    private void Start()
-    {
-        SceneManager.LoadScene("MainScene");
-    }
-
     // MoveScene 함수는 지정된 씬으로 이동하는 정적 메서드입니다.
     public static void MoveScene(string sceneName)
     {
@@ -74,6 +67,7 @@ public class GameManager : MonoBehaviour
         audioSource.Play();
     }
 
+    // ChangeVolume 함수는 배경 음악의 볼륨을 설정합니다.
     public void ChangeVolume(float value)
     {
         audioSource.volume = value;

@@ -40,7 +40,7 @@ public class ListItemController : MonoBehaviour
         GameManager.s_Instance.player.AddMonster(monster);
         GameManager.s_Instance.player.AddGold(-monster.GetPrice());
         btnHire.gameObject.SetActive(false);
-        marketManager.uiManager.UpdateUI();
+        marketManager.UIManager.UpdateUI();
         SetButton();
     }
 

@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class MainManager : MonoBehaviour
 {
+    // UI 관리 클래스
+    public MainUIManager UIManager { get; private set; }
+
     // 몬스터 목록
     private List<Character> monsters;
-
-    // UI 관리 클래스
-    public MainUIManager uiManager;
 
     // 오디오 관련 오브젝트
     public AudioClip backgroundSound;
 
+    private void Awake()
+    {
+        UIManager = gameObject.GetComponent<MainUIManager>();
+    }
+
     private void Start()
     {
         // UI 관리 클래스 초기화
-        uiManager.Initialize();
+        UIManager.Initialize();
 
         // 배경음악 재생 
         GameManager.s_Instance.SetMusic(backgroundSound);

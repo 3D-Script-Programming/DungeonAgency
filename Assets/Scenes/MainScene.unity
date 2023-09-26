@@ -5103,7 +5103,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2338c9abc2dfcf24983f87dd051a9560, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -43833,6 +43833,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 50749643}
+    - target: {fileID: 1532014323904540508, guid: f84e5bf6a8d338544bf9be78dc27c668,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1612269465523650520, guid: f84e5bf6a8d338544bf9be78dc27c668,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -43943,6 +43948,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3662106498939487457, guid: f84e5bf6a8d338544bf9be78dc27c668,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3662106498939487457, guid: f84e5bf6a8d338544bf9be78dc27c668,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3874266955635823815, guid: f84e5bf6a8d338544bf9be78dc27c668,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -43963,6 +43978,21 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 50749643}
+    - target: {fileID: 5830311167733977303, guid: f84e5bf6a8d338544bf9be78dc27c668,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830311167733977303, guid: f84e5bf6a8d338544bf9be78dc27c668,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830311167733977303, guid: f84e5bf6a8d338544bf9be78dc27c668,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6642599430678546574, guid: f84e5bf6a8d338544bf9be78dc27c668,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -44544,7 +44574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb5508a69049419496591aa8eb16aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 1936218626}
   backgroundSound: {fileID: 8300000, guid: 2338c9abc2dfcf24983f87dd051a9560, type: 3}
 --- !u!114 &1936218626
 MonoBehaviour:
