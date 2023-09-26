@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-
     private int currentRoom;
     private Player player;
     private UIBattleManager UI;
@@ -18,7 +17,7 @@ public class BattleManager : MonoBehaviour
         READY,
         WAIT,
         TAKEACTION,
-        PERFORMACTION 
+        PERFORMACTION
     }
     public PerformAction battleStates;
     public Character[] heroes = new Character[6];
@@ -48,7 +47,7 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        player = GameManager.instance.Player;
+        player = GameManager.s_Instance.player;
         currentRoom = 0;
 
         monsterSpawner.GetComponent<MonsterSpawner>().SetMonster(player.GetRoom(currentRoom).Monsters);
@@ -59,7 +58,7 @@ public class BattleManager : MonoBehaviour
         }
         heroSpawner.GetComponent<HeroSpawner>().SetHeroes(heroes);
 
-        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        if (player.GetRoom(currentRoom).Items == Item.CROWN)
         {
             bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
             bossSpawner.SetActive(true);
@@ -78,7 +77,7 @@ public class BattleManager : MonoBehaviour
         battleStates = PerformAction.READY;
         Turn = 0;
         UI = gameObject.GetComponent<UIBattleManager>();
-        GameManager.instance.SetMusic(backgroundSound);
+        GameManager.s_Instance.SetMusic(backgroundSound);
     }
 
     private void Update()
@@ -184,7 +183,7 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    
+
     public void CollectActions(GameObject input)
     {
         performList.Add(input);
@@ -204,7 +203,7 @@ public class BattleManager : MonoBehaviour
         isEnd = true;
         if (!playingAudio)
         {
-            GameManager.instance.SetMusic(winSound);
+            GameManager.s_Instance.SetMusic(winSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;
@@ -212,21 +211,21 @@ public class BattleManager : MonoBehaviour
 
         int addExp = (int)(1500 * (avgHeroCp / avgMonsterCp));
         int addGold = (int)(1500 * (avgHeroCp / avgMonsterCp));
-        int addEvilPoint = (int)(300 * (avgHeroCp / avgMonsterCp));
+        int addInfamy = (int)(300 * (avgHeroCp / avgMonsterCp));
 
-        for (int i=0; i<player.GetMonsterList().Count; i++)
+        for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
             player.GetMonster(i).AddExp(addExp);
         }
         player.AddGold(addGold);
-        player.AddEvilPoint(addEvilPoint);
-        UI.SetWinText(addGold, addEvilPoint);
+        player.AddInfamy(addInfamy);
+        UI.SetWinText(addGold, addInfamy);
         UI.winUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {
-            if (player.GetRoom(i).Item == Item.CROWN)
+            if (player.GetRoom(i).Items == Item.CROWN)
                 player.GetRoom(i).Monsters[0].FinishBoss();
-            player.GetRoom(i).Item = Item.NONE;
+            player.GetRoom(i).PlaceItem(Item.NONE);
         }
     }
 
@@ -236,7 +235,7 @@ public class BattleManager : MonoBehaviour
         isEnd = true;
         if (!playingAudio)
         {
-            GameManager.instance.SetMusic(failSound);
+            GameManager.s_Instance.SetMusic(failSound);
             playingAudio = true;
         }
         avgHeroCp = sumHeroCp / 6;
@@ -244,21 +243,21 @@ public class BattleManager : MonoBehaviour
 
         int addExp = (int)(1000 * (avgHeroCp / avgMonsterCp));
         int addGold = (int)(800 * (avgHeroCp / avgMonsterCp));
-        int addEvilPoint = (int)(-50 * (avgHeroCp / avgMonsterCp));
+        int addInfamy = (int)(-50 * (avgHeroCp / avgMonsterCp));
 
         for (int i = 0; i < player.GetMonsterList().Count; i++)
         {
             player.GetMonster(i).AddExp(addExp);
         }
         player.AddGold(addGold);
-        player.AddEvilPoint(addEvilPoint);
-        UI.SetFailText(addGold, addEvilPoint);
+        player.AddInfamy(addInfamy);
+        UI.SetFailText(addGold, addInfamy);
         UI.failUI.SetActive(true);
         for (int i = 0; i < player.GetRoomCount(); i++)
         {
-            if (player.GetRoom(i).Item == Item.CROWN)
+            if (player.GetRoom(i).Items == Item.CROWN)
                 player.GetRoom(i).Monsters[0].FinishBoss();
-            player.GetRoom(i).Item = Item.NONE;
+            player.GetRoom(i).PlaceItem(Item.NONE);
         }
     }
 
@@ -304,7 +303,7 @@ public class BattleManager : MonoBehaviour
             Destroy(removeHero[i]);
         }
 
-        if(player.GetRoom(currentRoom).Item == Item.CROWN)
+        if (player.GetRoom(currentRoom).Items == Item.CROWN)
         {
             bossSpawner.GetComponent<BossSpawner>().SetBoss(player.GetRoom(currentRoom).Monsters[0]);
             bossSpawner.SetActive(true);
@@ -321,7 +320,8 @@ public class BattleManager : MonoBehaviour
         heroSpawner.SetActive(true);
     }
 
-    public void GetReady() {
+    public void GetReady()
+    {
         battleStates = PerformAction.WAIT;
     }
 }

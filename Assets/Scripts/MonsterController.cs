@@ -72,24 +72,24 @@ public class MonsterController : MonoBehaviour
 
         // 공격 이펙트 실행과 데미지 계산
         int damage = character.GetDamage();
-        if(damage == character.GetMaxDamage())
+        if (damage == character.GetMaxDamage())
             animatorController.Critical();
         else
             animatorController.Attack();
 
         GameObject effect;
-        if (character.GetNature() == Nature.FIRE) effect = battleManager.fireEffect;
-        else if (character.GetNature() == Nature.WATER) effect = battleManager.waterEffect;
+        if (character.Nature == Nature.FIRE) effect = battleManager.fireEffect;
+        else if (character.Nature == Nature.WATER) effect = battleManager.waterEffect;
         else effect = battleManager.windEffect;
 
         yield return new WaitForSeconds(0.3f);
         GameObject gameObject = Instantiate(effect, targetObject.transform.position, Quaternion.identity);
 
         target.GetCharacter().GetHit(damage);
-        target.healthSlider.value = target.GetCharacter().GetHP();
+        target.healthSlider.value = target.GetCharacter().HP;
         audioPlayer.PlayOneShot(hitSound);
 
-        if (target.GetCharacter().GetHP() == 0)
+        if (target.GetCharacter().HP == 0)
         {
             target.animatorController.Die();
             audioPlayer.PlayOneShot(target.deathSound);
@@ -97,7 +97,7 @@ public class MonsterController : MonoBehaviour
             battleManager.heroesInBattle.Remove(targetObject);
             battleManager.heroNumber.Remove(target.GetSpawnNumber());
             battleManager.heroCps.Remove(target.GetCharacter().GetCP());
-            
+
         }
         else
         {
@@ -145,7 +145,7 @@ public class MonsterController : MonoBehaviour
     {
         this.character = character;
         healthSlider.maxValue = character.GetMaxHP();
-        healthSlider.value = character.GetHP();
+        healthSlider.value = character.HP;
     }
 
     public bool GetIsDead()

@@ -20,11 +20,12 @@ public class HeroSpawner : MonoBehaviour
         for (locationNumber = 0; locationNumber < 6; locationNumber++)
         {
             if (heroes[locationNumber] == null) continue;
-            if (heroes[locationNumber].GetHP() == 0)
+            if (heroes[locationNumber].HP == 0)
             {
                 heroes[locationNumber] = null;
             }
-            else {
+            else
+            {
                 Vector3 startPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
                 Character spawnCharacter = heroes[locationNumber];
                 GameObject prefab = spawnCharacter.Prefab;

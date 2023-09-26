@@ -1,76 +1,65 @@
-﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private Player player;
-    private AudioSource audioSource;
+    // 배경 음악을 재생하는 오디오 소스
+    [SerializeField] private AudioSource audioSource;
 
-    public static GameManager instance;
+    // 버튼 클릭 시 재생할 소리 
+    [SerializeField] private AudioClip buttonSound;
 
-    public Player Player { get => player; set => player = value; }
-    public AudioClip buttonSound;
+    // GameManager의 인스턴스 (싱글톤)
+    public static GameManager s_Instance { get; private set; }
 
+    // 플레이어 정보를 관리하는 객체
+    public Player player { get; set; }
+
+    // Awake 함수는 게임 오브젝트가 활성화되기 전에 호출됩니다.
+    // GameManager 인스턴스를 설정하고 다른 씬으로 이동해도 유지되도록 설정합니다.
+    // 플레이어 객체를 생성하고 초기 골드를 설정하여 게임을 시작합니다.
     private void Awake()
     {
-        if (instance != null)
+        if (s_Instance != null)
         {
-            Destroy(this);
+            // 이미 GameManager 인스턴스가 존재하면 중복 생성을 방지하고 경고 메시지를 출력
+            Debug.LogWarning("GameManager instance already exists. Destroying duplicate.");
+            Destroy(gameObject);
             return;
         }
-        instance = this;
+
+        // GameManager 인스턴스를 설정하고 다른 씬으로 이동해도 유지되도록 설정
+        s_Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        // 플레이어 객체를 생성하고 초기 골드를 설정하여 게임을 시작
         player = new Player();
         player.AddGold(5000);
 
-        audioSource = gameObject.GetComponent<AudioSource>();
+        // 배경 음악을 재생
         audioSource.Play();
     }
 
-    public static void MoveMainScene()
+    // MoveScene 함수는 지정된 씬으로 이동하는 정적 메서드입니다.
+    public static void MoveScene(string sceneName)
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene(sceneName);
     }
 
-    public static void MoveBattleScene()
+    // TogglePause 함수는 일시 정지 상태를 전환 (0 또는 1로)합니다.
+    public void TogglePause()
     {
-        SceneManager.LoadScene("BattleScene");
+        Time.timeScale = Time.timeScale == 0f ? 1f : 0f;
     }
 
-    public static void MoveManageScene()
+    // PlayButtonSound 함수는 버튼 클릭 시 버튼 사운드를 한 번 재생합니다.
+    public void PlayButtonSound()
     {
-        SceneManager.LoadScene("ManageScene");
+        audioSource.PlayOneShot(buttonSound);
     }
 
-    public static void MoveMarketScene()
-    {
-        SceneManager.LoadScene("MarketScene");
-    }
-
-    public static void MoveSettingScene()
-    {
-        SceneManager.LoadScene("SettingScene");
-    }
-
-    public void OnPause()
-    {
-        Time.timeScale = 0f;
-    }
-
-    public void OffPause()
-    {
-        Time.timeScale = 1f;
-    }
-
-    public void ButtonSound()
-    {
-        gameObject.GetComponent<AudioSource>().PlayOneShot(buttonSound);
-    }
-
+    // SetMusic 함수는 배경 음악을 설정하고 재생합니다.
     public void SetMusic(AudioClip audio)
     {
         audioSource.Stop();
@@ -78,6 +67,9 @@ public class GameManager : MonoBehaviour
         audioSource.Play();
     }
 
-    public void SaveData() { }
-    public void LoadData() { }
+    // ChangeVolume 함수는 배경 음악의 볼륨을 설정합니다.
+    public void ChangeVolume(float value)
+    {
+        audioSource.volume = value;
+    }
 }

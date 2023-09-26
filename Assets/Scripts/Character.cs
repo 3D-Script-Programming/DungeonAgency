@@ -1,177 +1,189 @@
-﻿using System;
-using System.Text.RegularExpressions;
+using System;
 using UnityEngine;
+using System.Text.RegularExpressions;
+using Random = UnityEngine.Random;
 
 public class Character
 {
-    private int level;
-    private int exp;
-    private int str, bal, vtp;
-    private Nature nature;
-    private int hp;
-    private int rank, potential;
-    private string name;
+    // 캐릭터의 프리팹과 속성들을 프로퍼티로 정의
+    public GameObject Prefab { get; private set; }
+    public int Level { get; private set; }
+    public int Exp { get; private set; }
+    public int Strength { get; private set; }
+    public int Balance { get; private set; }
+    public int Vitality { get; private set; }
+    public Nature Nature { get; private set; }
+    public int HP { get; private set; }
+    public int Potential { get; private set; }
+    public string Name { get; private set; }
 
-    private GameObject prefab;
+    // 이 몬스터가 현재 던전 방에 배치되었는지 여부를 나타내는 프로퍼티
+    public bool IsPlacedInRoom { get; private set; }
 
-    public GameObject Prefab { get => prefab; set => prefab = value; }
+    // 보스 상태 및 일반 상태에서의 능력치 배율을 상수로 정의
+    private const float BossMultiplier = 4.0f;
+    private const float NormalMultiplier = 1.0f;
 
-    public Character(string prefabPath, int str, int bal, int vtp, int potential, Nature nature)
+    // 데미지 계산식에 적용할 배율 상수 정의
+    private const int MaxDamageMultiplier = 15;
+    private const int MinDamageDenominator = 20;
+
+    // 생성자: 캐릭터 초기화
+    public Character(string name, string prefabPath, int strength, int balance, int vitality, int potential, Nature nature)
     {
-        level = 1;
-        exp = 0;
-
-        this.str = str;
-        this.bal = bal;
-        this.vtp = vtp;
-        this.nature = nature;
-        this.potential = potential;
-        hp = GetMaxHP();
-        prefab = Resources.Load<GameObject>(prefabPath);
-        name = prefabPath.Split('/')[1];
-        name = Regex.Replace(name, @"\d", "");
+        Name = name;
+        IsPlacedInRoom = false;
+        Level = 1;
+        Exp = 0;
+        Strength = strength;
+        Balance = balance;
+        Vitality = vitality;
+        Nature = nature;
+        Potential = potential;
+        HP = GetMaxHP();
+        Prefab = Resources.Load<GameObject>(prefabPath);
     }
 
-    public Character(string prefabPath, int level, int str, int bal, int vtp, int potential, Nature nature)
-        : this(prefabPath, str, bal, vtp, potential, nature)
+    // 생성자 오버로드: 특정 레벨로 캐릭터 초기화
+    public Character(string name, string prefabPath, int level, int strength, int balance, int vitality, int potential, Nature nature)
+        : this(name, prefabPath, strength, balance, vitality, potential, nature)
     {
         LevelUp(level);
     }
 
-    public void LevelUp()
+    // 캐릭터 이름을 추출하는 유틸리티 메서드
+    private string GetCharacterName(string prefabPath)
     {
-        if (GetReqExp() > exp)
-            return;
-
-        level++;
-        int statusSum = (int)(Math.Log10(100 + level) * 15 + potential * 1.2);
-        str += statusSum / 3;
-        vtp += statusSum / 3;
-        bal += statusSum / 3;
-        hp = GetMaxHP();
-        exp = 0;
+        string[] pathComponents = prefabPath.Split('/');
+        string nameWithoutDigits = Regex.Replace(pathComponents[1], @"\d", "");
+        return nameWithoutDigits;
     }
 
+    // 캐릭터 레벨 업
+    public void LevelUp()
+    {
+        if (GetRequiredExp() > Exp)
+            return;
+
+        Level++;
+        int statusSum = (int)(Math.Log10(100 + Level) * 15 + Potential * 1.2);
+        int statusIncrement = statusSum / 3;
+        Strength += statusIncrement;
+        Vitality += statusIncrement;
+        Balance += statusIncrement;
+        HP = GetMaxHP();
+        Exp = 0;
+    }
+
+    // 특정 레벨로 캐릭터 레벨 업
     public void LevelUp(int level)
     {
-        while (this.level < level)
+        while (Level < level)
         {
-            exp = GetReqExp();
+            Exp = GetRequiredExp();
             LevelUp();
         }
     }
 
+    // 캐릭터의 전투력(CP) 계산
     public int GetCP()
     {
-        return str * 8 + bal * 3 + vtp * 4;
+        return Strength * 8 + Balance * 3 + Vitality * 4;
     }
 
-    public Nature GetNature()
+    // 필요한 경험치 계산
+    public int GetRequiredExp()
     {
-        return nature;
+        int levelWeight = (int)Math.Pow(Level, 1.3);
+        return levelWeight * (200 + (Potential * 80) * (Level + 5) / 10);
     }
 
-    public string GetName()
-    {
-        return name;
-    }
-
-    public int GetLevel()
-    {
-        return level;
-    }
-
-    public int GetExp()
-    {
-        return exp;
-    }
-
-    public int GetReqExp()
-    {
-        int levelWeight = (int)Math.Pow(level, 1.3);
-        return levelWeight * (200 + (potential * 80) * (rank + 5) / 10);
-    }
-
+    // 최대 체력 계산
     public int GetMaxHP()
     {
-        return vtp * 50;
+        return Vitality * 50;
     }
 
-    public int GetHP()
-    {
-        return hp;
-    }
-
+    // 캐릭터가 공격을 받을 때 체력 감소 처리
     public void GetHit(int damage)
     {
-        hp -= damage;
-        if (hp < 0)
+        HP -= damage;
+        if (HP < 0)
         {
-            hp = 0;
+            HP = 0;
         }
     }
 
+    // 랜덤한 데미지 값 반환
     public int GetDamage()
     {
-        int maxDamage = str * 15;
-        int minDamage = maxDamage / (1 + (int)(Math.Log(bal,2) * 20));
+        int maxDamage = Strength * MaxDamageMultiplier;
+        int minDamage = maxDamage / (1 + (int)(Math.Log(Balance, 2) * MinDamageDenominator));
 
-        return CharacterFactory.random.Next(minDamage, maxDamage);
+        return Random.Range(minDamage, maxDamage);
     }
 
+    // 최대 데미지 값 반환
     public int GetMaxDamage()
     {
-        return str * 15;
+        return Strength * MaxDamageMultiplier;
     }
 
-    public int GetSTR()
-    {
-        return str;
-    }
-
-    public int GetBAL()
-    {
-        return bal;
-    }
-
-    public int GetVTP()
-    {
-        return vtp;
-    }
+    // 캐릭터의 가격 계산
     public int GetPrice()
     {
         return (int)Math.Pow(GetCP(), 1.2);
     }
 
+    // 보스 상태로 설정 (능력치 배율 적용)
     public void SetBoss()
     {
-        str = str * 4;
-        bal = bal * 4;
-        vtp = vtp * 4;
+        MultiplyStats(BossMultiplier);
     }
 
+    // 일반 상태로 설정 (능력치 배율 복원)
     public void FinishBoss()
     {
-        str = str / 4;
-        bal = bal / 4;
-        vtp = vtp / 4;
+        MultiplyStats(NormalMultiplier);
     }
 
+    // 능력치를 주어진 배율만큼 조정
+    private void MultiplyStats(float multiplier)
+    {
+        Strength = Mathf.RoundToInt(Strength * multiplier);
+        Balance = Mathf.RoundToInt(Balance * multiplier);
+        Vitality = Mathf.RoundToInt(Vitality * multiplier);
+    }
+
+    // 경험치 추가 및 레벨 업 처리
     public void AddExp(int addExp)
     {
-        int reqExp = GetReqExp();
-        exp += addExp;
-        while(reqExp < exp)
+        int requiredExp = GetRequiredExp();
+        Exp += addExp;
+        while (requiredExp < Exp)
         {
-            int remainExp = exp - reqExp;
+            int remainingExp = Exp - requiredExp;
             LevelUp();
-            reqExp = GetReqExp();
-            exp += remainExp;
+            requiredExp = GetRequiredExp();
+            Exp += remainingExp;
         }
     }
 
+    // 체력을 최대값으로 재설정
     public void SetResetHp()
     {
-        hp = GetMaxHP();
+        HP = GetMaxHP();
+    }
+
+    // 몬스터를 특정 던전 방에 배치하는 메서드
+    public void PlaceInRoom()
+    {
+        IsPlacedInRoom = true;
+    }
+
+    // 몬스터를 던전 방에서 제거하는 메서드
+    public void RemoveFromRoom()
+    {
+        IsPlacedInRoom = false;
     }
 }

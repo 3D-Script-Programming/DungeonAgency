@@ -9,7 +9,7 @@ public class ManageListController : MonoBehaviour
 
     void Start()
     {
-        monsters = GameManager.instance.Player.GetMonsterList();
+        monsters = GameManager.s_Instance.player.GetMonsterList();
         scrollViewContent = GameObject.Find("Content").GetComponent<RectTransform>();
         scrollViewContent.sizeDelta = new Vector2(145.2759f, 0);
         InstantiateItems();
@@ -19,11 +19,8 @@ public class ManageListController : MonoBehaviour
     {
         foreach (Character monster in monsters)
         {
-            GameObject listItem = Instantiate(Resources.Load<GameObject>("UI/MangeListItem"));
+            GameObject listItem = Instantiate(Resources.Load<GameObject>("UI/ManageListItem"), GameObject.Find("Content").transform);
             listItem.GetComponent<ManageListItemController>().SetText(monster);
-            listItem.transform.SetParent(GameObject.Find("Content").transform);
         }
-
-        scrollViewContent.sizeDelta = new Vector2(145.2759f, 60 * monsters.Count);
     }
 }

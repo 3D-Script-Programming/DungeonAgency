@@ -4,138 +4,179 @@ using System.Collections.Generic;
 
 public class Player
 {
-    int gold = 0;
-    int evilPoint = 1;
-    int[] items = {0, 0};
+    // 플레이어의 골드 속성
+    public int Gold { get; private set; }
 
-    private List<Character> monsters = new List<Character>();
-    private List<DungeonRoom> dungeon = new List<DungeonRoom>
+    // 플레이어의 악명 속성
+    public int Infamy { get; private set; }
+
+    // 아이템 수량 배열 속성 (index 0: 보스왕관 개수, index 1: 보물상자 개수)
+    public int[] Items { get; private set; }
+
+    // 몬스터 리스트 속성
+    public List<Character> Monsters { get; private set; }
+
+    // 던전 방 리스트 속성
+    private List<DungeonRoom> dungeon;
+
+    // 생성자 : 변수 초기화
+    public Player()
     {
-        new DungeonRoom(),
-        new DungeonRoom(),
-        new DungeonRoom()
-    };
-
-    public DungeonRoom GetRoom(int index)
-    {
-        if (dungeon.Count > index)
-            return dungeon[index];
-
-        return null;
+        Gold = 0;
+        Infamy = 1;
+        Items = new int[2];
+        Items[0] = 0;
+        Items[1] = 0;
+        Monsters = new List<Character>();
+        dungeon = new List<DungeonRoom>()
+        {
+            new DungeonRoom(),
+            new DungeonRoom(),
+            new DungeonRoom()
+        };
     }
 
+    // 특정 인덱스의 던전 방 반환
+    public DungeonRoom GetRoom(int index)
+    {
+        return (index >= 0 && index < dungeon.Count) ? dungeon[index] : null;
+    }
+
+    // 특정 인덱스의 던전 방 반환
+    public List<DungeonRoom> GetRooms()
+    {
+        return dungeon;
+    }
+
+    // 던전 방의 개수 반환
     public int GetRoomCount()
     {
         return dungeon.Count;
     }
 
+    // 특정 인덱스의 몬스터 반환
     public Character GetMonster(int index)
     {
-        if (monsters.Count > index)
-            return monsters[index];
-
-        return null;
+        return (index >= 0 && index < Monsters.Count) ? Monsters[index] : null;
     }
 
+    // 몬스터 리스트 반환
     public List<Character> GetMonsterList()
     {
-        if (monsters.Count > 0)
-            return monsters;
-
-        return null;
+        return Monsters.Count > 0 ? Monsters : null;
     }
 
+    // 아이템 추가 메서드
     public void AddItem(Item item, int count)
     {
         if (item == Item.CROWN)
-            items[0] += count;
+            Items[0] += count;
         if (item == Item.TREASURE)
-            items[1] += count;
+            Items[1] += count;
     }
 
+    // 아이템 수량 반환 메서드
     public int GetItem(Item item)
     {
-        if (item == Item.CROWN)
-            return items[0];
-        else if(item == Item.TREASURE)
-            return items[1];
-        return 0;
+        return item == Item.CROWN ? Items[0] : (item == Item.TREASURE ? Items[1] : 0);
     }
 
-    public void UseCrown() {
-        items[0]--;
+    // 크라운 사용 메서드
+    public void UseCrown()
+    {
+        Items[0]--;
     }
 
-    public void UnuseCrown() {
-        items[0]++;
+    // 크라운 사용 취소 메서드
+    public void UnuseCrown()
+    {
+        Items[0]++;
     }
 
-    public void UseTreasure() {
-        items[1]--;
+    // 보물 사용 메서드
+    public void UseTreasure()
+    {
+        Items[1]--;
     }
 
-    public void UnuseTreasure() {
-        items[1]++;
+    // 보물 사용 취소 메서드
+    public void UnuseTreasure()
+    {
+        Items[1]++;
     }
 
+    // 몬스터 추가 메서드
     public void AddMonster(Character monster)
     {
-        monsters.Add(monster);
+        Monsters.Add(monster);
     }
 
+    // 몬스터 리스트 추가 메서드
     public void AddRangeMonster(List<Character> monsters)
     {
-        this.monsters.AddRange(monsters);
+        Monsters.AddRange(monsters);
     }
 
+    // 특정 인덱스의 몬스터 제거 메서드
     public void RemoveMonster(int index)
     {
-        if (monsters.Count > index)
-            monsters.RemoveAt(index);
+        if (index >= 0 && index < Monsters.Count)
+            Monsters.RemoveAt(index);
     }
 
+    // 던전에 방 추가 메서드
     public void AddRoom()
     {
         dungeon.Add(new DungeonRoom());
     }
 
-    public int GetGold()
-    {
-        return gold;
-    }
-
-    public int GetEvilPoint()
-    {
-        return evilPoint;
-    }
-
-    public void AddGold(int gold)
-    {
-        this.gold += gold;
-    }
-
-    public void AddEvilPoint(int evilPoint)
-    {
-        this.evilPoint += evilPoint;
-        if (evilPoint <= 0)
-        {
-            this.evilPoint = 1;
-        }
-    }
-
+    // 용사(Enemy) 랭크 계산 메서드
     public int GetHeroRank()
     {
         int count = 0;
-        for (int i = 0; i < dungeon.Count; i++)
+        foreach (var room in dungeon)
         {
-            if(dungeon[i].Item == Item.TREASURE)
+            if (room.Items == Item.TREASURE)
             {
                 count += 500;
             }
         }
 
-        double rank = (evilPoint + count) / Math.Pow(10, Math.Log(evilPoint + count) + 2);
+        double rank = (Infamy + count) / Math.Pow(10, Math.Log(Infamy + count) + 2);
         return (int)rank;
     }
 
+    // 골드 추가 메서드
+    public void AddGold(int gold)
+    {
+        Gold += gold;
+    }
+
+    // 악명 포인트 추가 메서드
+    public void AddInfamy(int infamy)
+    {
+        Infamy += infamy;
+        if (Infamy <= 0)
+        {
+            Infamy = 1;
+        }
+    }
+
+    // 플레이어가 배틀에 준비되어 있는지 확인하는 메서드
+    public bool NotReadyForBattle()
+    {
+        // dungeon 리스트의 각 room에 대한 반복문 시작
+        foreach (var room in dungeon)
+        {
+            // room에 몬스터가 없는지 확인하는 함수 NoMonstersInRoom() 호출
+            if (!room.NoMonstersInRoom())
+            {
+                // 만약 현재 room에 몬스터가 존재하면 (준비가 됨)
+                return false; // false 반환하고 함수 종료
+            }
+        }
+
+        // 모든 room에 몬스터가 없다면 (준비가 안됨)
+        return true; // true 반환하고 함수 종료
+    }
 }
