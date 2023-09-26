@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ListItemController : MonoBehaviour
+public class MarketListItemController : MonoBehaviour
 {
     // UI 요소들을 저장할 변수들
     public TextMeshProUGUI name, level, str, bal, vtp, cp, price; // 몬스터 정보 텍스트

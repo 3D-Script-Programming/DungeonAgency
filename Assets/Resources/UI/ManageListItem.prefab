@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4861998322209649049}
   - component: {fileID: -2811402723414917156}
   m_Layer: 5
-  m_Name: MangeListItem
+  m_Name: ManageListItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

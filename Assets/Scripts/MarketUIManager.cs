@@ -31,12 +31,12 @@ public class MarketUIManager : MonoBehaviour
     public TextMeshProUGUI countTreasure; // 보물 갯수 표시 텍스트
 
     public Transform scrollViewContent; // 몬스터 목록을 표시하는 스크롤 뷰 컨텐츠
-    private List<ListItemController> listItems; // 몬스터 목록 아이템 컨트롤러를 저장하는 리스트
+    private List<MarketListItemController> listItems; // 몬스터 목록 아이템 컨트롤러를 저장하는 리스트
 
     private void Awake()
     {
         // 몬스터 목록 아이템 컨트롤러 리스트 초기화
-        listItems = new List<ListItemController>();
+        listItems = new List<MarketListItemController>();
         // MarketManager 스크립트 참조 저장
         marketManager = gameObject.GetComponent<MarketManager>();
         // UI 이벤트 등록
@@ -52,7 +52,7 @@ public class MarketUIManager : MonoBehaviour
         // 악명 텍스트 업데이트
         infamyText.text = GameManager.s_Instance.player.Infamy.ToString();
         // 몬스터 전체 목록에 Button UI(색상 변경)를 업데이트합니다.
-        foreach (ListItemController listItem in listItems)
+        foreach (MarketListItemController listItem in listItems)
         {
             listItem.SetButton();
         }
@@ -164,7 +164,7 @@ public class MarketUIManager : MonoBehaviour
         foreach (Character monster in monsters)
         {
             GameObject listItemObject = Instantiate(Resources.Load<GameObject>("UI/MarketListItem"), scrollViewContent);
-            ListItemController listItemController = listItemObject.GetComponent<ListItemController>();
+            MarketListItemController listItemController = listItemObject.GetComponent<MarketListItemController>();
             listItemController.SetText(monster);
             listItemController.SetMarketManager(marketManager);
             listItems.Add(listItemController);
