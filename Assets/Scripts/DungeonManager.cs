@@ -8,12 +8,12 @@ public class DungeonManager : MonoBehaviour
 {
     // 몬스터 스포너 오브젝트 배열과 해당 버튼 텍스트 배열
     public GameObject[] monsterSpawners = new GameObject[6];
-    public Text[] monsterSpawnButtons = new Text[6];
+    public Button[] monsterSpawnButtons = new Button[6];
 
     // 왕관 및 보물 버튼과 체크 아이콘 게임 오브젝트
-    public GameObject crownButton;
+    public Button crownButton;
     public GameObject crownCheckIcon;
-    public GameObject treasureButton;
+    public Button treasureButton;
     public GameObject treasureCheckIcon;
 
     // 방 이동 버튼 및 홈, 플레이, 마켓 버튼
@@ -24,14 +24,14 @@ public class DungeonManager : MonoBehaviour
     public Button marketButton;
 
     // 현재 방 번호를 표시하는 텍스트
-    public Text roomNumberText;
+    public TextMeshProUGUI roomNumberText;
 
     // 왕관과 보물의 개수를 표시하는 TextMeshProUGUI 텍스트
     public TextMeshProUGUI crownCountText;
     public TextMeshProUGUI treasureCountText;
 
     // 악명 및 골드를 표시하는 TextMeshProUGUI 텍스트
-    public TextMeshProUGUI evilPointText;
+    public TextMeshProUGUI infamyText;
     public TextMeshProUGUI goldText;
 
     // 배경 음악 및 버튼 클릭 소리
@@ -83,14 +83,14 @@ public class DungeonManager : MonoBehaviour
         {
             int now = i;
             // 람다 표현식을 사용하여 몬스터 스포너 버튼 클릭 이벤트를 설정합니다.
-            monsterSpawnButtons[i].GetComponent<Button>().onClick.AddListener(() => OnClickSpawner(now));
+            monsterSpawnButtons[i].onClick.AddListener(() => OnClickSpawner(now));
         }
 
         // 왕관 아이템 버튼에 대한 이벤트 리스너를 등록합니다.
-        crownButton.GetComponent<Button>().onClick.AddListener(OnClickCrown);
+        crownButton.onClick.AddListener(OnClickCrown);
 
         // 보물 아이템 버튼에 대한 이벤트 리스너를 등록합니다.
-        treasureButton.GetComponent<Button>().onClick.AddListener(OnClickTreasure);
+        treasureButton.onClick.AddListener(OnClickTreasure);
 
         // 이전 룸으로 이동하는 버튼에 대한 이벤트 리스너를 등록합니다.
         prevRoomButton.onClick.AddListener(OnClickPrevRoomButton);
@@ -302,7 +302,7 @@ public class DungeonManager : MonoBehaviour
         selectedRoom = player.GetRoom(selectedRoomNumber);
 
         // 선택된 던전 룸 번호를 화면에 표시합니다.
-        roomNumberText.text = selectedRoomNumber.ToString();
+        roomNumberText.text = "Room Number : " + selectedRoomNumber.ToString();
 
         // UI를 업데이트하고, 해당 룸의 정보로 변경합니다.
         UpdateUI();
@@ -318,7 +318,7 @@ public class DungeonManager : MonoBehaviour
         selectedRoom = player.GetRoom(selectedRoomNumber);
 
         // 선택된 던전 룸 번호를 화면에 표시합니다.
-        roomNumberText.text = selectedRoomNumber.ToString();
+        roomNumberText.text = "Room Number : " + selectedRoomNumber.ToString();
 
         // UI를 업데이트하고, 해당 룸의 정보로 변경합니다.
         UpdateUI();
@@ -398,7 +398,7 @@ public class DungeonManager : MonoBehaviour
         treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
 
         // UI에 플레이어의 악명 점수를 업데이트합니다.
-        evilPointText.text = player.Infamy.ToString();
+        infamyText.text = player.Infamy.ToString();
 
         // UI에 플레이어의 골드를 업데이트합니다.
         goldText.text = player.Gold.ToString();
