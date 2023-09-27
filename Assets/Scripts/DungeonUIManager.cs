@@ -52,7 +52,7 @@ public class DungeonUIManager : MonoBehaviour
     private int selectedRoomNumber = 0;
 
     // 선택된 몬스터 스포너 위치
-    private int selectedPosition = -1;
+    public int selectedPosition = -1;
 
     // 선택된 몬스터
     private Character selectedMonster;

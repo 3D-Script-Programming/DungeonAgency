@@ -18,9 +18,22 @@ public class DungeonManager : MonoBehaviour
 
     private void Start()
     {
+        intialize();
+
         UIManager.InstantiateItems();
         // 배경음악을 설정합니다.
         GameManager.s_Instance.SetMusic(backgroundSound);
+    }
+
+    private void intialize()
+    {
+        DungeonRoom room = GameManager.s_Instance.player.GetRoom(0);
+        // 0 번룸 몬스터 스폰
+        for (int i = 0; i < 6; i++)
+        {
+            Character monster = room.Monsters[i];
+            SpawnMonster(monster, i);
+        }
     }
 
     // SetMonsterSpawnerColor 함수는 몬스터 스포너의 색상을 설정합니다.
@@ -86,6 +99,8 @@ public class DungeonManager : MonoBehaviour
             // 몬스터를 활성화합니다.
             spawnUnit.SetActive(true);
         }
+        SetMonsterSpawnerColor(selectedPosition, new Color(255, 255, 255));
+        UIManager.selectedPosition = -1;
     }
 
     // ChangeRoom 함수는 현재 룸을 변경하는 함수입니다.

@@ -32,7 +32,7 @@ public class ManageListItemController : MonoBehaviour
             natureHolder.GetComponent<Image>().sprite = Resources.Load("UI/slider_skill_frame_green", typeof(Sprite)) as Sprite;
         }
 
-        nameText.text = monster.Nature.ToString();
+        nameText.text = monster.Name.ToString();
         levelText.text = monster.Level.ToString();
         strText.text = monster.Strength.ToString();
         balText.text = monster.Balance.ToString();
