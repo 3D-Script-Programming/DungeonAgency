@@ -7,12 +7,38 @@ using TMPro;
 
 public class ManageListItemController : MonoBehaviour
 {
-    public TextMeshProUGUI nameText, levelText, strText, balText, vtpText, cpText, positionText;
+    public TextMeshProUGUI nameText, levelText, strText, balText, vtpText, cpText;
+    public Button listItem;
+    public GameObject checkOnImage;
+    public GameObject checkOffImage;
     public GameObject natureHolder;
     public GameObject natureIcon;
 
     private DungeonManager dungeonManager;
-    private Character monster;
+    public Character monster;
+
+    private void Start()
+    {
+        ApplyEvents();
+    }
+
+    private void Update()
+    {
+        if (monster != null)
+        {
+            // 몬스터가 룸에 배치되어 있지 않으면
+            if (monster.CurrentRoomNumber == -1)
+                DeactivateMonsterCheck();
+            // 몬스터가 룸에 배치되어 있다면
+            else
+                ActivateMonsterCheck();
+        }
+    }
+
+    void ApplyEvents()
+    {
+        listItem.onClick.AddListener(OnClickListItem);
+    }
 
     public void SetText(Character monster)
     {
@@ -41,7 +67,7 @@ public class ManageListItemController : MonoBehaviour
         this.monster = monster;
     }
 
-    public void OnClickItem()
+    public void OnClickListItem()
     {
         dungeonManager.UIManager.OnClickListItem(monster);
     }
@@ -50,5 +76,17 @@ public class ManageListItemController : MonoBehaviour
     public void SetDungeonManager(DungeonManager dungeonManager)
     {
         this.dungeonManager = dungeonManager;
+    }
+
+    public void ActivateMonsterCheck()
+    {
+        checkOnImage.SetActive(true);
+        checkOffImage.SetActive(false);
+    }
+
+    public void DeactivateMonsterCheck()
+    {
+        checkOnImage.SetActive(false);
+        checkOffImage.SetActive(true);
     }
 }
