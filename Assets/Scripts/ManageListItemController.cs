@@ -14,11 +14,6 @@ public class ManageListItemController : MonoBehaviour
     private DungeonManager dungeonManager;
     private Character monster;
 
-    void Start()
-    {
-        dungeonManager = GameObject.Find("Dungeon Manager").GetComponent<DungeonManager>();
-    }
-
     public void SetText(Character monster)
     {
         if (monster.Nature == Nature.FIRE)
@@ -48,7 +43,12 @@ public class ManageListItemController : MonoBehaviour
 
     public void OnClickItem()
     {
-        Console.WriteLine("OnClickItem 실행되니?");
-        dungeonManager.OnClickListItem(monster);
+        dungeonManager.UIManager.OnClickListItem(monster);
+    }
+
+    // MarketManager 스크립트 참조 설정
+    public void SetDungeonManager(DungeonManager dungeonManager)
+    {
+        this.dungeonManager = dungeonManager;
     }
 }
