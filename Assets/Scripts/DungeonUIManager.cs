@@ -9,7 +9,7 @@ public class DungeonUIManager : MonoBehaviour
     public DungeonManager Manager { get; private set; }
 
     // 몬스터 스포너 위치에 대응하는 UI 버튼
-    public List<Button> monsterSpawnButtons = new List<Button>(6);
+    public List<Button> monsterSpawnButtons;
 
     // 왕관 및 보물 버튼과 체크 아이콘 게임 오브젝트
     public Button crownButton;
@@ -20,9 +20,11 @@ public class DungeonUIManager : MonoBehaviour
     // 방 이동 버튼 및 홈, 플레이, 마켓 버튼
     public Button prevRoomButton;
     public Button nextRoomButton;
-    public Button homeButton;
+    public Button mainButton;
     public Button playButton;
     public Button marketButton;
+    public Button settingButton;
+    public Slider soundSliderBar;
 
     // 현재 방 번호를 표시하는 텍스트
     public TextMeshProUGUI roomNumberText;
@@ -36,8 +38,15 @@ public class DungeonUIManager : MonoBehaviour
     public TextMeshProUGUI goldText;
 
     // 경고창 : 배치된 몬스터가 없음, 몬스터가 이미 배치되어 있음
+    public GameObject popupSetting;
     public GameObject popupWarning;
     public GameObject popupAlreadyMonsterInRoom;
+    public Button YesButton;
+    public Button NoButton;
+
+    // 팝업 닫기 버튼
+    public Button settingCloseButton;
+    public Button warningCloseButton;
 
     // 선택된 던전 룸 번호
     private int selectedRoomNumber = 0;
@@ -102,15 +111,17 @@ public class DungeonUIManager : MonoBehaviour
         // 몬스터 스포너 버튼에 대한 이벤트 리스너를 등록합니다.
         for (int i = 0; i < 6; i++)
         {
+            int index = i; // 인덱스를 복제하여 클로저 변수로 사용합니다.
+
             // 람다 표현식을 사용하여 몬스터 스포너 버튼 클릭 이벤트를 설정합니다.
-            monsterSpawnButtons[i].onClick.AddListener(() => OnClickSpawner(i));
+            monsterSpawnButtons[i].onClick.AddListener(() => OnClickSpawner(index));
         }
 
         // 홈으로 이동하는 버튼에 대한 이벤트 리스너를 등록합니다.
-        homeButton.onClick.AddListener(() => GameManager.MoveScene("MainScene"));
+        mainButton.onClick.AddListener(OnClickMainButton);
 
         // 시장으로 이동하는 버튼에 대한 이벤트 리스너를 등록합니다.
-        marketButton.onClick.AddListener(() => GameManager.MoveScene("MarketScene"));
+        marketButton.onClick.AddListener(OnClickMarketButton);
 
         // 전투 화면으로 이동하는 버튼에 대한 이벤트 리스너를 등록합니다.
         playButton.onClick.AddListener(OnClickPlayButton);
@@ -121,11 +132,19 @@ public class DungeonUIManager : MonoBehaviour
         // 다음 룸으로 이동하는 버튼에 대한 이벤트 리스너를 등록합니다.
         nextRoomButton.onClick.AddListener(OnClickNextRoomButton);
 
+        settingButton.onClick.AddListener(OnClickSettingButton);
+
         // 왕관 아이템 버튼에 대한 이벤트 리스너를 등록합니다.
         crownButton.onClick.AddListener(OnClickCrown);
 
         // 보물 아이템 버튼에 대한 이벤트 리스너를 등록합니다.
         treasureButton.onClick.AddListener(OnClickTreasure);
+
+        settingCloseButton.onClick.AddListener(OnClickSettingCloseButton);
+        warningCloseButton.onClick.AddListener(OnClickWarningCloseButton);
+
+        YesButton.onClick.AddListener(OnClickReplaceButton);
+        NoButton.onClick.AddListener(OnClickCancelButton);
     }
 
     // OnClickSpawner 함수는 몬스터 스포너 버튼을 클릭했을 때 호출됩니다.
@@ -134,6 +153,8 @@ public class DungeonUIManager : MonoBehaviour
     //   selected: 클릭된 몬스터 스포너의 인덱스
     void OnClickSpawner(int selected)
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+
         // 이미 선택된 몬스터 스포너라면 선택을 해제하고 함수를 종료합니다.
         if (this.selectedPosition == selected)
         {
@@ -148,6 +169,20 @@ public class DungeonUIManager : MonoBehaviour
         // 선택한 몬스터 스포너의 인덱스를 저장하고 해당 몬스터 스포너의 색상을 빨간색으로 변경합니다.
         this.selectedPosition = selected;
         Manager.SetMonsterSpawnerColor(selected, new Color(255, 0, 0));
+    }
+
+    // 메인 버튼 클릭 시 호출되는 메서드
+    private void OnClickMainButton()
+    {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.MoveScene("MainScene"); // 메인 씬으로 이동
+    }
+
+    // 메인 버튼 클릭 시 호출되는 메서드
+    private void OnClickMarketButton()
+    {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.MoveScene("MarketScene"); // 마켓 씬으로 이동
     }
 
     // Play 버튼 클릭 시 호출되는 메서드입니다.
@@ -175,12 +210,14 @@ public class DungeonUIManager : MonoBehaviour
     //   monster: 클릭된 몬스터 아이템에 해당하는 Character 객체
     public void OnClickListItem(Character monster)
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+
         // 선택된 몬스터 스포너 위치가 없으면 함수를 종료합니다.
         if (selectedPosition == -1)
             return;
 
         // 선택한 몬스터 스포너 위치에 이미 몬스터가 배치되어 있는지 확인
-        if (monster.IsPlacedInRoom)
+        if (monster.CurrentRoomNumber != -1)
         {
             // 이미 배치된 몬스터라면 경고창을 띄웁니다.
             popupAlreadyMonsterInRoom.SetActive(true);
@@ -198,10 +235,23 @@ public class DungeonUIManager : MonoBehaviour
     // 몬스터를 이전 배치에서 새로운 배치로 옮깁니다.
     public void OnClickReplaceButton()
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+
         if (selectedMonster != null)
         {
-            // 이미 배치된 몬스터를 제거하고 새 몬스터를 배치합니다.
-            Manager.RemovePreviousMonster(selectedMonster, selectedRoom);
+            // 몬스터를 제거합니다.
+            if (selectedMonster.CurrentRoomNumber == selectedRoom.RoomNumber)
+            {
+                // 이미 배치된 몬스터를 제거하고 새 몬스터를 배치합니다.
+                Manager.RemovePreviousMonster(selectedMonster, selectedRoom);
+                selectedRoom.RemoveMonster(selectedMonster);
+            }
+            else
+            {
+                DungeonRoom targetMonsterRoom = GameManager.s_Instance.player.GetRoom(selectedMonster.CurrentRoomNumber);
+                targetMonsterRoom.RemoveMonster(selectedMonster);
+            }
+            // 몬스터를 다시 배치하고 생성합니다.
             selectedRoom.PlaceMonster(selectedPosition, selectedMonster);
             Manager.SpawnMonster(selectedMonster, selectedPosition);
         }
@@ -213,6 +263,7 @@ public class DungeonUIManager : MonoBehaviour
     // 경고창을 닫습니다. 
     public void OnClickCancelButton()
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
         selectedMonster = null;
         popupAlreadyMonsterInRoom.SetActive(false); // 경고창 닫기
     }
@@ -221,6 +272,7 @@ public class DungeonUIManager : MonoBehaviour
     // 왕관 아이템을 사용하거나 사용 취소하고 UI를 업데이트합니다.
     public void OnClickCrown()
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
         // 왕관 아이템 체크 아이콘이 활성화되어 있다면, 아이템 사용을 취소하고 아이콘을 비활성화합니다.
         if (crownCheckIcon.activeSelf)
         {
@@ -248,6 +300,7 @@ public class DungeonUIManager : MonoBehaviour
     // 보물 아이템을 사용하거나 사용 취소하고 UI를 업데이트합니다.
     public void OnClickTreasure()
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
         // 보물 아이템 체크 아이콘이 활성화되어 있다면, 아이템 사용을 취소하고 아이콘을 비활성화합니다.
         if (treasureCheckIcon.activeSelf)
         {
@@ -275,6 +328,8 @@ public class DungeonUIManager : MonoBehaviour
     // 선택된 던전 룸 번호를 이전 번호로 갱신하고, UI를 업데이트하며 해당 룸의 정보로 변경합니다.
     public void OnClickPrevRoomButton()
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+
         // 이전 룸 번호를 계산하고 선택된 던전 룸을 변경합니다.
         selectedRoomNumber = (selectedRoomNumber - 1 + player.GetRoomCount()) % player.GetRoomCount();
         selectedRoom = player.GetRoom(selectedRoomNumber);
@@ -294,6 +349,8 @@ public class DungeonUIManager : MonoBehaviour
     // 선택된 던전 룸 번호를 다음 번호로 갱신하고, UI를 업데이트하며 해당 룸의 정보로 변경합니다.
     public void OnClickNextRoomButton()
     {
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+
         // 다음 룸 번호를 계산하고 선택된 던전 룸을 변경합니다.
         selectedRoomNumber = (selectedRoomNumber + 1) % player.GetRoomCount();
         selectedRoom = player.GetRoom(selectedRoomNumber);
@@ -306,6 +363,31 @@ public class DungeonUIManager : MonoBehaviour
         Manager.ChangeRoom(selectedRoom);
         // 선택된 몬스터 스포너 위치 초기화 (-1로 설정)
         this.selectedPosition = -1;
+    }
+
+    // Setting 버튼 클릭 시 호출되는 메서드입니다.
+    private void OnClickSettingButton()
+    {
+        // Setting 버튼 클릭 시 처리
+        GameManager.s_Instance.PlayButtonSound();
+        popupSetting.SetActive(true);
+        soundSliderBar.onValueChanged.AddListener((value) => GameManager.s_Instance.ChangeVolume(value));
+    }
+
+    // Setting 팝업의 닫기 버튼 클릭 시 호출되는 메서드입니다.
+    private void OnClickSettingCloseButton()
+    {
+        // Setting 팝업 닫기 버튼 클릭 시 처리
+        GameManager.s_Instance.PlayButtonSound();
+        popupSetting.SetActive(false);
+    }
+
+    // Warning 팝업의 닫기 버튼 클릭 시 호출되는 메서드입니다.
+    private void OnClickWarningCloseButton()
+    {
+        // Warning 팝업 닫기 버튼 클릭 시 처리
+        GameManager.s_Instance.PlayButtonSound();
+        popupWarning.SetActive(false);
     }
 
     public void InstantiateItems()

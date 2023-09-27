@@ -17,8 +17,8 @@ public class Character
     public int Potential { get; private set; }
     public string Name { get; private set; }
 
-    // 이 몬스터가 현재 던전 방에 배치되었는지 여부를 나타내는 프로퍼티
-    public bool IsPlacedInRoom { get; private set; }
+    // 현재 배치된 룸 넘버 : -1은 배치되어 있지 않음.
+    public int CurrentRoomNumber { get; private set; }
 
     // 보스 상태 및 일반 상태에서의 능력치 배율을 상수로 정의
     private const float BossMultiplier = 4.0f;
@@ -32,7 +32,7 @@ public class Character
     public Character(string name, string prefabPath, int strength, int balance, int vitality, int potential, Nature nature)
     {
         Name = name;
-        IsPlacedInRoom = false;
+        CurrentRoomNumber = -1;
         Level = 1;
         Exp = 0;
         Strength = strength;
@@ -176,14 +176,14 @@ public class Character
     }
 
     // 몬스터를 특정 던전 방에 배치하는 메서드
-    public void PlaceInRoom()
+    public void PlaceInRoom(int roomNumber)
     {
-        IsPlacedInRoom = true;
+        CurrentRoomNumber = roomNumber;
     }
 
     // 몬스터를 던전 방에서 제거하는 메서드
     public void RemoveFromRoom()
     {
-        IsPlacedInRoom = false;
+        CurrentRoomNumber = -1;
     }
 }

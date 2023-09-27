@@ -7,7 +7,7 @@ public class DungeonManager : MonoBehaviour
     public DungeonUIManager UIManager { get; private set; }
 
     // 몬스터 스포너 오브젝트 배열
-    public List<GameObject> monsterSpawners = new List<GameObject>(6);
+    public List<GameObject> monsterSpawners;
 
     public AudioClip backgroundSound;
 
@@ -30,8 +30,11 @@ public class DungeonManager : MonoBehaviour
     //   color: 설정할 몬스터 스포너의 색상
     public void SetMonsterSpawnerColor(int index, Color color)
     {
-        // 인덱스에 해당하는 몬스터 스포너 오브젝트의 렌더러 컴포넌트의 색상을 변경합니다.
-        monsterSpawners[index].GetComponent<Renderer>().material.color = color;
+        if (index != -1)
+        {
+            // 인덱스에 해당하는 몬스터 스포너 오브젝트의 렌더러 컴포넌트의 색상을 변경합니다.
+            monsterSpawners[index].GetComponent<Renderer>().material.color = color;
+        }
     }
 
     // ResetMonsterSpawnerColors 함수는 모든 몬스터 스포너의 색상을 흰색으로 초기화 설정합니다.

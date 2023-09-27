@@ -30,9 +30,9 @@ public class Player
         Monsters = new List<Character>();
         dungeon = new List<DungeonRoom>()
         {
-            new DungeonRoom(),
-            new DungeonRoom(),
-            new DungeonRoom()
+            new DungeonRoom(0),
+            new DungeonRoom(1),
+            new DungeonRoom(2)
         };
     }
 
@@ -122,12 +122,6 @@ public class Player
     {
         if (index >= 0 && index < Monsters.Count)
             Monsters.RemoveAt(index);
-    }
-
-    // 던전에 방 추가 메서드
-    public void AddRoom()
-    {
-        dungeon.Add(new DungeonRoom());
     }
 
     // 용사(Enemy) 랭크 계산 메서드
