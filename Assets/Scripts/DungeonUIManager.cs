@@ -154,8 +154,8 @@ public class DungeonUIManager : MonoBehaviour
         // 몬스터 배치 경고창 버튼에 대한 이벤트 리스너를 등록합니다.
         alreadyMonsterYesButton.onClick.AddListener(OnClickReplaceButton);
         alreadyMonsterNoButton.onClick.AddListener(OnClickReplaceCancelButton);
-        removeMonsterYesButton.onClick.AddListener(onClickRemoveButton);
-        removeMonsterNoButton.onClick.AddListener(onClickRemoveCancelButton);
+        removeMonsterYesButton.onClick.AddListener(OnClickRemoveButton);
+        removeMonsterNoButton.onClick.AddListener(OnClickRemoveCancelButton);
 
         // 왕관 아이템 버튼에 대한 이벤트 리스너를 등록합니다.
         crownButton.onClick.AddListener(OnClickCrown);
@@ -472,18 +472,18 @@ public class DungeonUIManager : MonoBehaviour
         popupWarning.SetActive(false); // 팝업창 비활성화
     }
 
-    // onClickRemoveButton 함수는 룸에 배치된 몬스터를 제거할때 호출되는 함수입니다.
+    // OnClickRemoveButton 함수는 룸에 배치된 몬스터를 제거할때 호출되는 함수입니다.
     // Remove 팝업창이 활성화 될때 Yes 버튼을 클릭할 경우 몬스터를 제거합니다.
-    private void onClickRemoveButton()
+    private void OnClickRemoveButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
         Manager.RemoveSpawnMonster(selectedPosition); // DungeonManager에 있는 RemoveSpawnMonster() 함수 호출
         popupRemoveMonster.SetActive(false); // 팝업창을 비활성화 합니다.
     }
 
-    // onClickRemoveCancelButton 함수는 몬스터 제거를 취소할때 호출되는 함수입니다.
+    // OnClickRemoveCancelButton 함수는 몬스터 제거를 취소할때 호출되는 함수입니다.
     // Remove 팝업창이 활성화 될때 No 버튼을 클릭할 경우 몬스터 제거를 취소합니다.
-    private void onClickRemoveCancelButton()
+    private void OnClickRemoveCancelButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
         selectedPosition = -1; // 선택된 위치 초기화
