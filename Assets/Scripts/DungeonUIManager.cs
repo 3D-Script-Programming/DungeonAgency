@@ -68,13 +68,17 @@ public class DungeonUIManager : MonoBehaviour
     // 던전 룸 객체 
     public DungeonRoom selectedRoom;
 
+    // 몬스터 리스트를 생성할 위치
     public Transform scrollViewContent;
 
+    // Player 정보를 불러올 객체 
     private Player player;
 
     private void Awake()
     {
+        // DungeonManager 컴포넌트를 가져와서 Manager에 할당
         Manager = gameObject.GetComponent<DungeonManager>();
+        // GameManager 클래스에 있는 Player 정보 할당
         player = GameManager.s_Instance.player;
     }
 
@@ -140,22 +144,24 @@ public class DungeonUIManager : MonoBehaviour
         // 다음 룸으로 이동하는 버튼에 대한 이벤트 리스너를 등록합니다.
         nextRoomButton.onClick.AddListener(OnClickNextRoomButton);
 
+        // 셋팅 버튼에 대한 이벤트 리스너를 등록합니다.
         settingButton.onClick.AddListener(OnClickSettingButton);
+        settingCloseButton.onClick.AddListener(OnClickSettingCloseButton);
+
+        // 경고창 팝업을 닫는 버튼에 대한 이벤트 리스너를 등록합니다.
+        warningCloseButton.onClick.AddListener(OnClickWarningCloseButton);
+
+        // 몬스터 배치 경고창 버튼에 대한 이벤트 리스너를 등록합니다.
+        alreadyMonsterYesButton.onClick.AddListener(OnClickReplaceButton);
+        alreadyMonsterNoButton.onClick.AddListener(OnClickReplaceCancelButton);
+        removeMonsterYesButton.onClick.AddListener(onClickRemoveButton);
+        removeMonsterNoButton.onClick.AddListener(onClickRemoveCancelButton);
 
         // 왕관 아이템 버튼에 대한 이벤트 리스너를 등록합니다.
         crownButton.onClick.AddListener(OnClickCrown);
 
         // 보물 아이템 버튼에 대한 이벤트 리스너를 등록합니다.
         treasureButton.onClick.AddListener(OnClickTreasure);
-
-        settingCloseButton.onClick.AddListener(OnClickSettingCloseButton);
-        warningCloseButton.onClick.AddListener(OnClickWarningCloseButton);
-
-        alreadyMonsterYesButton.onClick.AddListener(OnClickReplaceButton);
-        alreadyMonsterNoButton.onClick.AddListener(OnClickReplaceCancelButton);
-
-        removeMonsterYesButton.onClick.AddListener(onClickRemoveButton);
-        removeMonsterNoButton.onClick.AddListener(onClickRemoveCancelButton);
     }
 
     // OnClickSpawner 함수는 몬스터 스포너 버튼을 클릭했을 때 호출됩니다.
@@ -212,8 +218,7 @@ public class DungeonUIManager : MonoBehaviour
     // Play 버튼 클릭 시 호출되는 메서드입니다.
     private void OnClickPlayButton()
     {
-        // Play 버튼 클릭 시 처리
-        GameManager.s_Instance.PlayButtonSound();
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
 
         // 팝업 관련 처리
         if (player.NotReadyForBattle())
@@ -288,30 +293,43 @@ public class DungeonUIManager : MonoBehaviour
         selectedMonster = null;
     }
 
+    // SwapMonsters 함수는 두 몬스터의 룸 배치를 교체할때 호출됩니다.
+    // 두 몬스터의 위치를 변경합니다.
+    // Parameters:
+    //   monster1: 위치를 변경할 몬스터 객체
+    //   monster2: 위치를 변경할 몬스터 객체
     private void SwapMonsters(Character monster1, Character monster2)
     {
+        // 몬스터들이 배치된 룸 정보를 불러옵니다.
         DungeonRoom room1 = player.GetRoom(monster1.CurrentRoomNumber);
         DungeonRoom room2 = player.GetRoom(monster2.CurrentRoomNumber);
+        // 몬스터들이 룸에 위치한 번호를 불러옵니다.
         int position1 = room1.GetMonsterPosition(monster1);
         int position2 = room2.GetMonsterPosition(monster2);
 
-        // 기존 몬스터를 제거합니다.
+        // 스폰되어 있는 두 몬스터 오브젝트를 제거합니다.
         Manager.RemovePreviousMonster(monster1, room1);
         Manager.RemovePreviousMonster(monster2, room2);
 
-        // 새로운 몬스터를 룸에 배치합니다.
+        // 몬스터를 던전 룸에 다시 배치합니다.
         room1.PlaceMonster(position1, monster2);
         room2.PlaceMonster(position2, monster1);
 
+        // 두 몬스터가 같은 룸에 있었을 경우 : selectedRoom과 동일합니다.
         if (room1.RoomNumber == room2.RoomNumber)
         {
+            // 두 몬스터 오브젝트를 스폰합니다.
             Manager.SpawnMonster(monster2, position1);
             Manager.SpawnMonster(monster1, position2);
 
         }
+        // 첫번째 몬스터만 현재 룸에 있는 경우
         else if (selectedRoom.RoomNumber == room1.RoomNumber)
+            // 교체된 위치에 두번째 몬스터 오브젝트를 스폰합니다.
             Manager.SpawnMonster(monster2, position1);
+        // 두번째 몬스터만 현재 룸에 있는 경우
         else
+            // 교체된 위치에 첫번째 몬스터 오브젝트를 스폰합니다.
             Manager.SpawnMonster(monster1, position2);
     }
 
@@ -320,7 +338,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickReplaceCancelButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
-        selectedMonster = null;
+        selectedMonster = null; // 선택된 몬스터 초기화
         popupAlreadyMonsterInRoom.SetActive(false); // 경고창 닫기
     }
 
@@ -329,6 +347,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickCrown()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+
         // 왕관 아이템 체크 아이콘이 활성화되어 있다면, 아이템 사용을 취소하고 아이콘을 비활성화합니다.
         if (crownCheckIcon.activeSelf)
         {
@@ -348,6 +367,7 @@ public class DungeonUIManager : MonoBehaviour
             selectedRoom.PlaceItem(Item.CROWN);
             crownCheckIcon.SetActive(true);
         }
+
         // UI에 왕관 아이템 개수를 업데이트합니다.
         crownCountText.text = player.GetItem(Item.CROWN).ToString();
     }
@@ -357,6 +377,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickTreasure()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+
         // 보물 아이템 체크 아이콘이 활성화되어 있다면, 아이템 사용을 취소하고 아이콘을 비활성화합니다.
         if (treasureCheckIcon.activeSelf)
         {
@@ -376,6 +397,7 @@ public class DungeonUIManager : MonoBehaviour
             selectedRoom.PlaceItem(Item.TREASURE);
             treasureCheckIcon.SetActive(true);
         }
+
         // UI에 보물 아이템 개수를 업데이트합니다.
         treasureCountText.text = player.GetItem(Item.TREASURE).ToString();
     }
@@ -395,6 +417,8 @@ public class DungeonUIManager : MonoBehaviour
 
         // UI를 업데이트하고, 해당 룸의 정보로 변경합니다.
         UpdateUI();
+
+        // DungeonManager에 있는 룸 변경 함수를 호출합니다.
         Manager.ChangeRoom(selectedRoom);
 
         // 선택된 몬스터 스포너 위치 초기화 (-1로 설정)
@@ -416,7 +440,10 @@ public class DungeonUIManager : MonoBehaviour
 
         // UI를 업데이트하고, 해당 룸의 정보로 변경합니다.
         UpdateUI();
+
+        // DungeonManager에 있는 룸 변경 함수를 호출합니다.
         Manager.ChangeRoom(selectedRoom);
+
         // 선택된 몬스터 스포너 위치 초기화 (-1로 설정)
         this.selectedPosition = -1;
     }
@@ -424,47 +451,55 @@ public class DungeonUIManager : MonoBehaviour
     // Setting 버튼 클릭 시 호출되는 메서드입니다.
     private void OnClickSettingButton()
     {
-        // Setting 버튼 클릭 시 처리
-        GameManager.s_Instance.PlayButtonSound();
-        popupSetting.SetActive(true);
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        popupSetting.SetActive(true); // 팝업창 활성화
+
+        // GameManager에 있는 ChangeVolume() 함수를 호출합니다.
         soundSliderBar.onValueChanged.AddListener((value) => GameManager.s_Instance.ChangeVolume(value));
     }
 
     // Setting 팝업의 닫기 버튼 클릭 시 호출되는 메서드입니다.
     private void OnClickSettingCloseButton()
     {
-        // Setting 팝업 닫기 버튼 클릭 시 처리
-        GameManager.s_Instance.PlayButtonSound();
-        popupSetting.SetActive(false);
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        popupSetting.SetActive(false); // 팝업창 비활성화
     }
 
     // Warning 팝업의 닫기 버튼 클릭 시 호출되는 메서드입니다.
     private void OnClickWarningCloseButton()
     {
-        // Warning 팝업 닫기 버튼 클릭 시 처리
-        GameManager.s_Instance.PlayButtonSound();
-        popupWarning.SetActive(false);
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        popupWarning.SetActive(false); // 팝업창 비활성화
     }
 
+    // onClickRemoveButton 함수는 룸에 배치된 몬스터를 제거할때 호출되는 함수입니다.
+    // Remove 팝업창이 활성화 될때 Yes 버튼을 클릭할 경우 몬스터를 제거합니다.
     private void onClickRemoveButton()
     {
-        GameManager.s_Instance.PlayButtonSound();
-        Manager.RemoveSpawnMonster(selectedPosition);
-        popupRemoveMonster.SetActive(false);
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        Manager.RemoveSpawnMonster(selectedPosition); // DungeonManager에 있는 RemoveSpawnMonster() 함수 호출
+        popupRemoveMonster.SetActive(false); // 팝업창을 비활성화 합니다.
     }
 
+    // onClickRemoveCancelButton 함수는 몬스터 제거를 취소할때 호출되는 함수입니다.
+    // Remove 팝업창이 활성화 될때 No 버튼을 클릭할 경우 몬스터 제거를 취소합니다.
     private void onClickRemoveCancelButton()
     {
-        GameManager.s_Instance.PlayButtonSound();
-        selectedPosition = -1;
-        popupRemoveMonster.SetActive(false);
+        GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        selectedPosition = -1; // 선택된 위치 초기화
+        popupRemoveMonster.SetActive(false); // 팝업창을 비활성화 합니다.
     }
 
+
+    // InstantiateItems 함수는 새로운 몬스터 리스트를 생성할 때 호출되는 함수입니다. 
+    // player 객체에 저장되어 있는 몬스터 정보를 가져와서 리스트로 생성해줍니다.
     public void InstantiateItems()
     {
+        // 플레이어 정보를 불러옵니다.
         List<Character> monsters = player.GetMonsterList();
         foreach (Character monster in monsters)
         {
+            // 몬스터 리스트를 생성합니다.
             GameObject listItem = Instantiate(Resources.Load<GameObject>("UI/ManageListItem"), scrollViewContent);
             ManageListItemController listItemController = listItem.GetComponent<ManageListItemController>();
             listItemController.SetText(monster);
