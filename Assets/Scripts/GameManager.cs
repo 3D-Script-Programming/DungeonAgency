@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
         // 플레이어 객체를 생성하고 초기 골드를 설정하여 게임을 시작
         player = new Player();
-        player.AddGold(5000);
+        player.AddGold(10000);
 
         // 배경 음악을 재생
         audioSource.Play();

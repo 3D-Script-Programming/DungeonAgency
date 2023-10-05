@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 
@@ -11,9 +11,13 @@ public class DungeonRoom
     // 아이템 프로퍼티
     public Item Items { get; private set; }
 
+    // 던전 룸 번호 
+    public int RoomNumber { get; private set; }
+
     // 생성자 : 변수 초기화
-    public DungeonRoom()
+    public DungeonRoom(int roomNumber)
     {
+        RoomNumber = roomNumber;
         Monsters = new List<Character>(6);
         for (int i = 0; i < 6; i++)
         {
@@ -27,8 +31,8 @@ public class DungeonRoom
     {
         if (index >= 0 && index <= Monsters.Count)
         {
-            Monsters.Insert(index, monster); // 유효한 인덱스 내에서 몬스터를 추가합니다.
-            Monsters[index].PlaceInRoom(); // 추가한 몬스터를 방에 배치합니다.
+            Monsters[index] = monster; // 유효한 인덱스 내에서 몬스터를 추가합니다.
+            Monsters[index].PlaceInRoom(RoomNumber); // 추가한 몬스터를 방에 배치합니다.
         }
         else
         {
@@ -43,7 +47,7 @@ public class DungeonRoom
         if (index >= 0 && index < Monsters.Count)
         {
             Monsters[index].RemoveFromRoom(); // 해당 몬스터를 방에서 제거합니다.
-            Monsters.RemoveAt(index); // 해당 인덱스의 몬스터를 삭제합니다.
+            Monsters[index] = null; // 해당 인덱스에 몬스터를 null을 넣어줍니다.
         }
         else
         {
@@ -57,7 +61,10 @@ public class DungeonRoom
         if (Monsters.Contains(monster))
         {
             monster.RemoveFromRoom(); // 특정 몬스터를 방에서 제거합니다.
-            Monsters.Remove(monster); // 특정 몬스터를 몬스터 목록에서 제거합니다.
+            int index = Monsters.IndexOf(monster); // 특정 몬스터의 인덱스를 찾습니다.
+
+            // 해당 인덱스에 null을 설정하여 몬스터를 몬스터 목록에서 제거합니다.
+            Monsters[index] = null;
         }
     }
 
@@ -92,6 +99,12 @@ public class DungeonRoom
         }
 
         return true; // 모든 몬스터가 null인 경우 true 반환
+    }
+
+    // 인덱스를 통해 몬스터의 위치를 반환합니다.
+    public int GetMonsterPosition(Character monster)
+    {
+        return Monsters.IndexOf(monster);
     }
 
 }
