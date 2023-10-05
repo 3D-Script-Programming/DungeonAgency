@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +11,7 @@ public class DungeonRoom
     // 아이템 프로퍼티
     public Item Items { get; private set; }
 
+    // 던전 룸 번호 
     public int RoomNumber { get; private set; }
 
     // 생성자 : 변수 초기화
@@ -30,7 +31,7 @@ public class DungeonRoom
     {
         if (index >= 0 && index <= Monsters.Count)
         {
-            Monsters.Insert(index, monster); // 유효한 인덱스 내에서 몬스터를 추가합니다.
+            Monsters[index] = monster; // 유효한 인덱스 내에서 몬스터를 추가합니다.
             Monsters[index].PlaceInRoom(RoomNumber); // 추가한 몬스터를 방에 배치합니다.
         }
         else
@@ -98,6 +99,12 @@ public class DungeonRoom
         }
 
         return true; // 모든 몬스터가 null인 경우 true 반환
+    }
+
+    // 인덱스를 통해 몬스터의 위치를 반환합니다.
+    public int GetMonsterPosition(Character monster)
+    {
+        return Monsters.IndexOf(monster);
     }
 
 }

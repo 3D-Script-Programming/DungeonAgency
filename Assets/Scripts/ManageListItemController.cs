@@ -15,7 +15,7 @@ public class ManageListItemController : MonoBehaviour
     public GameObject natureIcon;
 
     private DungeonManager dungeonManager;
-    public Character monster;
+    public Character Monster { get; private set; }
 
     private void Start()
     {
@@ -24,10 +24,10 @@ public class ManageListItemController : MonoBehaviour
 
     private void Update()
     {
-        if (monster != null)
+        if (Monster != null)
         {
             // 몬스터가 룸에 배치되어 있지 않으면
-            if (monster.CurrentRoomNumber == -1)
+            if (Monster.CurrentRoomNumber == -1)
                 DeactivateMonsterCheck();
             // 몬스터가 룸에 배치되어 있다면
             else
@@ -64,12 +64,12 @@ public class ManageListItemController : MonoBehaviour
         balText.text = monster.Balance.ToString();
         vtpText.text = monster.Vitality.ToString();
         cpText.text = monster.GetCP().ToString();
-        this.monster = monster;
+        this.Monster = monster;
     }
 
     public void OnClickListItem()
     {
-        dungeonManager.UIManager.OnClickListItem(monster);
+        dungeonManager.UIManager.OnClickListItem(Monster);
     }
 
     // MarketManager 스크립트 참조 설정

@@ -5,6 +5,8 @@ public class NonBattleMonsterController : MonoBehaviour
     // 캐릭터 체력 바 객체
     [SerializeField] private GameObject slider;
 
+    public Character MonsterInfo { get; set; }
+
     // 애니메이터 객체
     private Animator animator;
 

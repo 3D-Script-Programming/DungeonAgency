@@ -62,46 +62,99 @@ public class DungeonManager : MonoBehaviour
     // RemovePreviousMonster 함수는 몬스터를 배치할때, Replace를 선택할 경우 호출되는 함수입니다. 
     // 해당하는 몬스터를 찾아서, 오브젝트를 제거해주고, 룸에서 몬스터를 지워줍니다.
     // Parameters:
-    //   monster: 제거할 몬스터 Character 객체
-    public void RemovePreviousMonster(Character monster, DungeonRoom selectedRoom)
+    //   selectedMonster: 제거할 몬스터 Character 객체
+    //   selectedRoom: 몬스터가 존재하는 룸
+    public void RemovePreviousMonster(Character selectedMonster, DungeonRoom selectedRoom)
     {
-        // 이전 몬스터의 GameObject를 찾아서 제거합니다.
-        GameObject monsterObject = GameObject.Find(monster.Name + "(Clone)");
-        if (monsterObject != null)
+        // Monster의 태그를 가진 오브젝트들을 찾습니다.
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+        // 모든 몬스터 오브젝트를 순회하여 UniqueID에 해당하는 몬스터를 제거합니다.
+        foreach (GameObject monster in monsters)
         {
-            Destroy(monsterObject);
+            Character monsterInfo = monster.GetComponent<NonBattleMonsterController>().MonsterInfo;
+            if (monsterInfo.UniqueID == selectedMonster.UniqueID)
+            {
+                Destroy(monster);
+                break;
+            }
         }
 
         // 룸에서 monster를 제거해줍니다.
-        selectedRoom.RemoveMonster(monster);
+        selectedRoom.RemoveMonster(selectedMonster);
     }
 
     // SpawnMonster 함수는 몬스터를 스폰하는 함수입니다.
     // 몬스터를 지정된 위치에 스폰하고 활성화합니다.
     // Parameters:
-    //   monster: 스폰할 몬스터의 Character 객체
-    //   spawnPosition: 몬스터를 스폰할 위치 (Vector3)
-    public void SpawnMonster(Character monster, int selectedPosition)
+    //   selectedMonster: 스폰할 몬스터의 Character 객체
+    //   selectedPosition: 몬스터 스포너 번호
+    public void SpawnMonster(Character selectedMonster, int selectedPosition)
     {
         if (selectedPosition == -1)
             return;
 
-        if (monster != null)
+        if (selectedMonster != null)
         {
-            Vector3 spawnPosition = monsterSpawners[selectedPosition].transform.position;
-            // 몬스터를 스폰합니다.
-            GameObject spawnUnit = Instantiate(monster.Prefab, spawnPosition, Quaternion.identity);
+            Transform spawnTransform = monsterSpawners[selectedPosition].transform;
 
-            // 몬스터 컨트롤러를 비활성화하고 비전투 몬스터 컨트롤러를 활성화합니다.
+            // 자식 오브젝트가 있는지 확인 후 제거
+            foreach (Transform child in spawnTransform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // 몬스터를 스폰합니다.
+            GameObject spawnUnit = Instantiate(selectedMonster.Prefab, spawnTransform.position, Quaternion.identity);
+            spawnUnit.transform.parent = spawnTransform;
+
+            // 몬스터 전투 컨트롤러를 비활성화합니다.
             spawnUnit.GetComponent<MonsterController>().enabled = false;
-            spawnUnit.GetComponent<NonBattleMonsterController>().enabled = true;
+            // 비전투 몬스터 컨트롤러를 활성화하고, Character 정보를 넘겨줍니다.
+            NonBattleMonsterController nonBattleMonsterController = spawnUnit.GetComponent<NonBattleMonsterController>();
+            nonBattleMonsterController.enabled = true;
+            nonBattleMonsterController.MonsterInfo = selectedMonster;
 
             // 몬스터를 활성화합니다.
             spawnUnit.SetActive(true);
         }
+
         SetMonsterSpawnerColor(selectedPosition, new Color(255, 255, 255));
         UIManager.selectedPosition = -1;
     }
+
+    // RemoveSpawnMonsters 함수는 스폰된 몬스터들을 제거하는 함수입니다.
+    // 지정된 위치에 스폰된 몬스터 오브젝트를 제거합니다.
+    // Parameters:
+    //   selectedPosition: 몬스터 스포너 번호
+    public void RemoveSpawnMonster(int selectedPosition)
+    {
+        if (selectedPosition == -1)
+            return;
+
+        GameObject targetObject = monsterSpawners[selectedPosition].transform.GetChild(0).gameObject;
+        if (targetObject != null)
+        {
+            Character targetMonsterInfo = targetObject.GetComponent<NonBattleMonsterController>().MonsterInfo;
+            // 룸에서 monster를 제거해줍니다.
+            UIManager.selectedRoom.RemoveMonster(targetMonsterInfo);
+            Destroy(targetObject);
+        }
+
+        UIManager.selectedPosition = -1;
+    }
+
+    // RemoveSpawnMonsters 함수는 스폰된 몬스터들을 제거하는 함수입니다.
+    // 태그가 "Monster"인 모든 스폰된 몬스터 오브젝트를 제거합니다.
+    public void RemoveSpawnMonsters()
+    {
+        // 스폰된 몬스터들을 제거합니다.
+        foreach (GameObject spawnedMonster in GameObject.FindGameObjectsWithTag("Monster"))
+        {
+            Destroy(spawnedMonster);
+        }
+    }
+
 
     // ChangeRoom 함수는 현재 룸을 변경하는 함수입니다.
     // 이전에 스폰된 몬스터들을 제거하고, 새로운 룸에 있는 몬스터를 스폰합니다.
@@ -121,16 +174,5 @@ public class DungeonManager : MonoBehaviour
 
         // 모든 몬스터 스포너의 색상을 초기화 (흰색으로 변경)
         ResetMonsterSpawnerColors();
-    }
-
-    // RemoveSpawnMonsters 함수는 스폰된 몬스터들을 제거하는 함수입니다.
-    // 태그가 "Monster"인 모든 스폰된 몬스터 오브젝트를 제거합니다.
-    public void RemoveSpawnMonsters()
-    {
-        // 스폰된 몬스터들을 제거합니다.
-        foreach (GameObject spawnedMonster in GameObject.FindGameObjectsWithTag("Monster"))
-        {
-            Destroy(spawnedMonster);
-        }
     }
 }
