@@ -2,30 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeroController : MonoBehaviour
+public class HeroController : CharacterActions
 {
-    private BattleManager battleManager;
-    private Character character;
-    private Vector3 startPosition;
-    private bool actionStarted = false;
-    private float animateSpeed = 20;
-    private bool isDead = false;
-    private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
-    private AudioSource audioPlayer;
-
-    public CharacterState currentState;
-    public GameObject targetObject;
-    public AnimatorController animatorController;
-    public Slider healthSlider;
-    public AudioClip deathSound;
-    public AudioClip hitSound;
 
     private void Start()
     {
-        animatorController = new AnimatorController(GetComponent<Animator>());
-        battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         currentState = CharacterState.READY;
-        audioPlayer = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -41,7 +23,7 @@ public class HeroController : MonoBehaviour
                 case (CharacterState.TURNCHECK):
                     if (battleManager.Turn == 1)
                     {
-                        if (spawnNumber == battleManager.heroNumber[0])
+                        if (SpawnNumber == battleManager.heroNumber[0])
                         {
                             battleManager.CollectActions(gameObject);
                             currentState = CharacterState.WAITING;
@@ -69,7 +51,7 @@ public class HeroController : MonoBehaviour
         animatorController.StopMove();
 
         yield return new WaitForSeconds(1f);
-        if (spawnNumber == battleManager.heroesInBattle.Count - 1)
+        if (SpawnNumber == battleManager.heroesInBattle.Count - 1)
         {
             battleManager.GetReady();
         }
@@ -89,7 +71,7 @@ public class HeroController : MonoBehaviour
         animatorController.MoveFoward();
         while (MoveTowardEnemy()) { yield return null; }
 
-        // TODO: attack 애니메이션 실행
+        // 공격 이펙트 실행과 데미지 계산
         int damage = character.GetDamage();
         if (damage == character.GetMaxDamage())
             animatorController.Critical();
@@ -106,15 +88,16 @@ public class HeroController : MonoBehaviour
 
         target.GetCharacter().GetHit(damage);
         target.healthSlider.value = target.GetCharacter().HP;
-        audioPlayer.PlayOneShot(hitSound);
+        audioSource.PlayOneShot(hitSound);
 
         if (target.GetCharacter().HP == 0)
         {
             target.animatorController.Die();
-            audioPlayer.PlayOneShot(target.deathSound);
-            target.SetIsDead(true);
+            audioSource.PlayOneShot(target.deathSound);
+            target.IsDead = true;
+
             battleManager.monsterInBattle.Remove(targetObject);
-            battleManager.monsterNumber.Remove(target.GetSpawnNumber());
+            battleManager.monsterNumber.Remove(target.SpawnNumber);
             battleManager.monsterCps.Remove(target.GetCharacter().GetCP());
         }
         else
@@ -137,55 +120,18 @@ public class HeroController : MonoBehaviour
         actionStarted = false;
 
         // performList를 Wait로 reset
-        battleManager.battleStates = BattleManager.PerformAction.WAIT;
-    }
-
-    private bool MoveTowardEnemy()
-    {
-        Vector3 enemyPosition =
-                    new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetObject.transform.position.z + 2.5f);
-        return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, animateSpeed * Time.deltaTime));
-    }
-
-    private bool MoveToStartPosition()
-    {
-        return startPosition != (transform.position = Vector3.MoveTowards(transform.position, startPosition, animateSpeed * Time.deltaTime));
-    }
-
-    public Character GetCharacter()
-    {
-        return character;
-    }
-
-    public void SetCharacter(Character character)
-    {
-        this.character = character;
-        healthSlider.maxValue = character.GetMaxHP();
-        healthSlider.value = character.HP;
-    }
-
-    public bool GetIsDead()
-    {
-        return isDead;
-    }
-
-    public void SetIsDead(bool value)
-    {
-        isDead = value;
-    }
-
-    public int GetSpawnNumber()
-    {
-        return spawnNumber;
-    }
-
-    public void SetSpawnNumber(int value)
-    {
-        spawnNumber = value;
+        battleManager.battleStates = BattleState.WAIT;
     }
 
     public void SetStartPosition(Vector3 startPosition)
     {
         this.startPosition = startPosition;
+    }
+
+    private bool MoveTowardEnemy()
+    {
+        Vector3 enemyPosition =
+            new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetObject.transform.position.z + 2.5f);
+        return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, moveSpeed * Time.deltaTime));
     }
 }

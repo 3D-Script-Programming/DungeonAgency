@@ -4,31 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class MonsterController : MonoBehaviour
+public class MonsterController : CharacterActions
 {
-    private BattleManager battleManager;
-    private Character character;
-    private Vector3 startPosition;
-    private bool actionStarted = false;
-    private float animateSpeed = 20;
-    private bool isDead = false;
-    private int spawnNumber; // 생성된 위치 넘버: 012 전열 345 후열
-    private AudioSource audioPlayer;
-
-    public CharacterState currentState;
-    public GameObject targetObject;
-    public AnimatorController animatorController;
-    public Slider healthSlider;
-    public AudioClip deathSound;
-    public AudioClip hitSound;
 
     private void Start()
     {
-        animatorController = new AnimatorController(GetComponent<Animator>());
-        battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
         startPosition = transform.position;
         currentState = CharacterState.TURNCHECK;
-        audioPlayer = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -40,7 +22,7 @@ public class MonsterController : MonoBehaviour
                 case (CharacterState.TURNCHECK):
                     if (battleManager.Turn == 0)
                     {
-                        if (spawnNumber == battleManager.monsterNumber[0])
+                        if (SpawnNumber == battleManager.monsterNumber[0])
                         {
                             battleManager.CollectActions(gameObject);
                             currentState = CharacterState.WAITING;
@@ -87,15 +69,16 @@ public class MonsterController : MonoBehaviour
 
         target.GetCharacter().GetHit(damage);
         target.healthSlider.value = target.GetCharacter().HP;
-        audioPlayer.PlayOneShot(hitSound);
+        audioSource.PlayOneShot(hitSound);
 
         if (target.GetCharacter().HP == 0)
         {
             target.animatorController.Die();
-            audioPlayer.PlayOneShot(target.deathSound);
-            target.SetIsDead(true);
+            audioSource.PlayOneShot(target.deathSound);
+            target.IsDead = true;
+
             battleManager.heroesInBattle.Remove(targetObject);
-            battleManager.heroNumber.Remove(target.GetSpawnNumber());
+            battleManager.heroNumber.Remove(target.SpawnNumber);
             battleManager.heroCps.Remove(target.GetCharacter().GetCP());
 
         }
@@ -121,50 +104,13 @@ public class MonsterController : MonoBehaviour
         actionStarted = false;
 
         // performList를 Wait로 reset
-        battleManager.battleStates = BattleManager.PerformAction.WAIT;
+        battleManager.battleStates = BattleState.WAIT;
     }
 
     private bool MoveTowardEnemy()
     {
         Vector3 enemyPosition =
             new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetObject.transform.position.z - 2.5f);
-        return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, animateSpeed * Time.deltaTime));
-    }
-
-    private bool MoveToStartPosition()
-    {
-        return startPosition != (transform.position = Vector3.MoveTowards(transform.position, startPosition, animateSpeed * Time.deltaTime));
-    }
-
-    public Character GetCharacter()
-    {
-        return character;
-    }
-
-    public void SetCharacter(Character character)
-    {
-        this.character = character;
-        healthSlider.maxValue = character.GetMaxHP();
-        healthSlider.value = character.HP;
-    }
-
-    public bool GetIsDead()
-    {
-        return isDead;
-    }
-
-    public void SetIsDead(bool value)
-    {
-        isDead = value;
-    }
-
-    public int GetSpawnNumber()
-    {
-        return spawnNumber;
-    }
-
-    public void SetSpawnNumber(int value)
-    {
-        spawnNumber = value;
+        return enemyPosition != (transform.position = Vector3.MoveTowards(transform.position, enemyPosition, moveSpeed * Time.deltaTime));
     }
 }
