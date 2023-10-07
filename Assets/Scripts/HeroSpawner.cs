@@ -1,39 +1,41 @@
-﻿using UnityEngine;
-using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class HeroSpawner : MonoBehaviour
 {
+    [SerializeField]
+    private BattleManager battleManager;
+
     private static readonly float[,] POSITIONS = new float[,] {
         { 3, -6.5f, 3 }, { 0, -6.5f, 3 }, { -3, -6.5f, 3 },
         { 3, -6.5f, 6 }, { 0, -6.5f, 6 }, { -3, -6.5f, 6 },
     };
 
-    private Character[] heroes;
-
-    public int locationNumber; // 012 전열 345 후열 
-    BattleManager battleManager;
+    public List<Character> Heros { get; set; }
 
     void OnEnable()
     {
-        battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
-
-        for (locationNumber = 0; locationNumber < 6; locationNumber++)
+        for (int locationNumber = 0; locationNumber < 6; locationNumber++)
         {
-            if (heroes[locationNumber] == null) continue;
-            if (heroes[locationNumber].HP == 0)
+            if (Heros[locationNumber] == null) continue;
+            if (Heros[locationNumber].HP == 0)
             {
-                heroes[locationNumber] = null;
+                Heros[locationNumber] = null;
             }
             else
             {
                 Vector3 startPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
-                Character spawnCharacter = heroes[locationNumber];
+                Character spawnCharacter = Heros[locationNumber];
                 GameObject prefab = spawnCharacter.Prefab;
                 GameObject spawnUnit = Instantiate(prefab, transform.position, Quaternion.Euler(0, 180, 0));
-                spawnUnit.GetComponent<HeroController>().SetCharacter(spawnCharacter);
-                spawnUnit.GetComponent<HeroController>().SetSpawnNumber(locationNumber);
-                spawnUnit.GetComponent<HeroController>().SetStartPosition(startPosition);
-                spawnUnit.GetComponent<HeroController>().gameObject.SetActive(true);
+                HeroController heroController = spawnUnit.GetComponent<HeroController>();
+                heroController.SetCharacter(spawnCharacter);
+                heroController.SetBattleManager(battleManager);
+                heroController.SpawnNumber = locationNumber;
+                heroController.SetStartPosition(startPosition);
+                heroController.gameObject.SetActive(true);
+
                 battleManager.heroesInBattle.Add(spawnUnit);
                 battleManager.heroNumber.Add(locationNumber);
                 battleManager.heroNumber.Sort();
@@ -42,15 +44,5 @@ public class HeroSpawner : MonoBehaviour
             }
         }
         battleManager.reloadHeroLock = false;
-    }
-
-    public Character[] GetHeroes()
-    {
-        return heroes;
-    }
-
-    public void SetHeroes(Character[] value)
-    {
-        heroes = value;
     }
 }

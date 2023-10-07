@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class MonsterSpawner : MonoBehaviour
 {
+    [SerializeField]
+    private BattleManager battleManager;
+
     private static readonly float[,] POSITIONS = new float[,] {
         { 3, -6.5f, -3 }, { 0, -6.5f, -3 }, { -3, -6.5f, -3 },
         { 3, -6.5f, -6 }, { 0, -6.5f, -6 }, { -3, -6.5f, -6 },
     };
 
-    private int locationNumber; // 012 전열 345 후열
-    private List<Character> monsters = new List<Character>(6);
-
-    BattleManager battleManager;
+    public List<Character> Monsters { get; set; }
 
     void OnEnable()
     {
-        for (locationNumber = 0; locationNumber < 6; locationNumber++)
+        for (int locationNumber = 0; locationNumber < 6; locationNumber++)
         {
-            if (monsters[locationNumber] != null)
+            if (Monsters[locationNumber] != null)
             {
-                Character spawnCharacter = monsters[locationNumber];
+                Character spawnCharacter = Monsters[locationNumber];
                 GameObject prefab = spawnCharacter.Prefab;
                 spawnCharacter.SetResetHp();
 
                 Vector3 spawnPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
                 GameObject spawnUnit = Instantiate(prefab, spawnPosition, Quaternion.identity);
-                spawnUnit.GetComponent<MonsterController>().SetCharacter(spawnCharacter);
-                spawnUnit.GetComponent<MonsterController>().SetSpawnNumber(locationNumber);
-                spawnUnit.GetComponent<MonsterController>().gameObject.SetActive(true);
+                MonsterController monsterController = spawnUnit.GetComponent<MonsterController>();
+                monsterController.SetCharacter(spawnCharacter);
+                monsterController.SetBattleManager(battleManager);
+                monsterController.SpawnNumber = locationNumber;
+                monsterController.gameObject.SetActive(true);
 
-                battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
                 battleManager.monsterInBattle.Add(spawnUnit);
                 battleManager.monsterNumber.Add(locationNumber);
                 battleManager.monsterNumber.Sort();
@@ -39,15 +40,5 @@ public class MonsterSpawner : MonoBehaviour
             }
         }
         battleManager.reloadMonsterLock = false;
-    }
-
-    public List<Character> GetMonster()
-    {
-        return monsters;
-    }
-
-    public void SetMonster(List<Character> value)
-    {
-        monsters = value;
     }
 }
