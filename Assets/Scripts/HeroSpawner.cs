@@ -40,7 +40,6 @@ public class HeroSpawner : MonoBehaviour
                 battleManager.heroNumber.Add(locationNumber);
                 battleManager.heroNumber.Sort();
                 battleManager.heroCps.Add(spawnCharacter.GetCP());
-                battleManager.sumHeroCp += spawnCharacter.GetCP();
             }
         }
         battleManager.reloadHeroLock = false;

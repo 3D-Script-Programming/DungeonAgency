@@ -1071,13 +1071,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a0616b20d03e748a6dadfe42381572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 6428175525184080168}
-  level: {fileID: 4289054304366721484}
-  str: {fileID: 7212934624712996909}
-  bal: {fileID: 8537464243013783474}
-  vtp: {fileID: 296217369759875547}
-  cp: {fileID: 6719247933389606106}
-  price: {fileID: 1123018734201894204}
+  nameText: {fileID: 6428175525184080168}
+  levelText: {fileID: 4289054304366721484}
+  strText: {fileID: 7212934624712996909}
+  balText: {fileID: 8537464243013783474}
+  vtpText: {fileID: 296217369759875547}
+  cpText: {fileID: 6719247933389606106}
+  priceText: {fileID: 1123018734201894204}
   btnListItem: {fileID: 7605442301964172310}
   btnHire: {fileID: 1123018733434025704}
   natureHolder: {fileID: 2803540264801452749}

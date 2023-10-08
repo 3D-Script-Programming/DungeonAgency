@@ -26,7 +26,7 @@ public class AnimatorController
         animator.SetTrigger("Victory");
     }
 
-    public void MoveFoward()
+    public void MoveForward()
     {
         animator.SetTrigger("Forward");
     }

@@ -7,9 +7,9 @@ public class BattleUIManager : MonoBehaviour
     public GameObject winUI;
     public GameObject failUI;
     public TextMeshProUGUI winGoldText;
-    public TextMeshProUGUI WinEvilPointText;
+    public TextMeshProUGUI WinInfamyText;
     public TextMeshProUGUI failGoldText;
-    public TextMeshProUGUI failEvilPointText;
+    public TextMeshProUGUI failInfamyText;
     public Button winHome;
     public Button winRestart;
     public Button winNext;
@@ -35,16 +35,16 @@ public class BattleUIManager : MonoBehaviour
         ApplyUIEvents();
     }
 
-    public void SetWinText(int gold, int evilPoint)
+    public void SetWinText(int gold, int infamy)
     {
-        winGoldText.text = gold.ToString();
-        WinEvilPointText.text = evilPoint.ToString();
+        winGoldText.text = GameManager.s_Instance.player.Gold.ToString() + " + " + gold.ToString();
+        WinInfamyText.text = GameManager.s_Instance.player.Infamy.ToString() + " + " + infamy.ToString();
     }
 
-    public void SetFailText(int gold, int evilPoint)
+    public void SetFailText(int gold, int infamy)
     {
-        failGoldText.text = gold.ToString();
-        failEvilPointText.text = evilPoint.ToString();
+        failGoldText.text = GameManager.s_Instance.player.Gold.ToString() + " + " + gold.ToString();
+        failInfamyText.text = GameManager.s_Instance.player.Infamy.ToString() + " + " + infamy.ToString();
     }
 
     private void ApplyUIEvents()
