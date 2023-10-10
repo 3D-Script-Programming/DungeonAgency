@@ -68,6 +68,8 @@ public class BattleManager : MonoBehaviour
     public bool reloadMonsterLock;
     public bool reloadHeroLock;
 
+    public bool isFirstHeroSpawn;
+
     // 몬스터 전투력의 합 및 용사 전투력의 합
     public double sumMonsterCp;
     public double sumHeroCp;
@@ -75,6 +77,9 @@ public class BattleManager : MonoBehaviour
     // 평균 몬스터 전투력 및 평균 용사 전투력
     public double avgHeroCp;
     public double avgMonsterCp;
+
+    // 전투한 몬스터 개수
+    public int monsterCount;
 
     // 배경음, 승리음, 패배음 오디오 클립들
     public AudioClip backgroundSound;
@@ -115,11 +120,15 @@ public class BattleManager : MonoBehaviour
         reloadMonsterLock = true;
         reloadHeroLock = true;
         isEnd = false;
+        isFirstHeroSpawn = true;
         battleStates = BattleState.READY;
         Turn = 0;
         currentRoom = 0;
         UIManager = GetComponent<BattleUIManager>();
         GameManager.s_Instance.SetMusic(backgroundSound);
+        sumMonsterCp = 0;
+        sumHeroCp = 0;
+        monsterCount = 0;
 
         // 몬스터 스포너에 현재 방 몬스터 설정
         monsterSpawner.Monsters = player.GetRoom(currentRoom).Monsters;
@@ -139,9 +148,6 @@ public class BattleManager : MonoBehaviour
 
         // 용사 스포너 활성화
         heroSpawner.gameObject.SetActive(true);
-
-        CalculateCpSums();
-        CalculateAvgCp();
     }
 
     private void Update()
@@ -303,8 +309,8 @@ public class BattleManager : MonoBehaviour
             GameManager.s_Instance.SetMusic(winSound);
             playingAudio = true;
         }
-        avgHeroCp = sumHeroCp / 6;
-        avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
+        
+        CalculateAvgCp();
 
         // 승리 보상 적용
         AddPlayerRewardsOnWin((int)avgHeroCp, (int)avgMonsterCp);
@@ -342,8 +348,8 @@ public class BattleManager : MonoBehaviour
             GameManager.s_Instance.SetMusic(failSound);
             playingAudio = true;
         }
-        avgHeroCp = sumHeroCp / 6;
-        avgMonsterCp = sumMonsterCp / player.GetMonsterList().Count;
+
+        CalculateAvgCp();
 
         // 패배 보상 적용
         AddPlayerRewardsOnLoss((int)avgHeroCp, (int)avgMonsterCp);
@@ -390,9 +396,9 @@ public class BattleManager : MonoBehaviour
     {
         DestroyCombatants();
         ClearLists();
-
         reloadMonsterLock = true;
         reloadHeroLock = true;
+        isFirstHeroSpawn = false;
         Turn = 0;
 
         if (player.GetRoom(currentRoom).Items == Item.CROWN)
@@ -410,23 +416,13 @@ public class BattleManager : MonoBehaviour
         heroSpawner.gameObject.SetActive(false);
         heroSpawner.Heros = heroes;
         heroSpawner.gameObject.SetActive(true);
-
-        CalculateCpSums();
-        CalculateAvgCp();
-    }
-
-    // 몬스터 전투력 및 용사 전투력의 합 계산
-    private void CalculateCpSums()
-    {
-        sumMonsterCp = monsterCps.Sum();
-        sumHeroCp = heroCps.Sum();
     }
 
     // 평균 몬스터 전투력 및 평균 용사 전투력 계산
     private void CalculateAvgCp()
     {
-        avgHeroCp = sumHeroCp / heroes.Count;
-        avgMonsterCp = sumMonsterCp / monsterInBattle.Count;
+        avgHeroCp = sumHeroCp / 6;
+        avgMonsterCp = sumMonsterCp / monsterCount;
     }
 
     // 전투 중인 몬스터와 용사 제거

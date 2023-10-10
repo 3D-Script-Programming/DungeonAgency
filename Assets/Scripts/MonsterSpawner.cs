@@ -36,6 +36,8 @@ public class MonsterSpawner : MonoBehaviour
                 battleManager.monsterNumber.Add(locationNumber);
                 battleManager.monsterNumber.Sort();
                 battleManager.monsterCps.Add(spawnCharacter.GetCP());
+                battleManager.sumMonsterCp += spawnCharacter.GetCP();
+                battleManager.monsterCount++;
             }
         }
         battleManager.reloadMonsterLock = false;
