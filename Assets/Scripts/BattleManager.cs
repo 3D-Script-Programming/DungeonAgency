@@ -71,12 +71,12 @@ public class BattleManager : MonoBehaviour
     public bool isFirstHeroSpawn;
 
     // 몬스터 전투력의 합 및 용사 전투력의 합
-    public double sumMonsterCp;
-    public double sumHeroCp;
+    public float sumMonsterCp;
+    public float sumHeroCp;
 
     // 평균 몬스터 전투력 및 평균 용사 전투력
-    public double avgHeroCp;
-    public double avgMonsterCp;
+    public float avgHeroCp;
+    public float avgMonsterCp;
 
     // 전투한 몬스터 개수
     public int monsterCount;
@@ -313,18 +313,20 @@ public class BattleManager : MonoBehaviour
         CalculateAvgCp();
 
         // 승리 보상 적용
-        AddPlayerRewardsOnWin((int)avgHeroCp, (int)avgMonsterCp);
+        AddPlayerRewardsOnWin();
 
         // 게임 종료 처리
         InitializeGame();
     }
 
     // 승리 보상 적용
-    private void AddPlayerRewardsOnWin(int avgHeroCp, int avgMonsterCp)
+    private void AddPlayerRewardsOnWin()
     {
-        int addExp = 1500 * (avgHeroCp / avgMonsterCp);
-        int addGold = 1500 * (avgHeroCp / avgMonsterCp);
-        int addInfamy = 300 * (avgHeroCp / avgMonsterCp);
+        float ratio = Mathf.Max(avgHeroCp, 1) / Mathf.Max(avgMonsterCp, 1); // 분모를 0보다 크게 유지
+
+        int addExp = Mathf.RoundToInt(1500 * ratio);
+        int addGold = Mathf.RoundToInt(1500 * ratio);
+        int addInfamy = Mathf.RoundToInt(300 * ratio);
 
         foreach (var monster in player.GetMonsterList())
         {
@@ -334,9 +336,6 @@ public class BattleManager : MonoBehaviour
         // UI 갱신 및 보스 몬스터 처리
         UIManager.SetWinText(addGold, addInfamy);
         UIManager.winUI.SetActive(true);
-
-        player.AddGold(addGold);
-        player.AddInfamy(addInfamy);
     }
 
     // 패배 처리
@@ -352,18 +351,21 @@ public class BattleManager : MonoBehaviour
         CalculateAvgCp();
 
         // 패배 보상 적용
-        AddPlayerRewardsOnLoss((int)avgHeroCp, (int)avgMonsterCp);
+        AddPlayerRewardsOnLoss();
 
         // 게임 종료 처리
         InitializeGame();
     }
 
     // 패배 보상 적용
-    private void AddPlayerRewardsOnLoss(int avgHeroCp, int avgMonsterCp)
+    private void AddPlayerRewardsOnLoss()
     {
-        int addExp = 1000 * (avgHeroCp / avgMonsterCp);
-        int addGold = 800 * (avgHeroCp / avgMonsterCp);
-        int addInfamy = -50 * (avgHeroCp / avgMonsterCp);
+
+        float ratio = Mathf.Max(avgHeroCp, 1) / Mathf.Max(avgMonsterCp, 1); // 분모를 0보다 크게 유지
+
+        int addExp = Mathf.RoundToInt(1000 * ratio);
+        int addGold = Mathf.RoundToInt(800 * ratio);
+        int addInfamy = Mathf.RoundToInt(-50 * ratio);
 
         foreach (var monster in player.GetMonsterList())
         {
@@ -373,9 +375,6 @@ public class BattleManager : MonoBehaviour
         // UI 갱신 및 보스 몬스터 처리
         UIManager.SetFailText(addGold, addInfamy);
         UIManager.failUI.SetActive(true);
-
-        player.AddGold(addGold);
-        player.AddInfamy(addInfamy);
     }
 
     // 게임 종료 처리

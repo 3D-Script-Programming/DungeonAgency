@@ -83,9 +83,6 @@ public class MonsterController : CharacterActions
         // 몬스터에게 피격 처리
         yield return HandleTargetHit(target, damage, effect);
 
-        // 대기 시간 후
-        yield return new WaitForSeconds(0.8f);
-
         // 뒤로 이동 애니메이션 재생
         animatorController.MoveBackward();
 

@@ -18,6 +18,8 @@ public class BattleUIManager : MonoBehaviour
     public Button failNext;
     public Button quitOK;
 
+    private Player player;
+
     // 새로운 속성: 전투 승리 텍스트
     public string VictoryText
     {
@@ -32,19 +34,24 @@ public class BattleUIManager : MonoBehaviour
 
     private void Start()
     {
+        player = GameManager.s_Instance.player;
         ApplyUIEvents();
     }
 
     public void SetWinText(int gold, int infamy)
     {
-        winGoldText.text = GameManager.s_Instance.player.Gold.ToString() + " + " + gold.ToString();
-        WinInfamyText.text = GameManager.s_Instance.player.Infamy.ToString() + " + " + infamy.ToString();
+        player.AddGold(gold);
+        player.AddInfamy(infamy);
+        winGoldText.text = player.Gold.ToString() + "(+" + gold.ToString() + ")";
+        WinInfamyText.text = player.Infamy.ToString() + "(+" + infamy.ToString() + ")";
     }
 
     public void SetFailText(int gold, int infamy)
     {
-        failGoldText.text = GameManager.s_Instance.player.Gold.ToString() + " + " + gold.ToString();
-        failInfamyText.text = GameManager.s_Instance.player.Infamy.ToString() + " + " + infamy.ToString();
+        player.AddGold(gold);
+        player.AddInfamy(infamy);
+        failGoldText.text = player.Gold.ToString() + "(+" + gold.ToString() + ")";
+        failInfamyText.text = player.Infamy.ToString() + "(" + infamy.ToString() + ")";
     }
 
     private void ApplyUIEvents()
