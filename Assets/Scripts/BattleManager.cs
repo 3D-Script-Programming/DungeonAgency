@@ -335,7 +335,7 @@ public class BattleManager : MonoBehaviour
 
         // UI 갱신 및 보스 몬스터 처리
         UIManager.SetWinText(addGold, addInfamy);
-        UIManager.winUI.SetActive(true);
+        UIManager.popupWin.SetActive(true);
     }
 
     // 패배 처리
@@ -374,7 +374,7 @@ public class BattleManager : MonoBehaviour
 
         // UI 갱신 및 보스 몬스터 처리
         UIManager.SetFailText(addGold, addInfamy);
-        UIManager.failUI.SetActive(true);
+        UIManager.popupFail.SetActive(true);
     }
 
     // 게임 종료 처리
