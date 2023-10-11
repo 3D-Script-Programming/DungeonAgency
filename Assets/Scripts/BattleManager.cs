@@ -32,10 +32,22 @@ public class BattleManager : MonoBehaviour
     public List<GameObject> performList;
 
     // 전투 중인 몬스터 리스트
-    public List<MonsterInfo> monstersInBattle;
+    public List<GameObject> monsterInBattle;
 
     // 전투 중인 용사 리스트
-    public List<HeroInfo> heroesInBattle;
+    public List<GameObject> heroesInBattle;
+
+    // 몬스터 번호 리스트
+    public List<int> monsterNumber;
+
+    // 용사 번호 리스트
+    public List<int> heroNumber;
+
+    // 몬스터 전투력 리스트
+    public List<int> monsterCps;
+
+    // 용사 전투력 리스트
+    public List<int> heroCps;
 
     // 공격 이펙트 게임 오브젝트들
     public GameObject fireEffect;
@@ -81,8 +93,12 @@ public class BattleManager : MonoBehaviour
 
         heroes = new List<Character>();
         performList = new List<GameObject>();
-        monstersInBattle = new List<MonsterInfo>();
-        heroesInBattle = new List<HeroInfo>();
+        monsterInBattle = new List<GameObject>();
+        heroesInBattle = new List<GameObject>();
+        monsterNumber = new List<int>();
+        heroNumber = new List<int>();
+        monsterCps = new List<int>();
+        heroCps = new List<int>();
 
         // 각각의 공격 이펙트 풀 초기화
         fireEffectPool = new ObjectPool(fireEffect, 1);
@@ -293,7 +309,7 @@ public class BattleManager : MonoBehaviour
             GameManager.s_Instance.SetMusic(winSound);
             playingAudio = true;
         }
-        
+
         CalculateAvgCp();
 
         // 승리 보상 적용
@@ -425,53 +441,15 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // 몬스터를 리스트에 추가하는 메서드
-    public void AddMonsterToBattle(GameObject monster, int number, int cp)
-    {
-        monstersInBattle.Add(new MonsterInfo(monster, number, cp));
-    }
-
-    // 용사를 리스트에 추가하는 메서드
-    public void AddHeroToBattle(GameObject hero, int number, int cp)
-    {
-        heroesInBattle.Add(new HeroInfo(hero, number, cp));
-    }
-
     // 리스트 초기화
     private void ClearLists()
     {
         performList.Clear();
-        monstersInBattle.Clear();
+        monsterInBattle.Clear();
         heroesInBattle.Clear();
-    }
-
-    // 내부 클래스 MonsterInfo
-    public class MonsterInfo
-    {
-        public GameObject monsterObject;
-        public int number;
-        public int cp;
-
-        public MonsterInfo(GameObject monsterObject, int number, int cp)
-        {
-            this.monsterObject = monsterObject;
-            this.number = number;
-            this.cp = cp;
-        }
-    }
-
-    // 내부 클래스 HeroInfo
-    public class HeroInfo
-    {
-        public GameObject heroObject;
-        public int number;
-        public int cp;
-
-        public HeroInfo(GameObject heroObject, int number, int cp)
-        {
-            this.heroObject = heroObject;
-            this.number = number;
-            this.cp = cp;
-        }
+        monsterNumber.Clear();
+        heroNumber.Clear();
+        monsterCps.Clear();
+        heroCps.Clear();
     }
 }
