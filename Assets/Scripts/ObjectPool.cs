@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class ObjectPool
 {
+    // 오브젝트 풀의 큐
     private Queue<GameObject> poolQueue = new Queue<GameObject>();
+
+    // 오브젝트 풀에서 사용할 프리팹
     private GameObject prefab;
 
     // ObjectPool 생성자

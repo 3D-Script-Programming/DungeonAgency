@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CharacterActions : MonoBehaviour
 {
-    // 배틀매니저 객체
+    // 배틀 매니저 객체
     protected BattleManager battleManager;
 
     // 캐릭터 정보
@@ -13,19 +13,19 @@ public class CharacterActions : MonoBehaviour
     // 시작 위치
     protected Vector3 startPosition;
 
-    // 현재 액션중인가
+    // 현재 액션 중인가
     protected bool actionStarted;
 
     // 애니메이션 속도
     protected float moveSpeed;
 
-    // 애니메이터
+    // 애니메이터 컨트롤러
     public AnimatorController animatorController;
 
     // 오디오 소스
     protected AudioSource audioSource;
 
-    // 죽었는가?
+    // 죽었는가
     public bool IsDead { get; set; }
 
     // 생성된 위치 넘버: 012 전열 345 후열
@@ -37,7 +37,7 @@ public class CharacterActions : MonoBehaviour
     // 어택 타겟
     public GameObject targetObject;
 
-    // 쳋력바
+    // 체력바
     public Slider healthSlider;
 
     // 죽음 사운드
@@ -46,8 +46,10 @@ public class CharacterActions : MonoBehaviour
     // 피격 사운드
     public AudioClip hitSound;
 
+    // 스크립트가 활성화될 때 호출되는 메서드
     private void Awake()
     {
+        // 애니메이터 컨트롤러 초기화
         animatorController = new AnimatorController(gameObject.GetComponent<Animator>());
         audioSource = GetComponent<AudioSource>();
         IsDead = false;
@@ -55,6 +57,7 @@ public class CharacterActions : MonoBehaviour
         moveSpeed = 20f;
     }
 
+    // 시작 위치로 이동하는 메서드
     protected bool MoveToStartPosition()
     {
         // 현재 위치에서 목표 지점까지 이동
@@ -121,7 +124,6 @@ public class CharacterActions : MonoBehaviour
         return effect;
     }
 
-
     // 이펙트를 풀에 반환하는 함수
     protected void ReturnEffectToPool(GameObject effect)
     {
@@ -144,11 +146,13 @@ public class CharacterActions : MonoBehaviour
         }
     }
 
+    // 배틀 매니저 설정 메서드
     public void SetBattleManager(BattleManager battleManager)
     {
         this.battleManager = battleManager;
     }
 
+    // 캐릭터 설정 메서드
     public void SetCharacter(Character character)
     {
         this.character = character;
@@ -156,10 +160,9 @@ public class CharacterActions : MonoBehaviour
         healthSlider.value = character.HP;
     }
 
+    // 현재 캐릭터 반환 메서드
     public Character GetCharacter()
     {
         return character;
     }
-
 }
-

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class HeroController : CharacterActions
 {
-    // 초기화 함수
     private void Start()
     {
         // 초기 상태 설정: 대기 상태
@@ -182,6 +181,7 @@ public class HeroController : CharacterActions
         battleManager.monsterCps.Remove(target.GetCharacter().GetCP());
     }
 
+    // 시작 위치 설정 메서드
     public void SetStartPosition(Vector3 startPosition)
     {
         this.startPosition = startPosition;
