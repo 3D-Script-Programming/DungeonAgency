@@ -63,6 +63,7 @@ public class MainUIManager : MonoBehaviour
         // 팝업 관련 처리
         if (GameManager.s_Instance.player.NotReadyForBattle())
         {
+            GameManager.s_Instance.TogglePause(); // 일시 정지 토글
             // 경고 팝업 표시
             popupWarning.SetActive(true);
         }
@@ -94,6 +95,7 @@ public class MainUIManager : MonoBehaviour
     {
         // Setting 버튼 클릭 시 처리
         GameManager.s_Instance.PlayButtonSound();
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupSetting.SetActive(true);
         soundSliderBar.onValueChanged.AddListener((value) => GameManager.s_Instance.ChangeVolume(value));
     }
@@ -103,6 +105,7 @@ public class MainUIManager : MonoBehaviour
     {
         // Setting 팝업 닫기 버튼 클릭 시 처리
         GameManager.s_Instance.PlayButtonSound();
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupSetting.SetActive(false);
     }
 
@@ -111,6 +114,7 @@ public class MainUIManager : MonoBehaviour
     {
         // Warning 팝업 닫기 버튼 클릭 시 처리
         GameManager.s_Instance.PlayButtonSound();
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupWarning.SetActive(false);
     }
 }

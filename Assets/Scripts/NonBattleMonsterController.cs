@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class NonBattleMonsterController : MonoBehaviour
 {
     // 캐릭터 체력 바 객체
-    [SerializeField] private GameObject slider;
+    [SerializeField] private Slider slider;
 
     // 몬스터 정보 속성
     public Character MonsterInfo { get; set; }
@@ -15,6 +16,7 @@ public class NonBattleMonsterController : MonoBehaviour
     {
         // animator를 가져옴
         animator = GetComponent<Animator>();
+        slider = gameObject.GetComponent<MonsterController>().healthSlider;
     }
 
     private void OnEnable()
@@ -29,7 +31,7 @@ public class NonBattleMonsterController : MonoBehaviour
     private void DeactivateSlider()
     {
         // 캐릭터 체력 바를 비활성화
-        slider.SetActive(false);
+        slider.gameObject.SetActive(false);
     }
 
     // 등장 애니메이션 재생 함수

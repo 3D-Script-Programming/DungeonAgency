@@ -25,7 +25,7 @@ public class Character
 
     // 보스 상태 및 일반 상태에서의 능력치 배율을 상수로 정의
     private const float BossMultiplier = 4.0f;
-    private const float NormalMultiplier = 1.0f;
+    private const float NormalMultiplier = 1.0f / 4.0f;
 
     // 데미지 계산식에 적용할 배율 상수 정의
     private const int MaxDamageMultiplier = 15;
@@ -144,12 +144,17 @@ public class Character
     public void SetBoss()
     {
         MultiplyStats(BossMultiplier);
+        HP = GetMaxHP();
     }
 
     // 일반 상태로 설정 (능력치 배율 복원)
     public void FinishBoss()
     {
         MultiplyStats(NormalMultiplier);
+        if (HP > GetMaxHP())
+        {
+            HP = GetMaxHP();
+        }
     }
 
     // 능력치를 주어진 배율만큼 조정

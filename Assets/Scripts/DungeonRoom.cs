@@ -106,5 +106,4 @@ public class DungeonRoom
     {
         return Monsters.IndexOf(monster);
     }
-
 }

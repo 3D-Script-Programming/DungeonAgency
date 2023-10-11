@@ -2,43 +2,61 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimatorController 
+public class AnimatorController
 {
     private Animator animator;
 
-    public AnimatorController(Animator animator) {
+    // 생성자: AnimatorController 클래스의 인스턴스를 초기화할 때 호출됨
+    public AnimatorController(Animator animator)
+    {
         this.animator = animator;
     }
 
-    public void Die() {
+    // Die 애니메이션을 재생하는 메서드
+    public void Die()
+    {
         animator.SetTrigger("Die");
     }
 
-    public void GetHit() {
+    // GetHit 애니메이션을 재생하는 메서드
+    public void GetHit()
+    {
         animator.SetTrigger("GetHit");
     }
-    
-    public void Victory() {
+
+    // Victory 애니메이션을 재생하는 메서드
+    public void Victory()
+    {
         animator.SetTrigger("Victory");
     }
 
-    public void MoveFoward() {
+    // Forward 애니메이션을 재생하는 메서드
+    public void MoveForward()
+    {
         animator.SetTrigger("Forward");
     }
 
-    public void Attack() {
+    // Attack 애니메이션을 재생하는 메서드
+    public void Attack()
+    {
         animator.SetTrigger("Attack");
     }
 
-    public void Critical() {
+    // Critical 애니메이션을 재생하는 메서드
+    public void Critical()
+    {
         animator.SetTrigger("Critical");
     }
 
-    public void MoveBackward() {
+    // Backward 애니메이션을 재생하는 메서드
+    public void MoveBackward()
+    {
         animator.SetTrigger("Backward");
     }
 
-    public void StopMove() {
+    // Idle 애니메이션을 재생하는 메서드
+    public void StopMove()
+    {
         animator.SetTrigger("Idle");
     }
 }

@@ -4,50 +4,54 @@ using UnityEngine;
 
 public class MonsterSpawner : MonoBehaviour
 {
+    // 배틀 매니저 객체
+    [SerializeField]
+    private BattleManager battleManager;
+
+    // 몬스터 초기 위치 설정
     private static readonly float[,] POSITIONS = new float[,] {
         { 3, -6.5f, -3 }, { 0, -6.5f, -3 }, { -3, -6.5f, -3 },
         { 3, -6.5f, -6 }, { 0, -6.5f, -6 }, { -3, -6.5f, -6 },
     };
 
-    private int locationNumber; // 012 전열 345 후열
-    private List<Character> monsters = new List<Character>(6);
-
-    BattleManager battleManager;
+    // 몬스터 캐릭터 리스트
+    public List<Character> Monsters { get; set; }
 
     void OnEnable()
     {
-        for (locationNumber = 0; locationNumber < 6; locationNumber++)
+        // 각 위치별로 몬스터 생성
+        for (int locationNumber = 0; locationNumber < 6; locationNumber++)
         {
-            if (monsters[locationNumber] != null)
+            // 몬스터가 null이 아닌 경우
+            if (Monsters[locationNumber] != null)
             {
-                Character spawnCharacter = monsters[locationNumber];
+                // 몬스터 정보 설정 및 초기화
+                Character spawnCharacter = Monsters[locationNumber];
                 GameObject prefab = spawnCharacter.Prefab;
                 spawnCharacter.SetResetHp();
 
+                // 몬스터 생성 위치 설정
                 Vector3 spawnPosition = new Vector3(POSITIONS[locationNumber, 0], POSITIONS[locationNumber, 1], POSITIONS[locationNumber, 2]);
-                GameObject spawnUnit = Instantiate(prefab, spawnPosition, Quaternion.identity);
-                spawnUnit.GetComponent<MonsterController>().SetCharacter(spawnCharacter);
-                spawnUnit.GetComponent<MonsterController>().SetSpawnNumber(locationNumber);
-                spawnUnit.GetComponent<MonsterController>().gameObject.SetActive(true);
 
-                battleManager = GameObject.Find("Battle Manager").GetComponent<BattleManager>();
+                // 몬스터 오브젝트 생성 및 설정
+                GameObject spawnUnit = Instantiate(prefab, spawnPosition, Quaternion.identity);
+                MonsterController monsterController = spawnUnit.GetComponent<MonsterController>();
+                monsterController.SetCharacter(spawnCharacter);
+                monsterController.SetBattleManager(battleManager);
+                monsterController.SpawnNumber = locationNumber;
+                monsterController.gameObject.SetActive(true);
+
+                // 배틀 매니저에 몬스터 정보 추가
                 battleManager.monsterInBattle.Add(spawnUnit);
                 battleManager.monsterNumber.Add(locationNumber);
                 battleManager.monsterNumber.Sort();
                 battleManager.monsterCps.Add(spawnCharacter.GetCP());
                 battleManager.sumMonsterCp += spawnCharacter.GetCP();
+                battleManager.monsterCount++;
             }
         }
+
+        // 몬스터 리로드 락 해제
         battleManager.reloadMonsterLock = false;
-    }
-
-    public List<Character> GetMonster()
-    {
-        return monsters;
-    }
-
-    public void SetMonster(List<Character> value)
-    {
-        monsters = value;
     }
 }

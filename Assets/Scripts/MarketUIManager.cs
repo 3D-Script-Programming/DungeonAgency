@@ -90,6 +90,7 @@ public class MarketUIManager : MonoBehaviour
     {
         // 설정 팝업 열기
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupSetting.SetActive(true); // 설정 팝업 활성화
         soundSliderBar.onValueChanged.AddListener((value) => GameManager.s_Instance.ChangeVolume(value)); // 볼륨 조절 슬라이더 이벤트 등록
     }
@@ -98,6 +99,7 @@ public class MarketUIManager : MonoBehaviour
     private void OnClickSettingCloseButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupSetting.SetActive(false); // 설정 팝업 비활성화
     }
 

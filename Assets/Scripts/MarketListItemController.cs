@@ -7,7 +7,7 @@ using TMPro;
 public class MarketListItemController : MonoBehaviour
 {
     // UI 요소들을 저장할 변수들
-    public TextMeshProUGUI name, level, str, bal, vtp, cp, price; // 몬스터 정보 텍스트
+    public TextMeshProUGUI nameText, levelText, strText, balText, vtpText, cpText, priceText; // 몬스터 정보 텍스트
     public Button btnListItem; // 몬스터 선택 버튼
     public Button btnHire; // 몬스터 고용 버튼
     public GameObject natureHolder; // 몬스터 속성 아이콘을 감싸는 오브젝트
@@ -72,13 +72,13 @@ public class MarketListItemController : MonoBehaviour
         }
 
         // 몬스터 정보 텍스트 업데이트
-        name.text = monster.Name;
-        level.text = monster.Level.ToString();
-        str.text = monster.Strength.ToString();
-        bal.text = monster.Balance.ToString();
-        vtp.text = monster.Vitality.ToString();
-        cp.text = monster.GetCP().ToString();
-        price.text = monster.GetPrice().ToString();
+        nameText.text = monster.Name;
+        levelText.text = monster.Level.ToString();
+        strText.text = monster.Strength.ToString();
+        balText.text = monster.Balance.ToString();
+        vtpText.text = monster.Vitality.ToString();
+        cpText.text = monster.GetCP().ToString();
+        priceText.text = monster.GetPrice().ToString();
 
         // 버튼 상태 업데이트
         SetButton();

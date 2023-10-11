@@ -180,6 +180,7 @@ public class DungeonUIManager : MonoBehaviour
         if (spawnerTransform.childCount > 0)
         {
             selectedPosition = selected;
+            GameManager.s_Instance.TogglePause(); // 일시 정지 토글
             popupRemoveMonster.SetActive(true);
         }
         else
@@ -223,6 +224,7 @@ public class DungeonUIManager : MonoBehaviour
         // 팝업 관련 처리
         if (player.NotReadyForBattle())
         {
+            GameManager.s_Instance.TogglePause(); // 일시 정지 토글
             // 경고 팝업 표시
             popupWarning.SetActive(true);
         }
@@ -248,6 +250,7 @@ public class DungeonUIManager : MonoBehaviour
         // 선택한 몬스터가 이미 배치되어 있는지 확인
         if (monster.CurrentRoomNumber != -1)
         {
+            GameManager.s_Instance.TogglePause(); // 일시 정지 토글
             // 이미 배치된 몬스터라면 경고창을 띄웁니다.
             popupAlreadyMonsterInRoom.SetActive(true);
             selectedMonster = monster;
@@ -265,6 +268,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickReplaceButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
 
         if (selectedMonster != null)
         {
@@ -275,9 +279,6 @@ public class DungeonUIManager : MonoBehaviour
             {
                 // 몬스터의 위치를 서로 교체합니다.
                 SwapMonsters(selectedMonster, existingMonster);
-
-                // 경고 팝업을 닫습니다.
-                popupAlreadyMonsterInRoom.SetActive(false);
             }
             else
             {
@@ -286,9 +287,11 @@ public class DungeonUIManager : MonoBehaviour
                 Manager.RemovePreviousMonster(selectedMonster, player.GetRoom(selectedMonster.CurrentRoomNumber));
                 selectedRoom.PlaceMonster(selectedPosition, selectedMonster);
                 Manager.SpawnMonster(selectedMonster, selectedPosition);
-                popupAlreadyMonsterInRoom.SetActive(false); // 경고창 닫기
             }
         }
+
+        // 경고 팝업을 닫습니다.
+        popupAlreadyMonsterInRoom.SetActive(false);
 
         selectedMonster = null;
     }
@@ -338,6 +341,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickReplaceCancelButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         selectedMonster = null; // 선택된 몬스터 초기화
         popupAlreadyMonsterInRoom.SetActive(false); // 경고창 닫기
     }
@@ -452,6 +456,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickSettingButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupSetting.SetActive(true); // 팝업창 활성화
 
         // GameManager에 있는 ChangeVolume() 함수를 호출합니다.
@@ -462,6 +467,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickSettingCloseButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupSetting.SetActive(false); // 팝업창 비활성화
     }
 
@@ -469,6 +475,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickWarningCloseButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         popupWarning.SetActive(false); // 팝업창 비활성화
     }
 
@@ -477,6 +484,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickRemoveButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         Manager.RemoveSpawnMonster(selectedPosition); // DungeonManager에 있는 RemoveSpawnMonster() 함수 호출
         popupRemoveMonster.SetActive(false); // 팝업창을 비활성화 합니다.
     }
@@ -486,6 +494,7 @@ public class DungeonUIManager : MonoBehaviour
     private void OnClickRemoveCancelButton()
     {
         GameManager.s_Instance.PlayButtonSound(); // 버튼 사운드 재생
+        GameManager.s_Instance.TogglePause(); // 일시 정지 토글
         selectedPosition = -1; // 선택된 위치 초기화
         popupRemoveMonster.SetActive(false); // 팝업창을 비활성화 합니다.
     }
