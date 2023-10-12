@@ -1,5 +1,4 @@
-﻿using System;
-public enum Hero
+﻿public enum Hero
 {
     DoubleSword01,
     DoubleSword02,

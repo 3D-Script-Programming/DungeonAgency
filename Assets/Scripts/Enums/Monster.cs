@@ -1,5 +1,4 @@
-﻿using System;
-public enum Monster
+﻿public enum Monster
 {
     BeholderGuardian,
     BeholderQueen,
